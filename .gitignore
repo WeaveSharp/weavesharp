@@ -1,0 +1,24 @@
+# .NET
+bin/
+obj/
+TestResults/
+*.user
+.vs/
+
+# Node and TypeScript
+node_modules/
+out/
+dist/
+*.vsix
+
+# Gradle and JetBrains
+.gradle/
+.idea/
+.intellijPlatform/
+
+# Vericairn worker brief exports
+.vericairn/
+
+# Operating systems
+.DS_Store
+Thumbs.db
