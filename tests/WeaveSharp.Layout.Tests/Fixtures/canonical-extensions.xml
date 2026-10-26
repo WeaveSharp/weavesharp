@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visualDocument xmlns="urn:weavesharp:visual:1" schemaVersion="1" source="Mosaic.cs" mode="draft" e1:owner="tile-editor" xmlns:e1="urn:tiles:extra">
+  <view id="mosaic" e1:palette="warm">
+    <node id="chip" syntaxKind="LiteralExpression" e1:shade="ochre">
+      <anchor syntaxRole="Value" e1:weight="3" />
+      <badge tone="blue" xmlns="urn:tiles:extra">Pinned</badge>
+    </node>
+    <note id="legend" e1:style="small">
+      <text>Amber &lt; ochre; café.</text>
+      <badge xmlns="urn:tiles:extra">Note badge</badge>
+    </note>
+    <group id="tray" title="Sample tray" e1:sort="manual">
+      <member node="missing-chip" />
+      <badge xmlns="urn:tiles:extra">Group badge</badge>
+    </group>
+    <state ordinal="2" xmlns="urn:tiles:extra" />
+    <state ordinal="1" xmlns="urn:tiles:extra" />
+  </view>
+  <catalog revision="4" xmlns="urn:tiles:extra"><entry key="amber" /></catalog>
+</visualDocument>

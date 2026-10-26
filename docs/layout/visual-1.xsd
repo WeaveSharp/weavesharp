@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:v="urn:weavesharp:visual:1"
+           targetNamespace="urn:weavesharp:visual:1"
+           elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:annotation>
+    <xs:documentation>
+      Layout vocabulary for saved presentation. LayoutReader additionally checks
+      related attributes, source paths and resource limits. See README.md for
+      extension compatibility and the limits of XSD 1.0.
+    </xs:documentation>
+  </xs:annotation>
+
+  <xs:simpleType name="identifier">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="64" />
+      <xs:pattern value="[A-Za-z0-9][A-Za-z0-9._-]*" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="syntaxKind">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="128" />
+      <xs:pattern value="[A-Za-z][A-Za-z0-9]*" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="portRole">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:maxLength value="64" />
+      <xs:pattern value="[A-Za-z][A-Za-z0-9-]*" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="flag">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="true" />
+      <xs:enumeration value="false" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="flowDirection">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="left-to-right" />
+      <xs:enumeration value="top-to-bottom" />
+      <xs:enumeration value="right-to-left" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="coordinate">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="-1000000" />
+      <xs:maxInclusive value="1000000" />
+      <xs:pattern value="-?[0-9]{1,9}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="extentLength">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1" />
+      <xs:maxInclusive value="100000" />
+      <xs:pattern value="[0-9]{1,9}" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="attributeText">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="4096" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="title">
+    <xs:restriction base="v:attributeText">
+      <xs:minLength value="1" />
+      <xs:pattern value="[\s\S]*\S[\s\S]*" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="noteText">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="16384" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:attributeGroup name="position">
+    <xs:attribute name="x" type="v:coordinate" />
+    <xs:attribute name="y" type="v:coordinate" />
+  </xs:attributeGroup>
+
+  <xs:complexType name="anchor">
+    <xs:attribute name="syntaxPathHint" type="v:attributeText" />
+    <xs:attribute name="memberSignature" type="v:attributeText" />
+    <xs:attribute name="syntaxRole" type="v:attributeText" />
+    <xs:attribute name="fingerprint" type="v:attributeText" />
+    <xs:anyAttribute processContents="skip" />
+  </xs:complexType>
+  <xs:complexType name="extent">
+    <xs:attribute name="along" type="v:extentLength" use="required" />
+    <xs:attribute name="across" type="v:extentLength" use="required" />
+    <xs:anyAttribute processContents="skip" />
+  </xs:complexType>
+  <xs:complexType name="text">
+    <xs:simpleContent>
+      <xs:extension base="v:noteText">
+        <xs:anyAttribute processContents="skip" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="member">
+    <xs:attribute name="node" type="v:identifier" use="required" />
+    <xs:anyAttribute processContents="skip" />
+  </xs:complexType>
+  <xs:complexType name="point">
+    <xs:attribute name="x" type="v:coordinate" use="required" />
+    <xs:attribute name="y" type="v:coordinate" use="required" />
+    <xs:anyAttribute processContents="skip" />
+  </xs:complexType>
+
+  <xs:complexType name="node">
+    <xs:sequence>
+      <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+      <xs:choice>
+        <xs:sequence>
+          <xs:element name="anchor" type="v:anchor" />
+          <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+          <xs:sequence minOccurs="0">
+            <xs:element name="extent" type="v:extent" />
+            <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:sequence>
+        <xs:sequence>
+          <xs:element name="extent" type="v:extent" />
+          <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="anchor" type="v:anchor" />
+          <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="id" type="v:identifier" use="required" />
+    <xs:attribute name="syntaxKind" type="v:syntaxKind" use="required" />
+    <xs:attribute name="collapsed" type="v:flag" />
+    <xs:attributeGroup ref="v:position" />
+    <xs:anyAttribute processContents="skip" />
+  </xs:complexType>
+  <xs:complexType name="note">
+    <xs:sequence>
+      <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+      <xs:choice>
+        <xs:sequence>
+          <xs:element name="text" type="v:text" />
+          <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+          <xs:sequence minOccurs="0">
+            <xs:element name="extent" type="v:extent" />
+            <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:sequence>
+        <xs:sequence>
+          <xs:element name="extent" type="v:extent" />
+          <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+          <xs:element name="text" type="v:text" />
+          <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="id" type="v:identifier" use="required" />
+    <xs:attributeGroup ref="v:position" />
+    <xs:anyAttribute processContents="skip" />
+  </xs:complexType>
+  <xs:complexType name="group">
+    <xs:sequence>
+      <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="member" type="v:member" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="member" type="v:member" />
+        <xs:any namespace="##other" processContents="skip" />
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="id" type="v:identifier" use="required" />
+    <xs:attribute name="title" type="v:title" use="required" />
+    <xs:attribute name="collapsed" type="v:flag" />
+    <xs:attribute name="note" type="v:attributeText" />
+    <xs:anyAttribute processContents="skip" />
+  </xs:complexType>
+  <xs:complexType name="edgeRoute">
+    <xs:sequence>
+      <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="point" type="v:point" />
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="point" type="v:point" />
+        <xs:any namespace="##other" processContents="skip" />
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="id" type="v:identifier" use="required" />
+    <xs:attribute name="from" type="v:identifier" use="required" />
+    <xs:attribute name="fromPort" type="v:portRole" use="required" />
+    <xs:attribute name="to" type="v:identifier" use="required" />
+    <xs:attribute name="toPort" type="v:portRole" use="required" />
+    <xs:anyAttribute processContents="skip" />
+  </xs:complexType>
+  <xs:complexType name="view">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element name="node" type="v:node" />
+      <xs:element name="note" type="v:note" />
+      <xs:element name="group" type="v:group" />
+      <xs:element name="edgeRoute" type="v:edgeRoute" />
+      <xs:any namespace="##other" processContents="skip" />
+    </xs:choice>
+    <xs:attribute name="id" type="v:identifier" use="required" />
+    <xs:attribute name="memberHint" type="v:attributeText" />
+    <xs:attribute name="contextHint" type="v:attributeText" />
+    <xs:attribute name="flow" type="v:flowDirection" />
+    <xs:anyAttribute processContents="skip" />
+  </xs:complexType>
+  <xs:element name="visualDocument">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="view" type="v:view">
+          <xs:unique name="recordIds">
+            <xs:selector xpath="v:node | v:note | v:group | v:edgeRoute" />
+            <xs:field xpath="@id" />
+          </xs:unique>
+        </xs:element>
+        <xs:any namespace="##other" processContents="skip" />
+      </xs:choice>
+      <xs:attribute name="schemaVersion" use="required">
+        <xs:simpleType>
+          <xs:restriction base="v:attributeText">
+            <xs:pattern value="0*1" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="source" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+            <xs:maxLength value="1024" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:anyAttribute processContents="skip" />
+    </xs:complexType>
+    <xs:unique name="viewIds">
+      <xs:selector xpath="v:view" />
+      <xs:field xpath="@id" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>
