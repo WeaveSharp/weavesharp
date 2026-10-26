@@ -273,6 +273,55 @@ class SupplyChainCheck(unittest.TestCase):
         self.repo.write(".github/workflows/ci.yml", WORKFLOW + '      - run: echo "a # b" && npx some-tool\n')
         self.assertRefused("npx fetches and runs packages")
 
+    # The Reviewer's fourth session (01M5X5S3BQ19GF2Y1GNQ9X53SK): MSBuild names are case-insensitive.
+
+    def test_msbuild_names_are_matched_in_any_case(self):
+        cases = {
+            "<PropertyGroup><nugetaudit>false</nugetaudit></PropertyGroup>": "sets NuGetAudit",
+            "<propertygroup><NUGETLOCKFILEPATH>obj/alt.lock.json</NUGETLOCKFILEPATH></propertygroup>": "sets NuGetLockFilePath",
+            "<PropertyGroup><restoreSources>https://example.invalid/feed</restoreSources></PropertyGroup>": "sets RestoreSources",
+            "<PropertyGroup><treatwarningsaserrors>false</treatwarningsaserrors></PropertyGroup>": "sets TreatWarningsAsErrors",
+            "<PropertyGroup><managepackageversionscentrally>false</managepackageversionscentrally></PropertyGroup>": "sets ManagePackageVersionsCentrally",
+            '<ItemGroup><packagereference include="Example.Other" version="*" /></ItemGroup>': "sets Version",
+            '<ItemGroup><PackageReference Include="Example.Other"><VERSION>9.9.9</VERSION></PackageReference></ItemGroup>': "sets Version",
+            "<PropertyGroup><A>NU19</A><B>03</B><nowarn>$(NoWarn);$(A)$(B)</nowarn></PropertyGroup>": "warning lists name literal codes only",
+            '<import project="../x.targets" />': "has an Import element",
+        }
+        for body, fragment in cases.items():
+            with self.subTest(body=body):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("<ItemGroup>", body + "<ItemGroup>", 1))
+                self.assertRefused(fragment)
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace('Sdk="Microsoft.NET.Sdk"', 'Sdk="microsoft.net.sdk"'))
+        self.assertEqual(self.repo.problems(), [])
+
+    def test_properties_that_redirect_imports_are_refused(self):
+        for name in ("CustomAfterMicrosoftCommonTargets", "custombeforemicrosoftcommonprops", "DirectoryBuildPropsPath",
+                     "ImportDirectoryBuildProps", "MSBuildExtensionsPath"):
+            with self.subTest(name=name):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj",
+                                PROJECT.replace("<ItemGroup>", f"<PropertyGroup><{name}>x</{name}></PropertyGroup><ItemGroup>", 1))
+                self.assertRefused("MSBuild files import nothing the rules don't read")
+
+    def test_projects_are_found_after_leading_whitespace_and_in_utf32(self):
+        evil = self.evil_project()
+        cases = {"src/A/A.build": ("\n" * 40 + evil).encode("utf-8"),
+                 "src/B/B.build": ("  \n  " + evil).encode("utf-16-le"),
+                 "src/C/C.build": evil.encode("utf-32")}
+        for name, data in cases.items():
+            with self.subTest(name=name):
+                target = self.repo.root / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(data)
+                self.assertRefused(f"{name}: sets NuGetLockFilePath")
+                target.unlink()
+
+    def test_solution_entries_are_matched_in_any_case(self):
+        self.repo.write("Example.SLNX", '<solution>\n  <project path="src/Odd/Odd.thing" />\n</solution>\n')
+        self.repo.write("src/Odd/Odd.thing", self.evil_project())
+        self.assertRefused("src/Odd/Odd.thing: has no packages.lock.json")
+        self.repo.write("src/Odd/Odd.thing", "plain text, listed as a project anyway")
+        self.assertRefused("Odd.thing: not well-formed XML")
+
     def test_a_project_without_a_lock_file_is_refused(self):
         (self.repo.root / "tests/Example.Tests/packages.lock.json").unlink()
         self.assertRefused("has no packages.lock.json")

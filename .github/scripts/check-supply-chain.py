@@ -44,6 +44,15 @@ WARNING_LISTS = {"NoWarn", "WarningsNotAsErrors", "WarningsAsErrors", "MSBuildWa
 WARNING_CODE = re.compile(r"^[A-Za-z]{2,}[0-9]{1,5}$")
 AUDIT_CODE = re.compile(r"NU19\d\d", re.IGNORECASE)
 MAX_XML_BYTES = 16 * 1024 * 1024
+# Properties that make MSBuild import a file the rules never read, or skip the root files.
+IMPORT_PROPERTIES = ("CustomBeforeMicrosoftCommonProps", "CustomAfterMicrosoftCommonProps",
+                     "CustomBeforeMicrosoftCommonTargets", "CustomAfterMicrosoftCommonTargets",
+                     "CustomBeforeMicrosoftCSharpTargets", "CustomAfterMicrosoftCSharpTargets",
+                     "DirectoryBuildPropsPath", "DirectoryBuildTargetsPath", "DirectoryPackagesPropsPath",
+                     "ImportDirectoryBuildProps", "ImportDirectoryBuildTargets", "ImportDirectoryPackagesProps",
+                     "ImportProjectExtensionProps", "ImportProjectExtensionTargets", "MSBuildProjectExtensionsPath",
+                     "MSBuildExtensionsPath", "MSBuildExtensionsPath32", "MSBuildExtensionsPath64", "MSBuildUserExtensionsPath",
+                     "ForceImportBeforeCppTargets", "ForceImportAfterCppTargets", "AlternateCommonProps")
 # The audit and the warnings that make it fail a build: set only in the root Directory.Build.props.
 AUDIT_SETTINGS = {"NuGetAudit": "true", "NuGetAuditMode": "all", "NuGetAuditLevel": "low", "TreatWarningsAsErrors": "true"}
 # npm runs these around the scripts CI calls by name, and on install.
@@ -87,44 +96,57 @@ def tracked_files(root):
     return {p for p in out.stdout.decode("utf-8").split("\0") if p}
 
 
-def xml_root(path):
-    """The local name of a file's root element when it is well-formed XML in any encoding, else None."""
+def xml_text(path):
+    """A file's text when it could be XML in an encoding MSBuild reads (UTF-8, UTF-16 or UTF-32, with or
+    without a byte-order mark), with any XML declaration removed; otherwise None."""
     try:
-        with open(path, "rb") as handle:
-            head = handle.read(4)
         if path.stat().st_size > MAX_XML_BYTES:
             return None
+        data = path.read_bytes()
     except OSError:
         return None
-    looks_like_xml = (head.lstrip(b" \t\r\n").startswith(b"<") or head.startswith((b"\xef\xbb\xbf", b"\xff\xfe", b"\xfe\xff"))
-                      or head[:2] in (b"<\x00", b"\x00<"))
-    if not looks_like_xml:
+    if data.startswith((b"\xff\xfe\x00\x00", b"\x00\x00\xfe\xff")):
+        candidates = ["utf-32"]
+    elif data.startswith((b"\xff\xfe", b"\xfe\xff")):
+        candidates = ["utf-16"]
+    elif b"\x00" in data[:64]:
+        candidates = ["utf-32-le", "utf-32-be", "utf-16-le", "utf-16-be"]
+    else:
+        candidates = ["utf-8-sig"]
+    for encoding in candidates:
+        try:
+            text = data.decode(encoding)
+        except UnicodeDecodeError:
+            continue
+        text = re.sub(r"^\s*<\?xml[^>]*\?>", "", text.lstrip("\ufeff")).lstrip()
+        if text.startswith("<"):
+            return text
+    return None
+
+
+def xml_root(path):
+    """The local name of a file's root element when it is well-formed XML in any encoding, else None."""
+    text = xml_text(path)
+    if text is None:
         return None
     try:
-        for _, element in ET.iterparse(path, events=("start",)):
-            return local(element.tag)
+        return local(ET.fromstring(text).tag)
     except ET.ParseError:
-        # UTF-16 without a byte-order mark: MSBuild reads it, so decode it and try again.
-        for encoding in ("utf-16-le", "utf-16-be"):
-            try:
-                return local(ET.fromstring(path.read_bytes().decode(encoding)).tag)
-            except (UnicodeDecodeError, ET.ParseError):
-                continue
-    return None
+        return None
 
 
 def solution_projects(root, files):
     """Every project path a solution file lists, whatever its extension or content."""
     listed = set()
-    for solution in (p for p in files if p.suffix in (".slnx", ".sln")):
+    for solution in (p for p in files if p.suffix.lower() in (".slnx", ".sln")):
         try:
             text = solution.read_text(encoding="utf-8-sig", errors="replace")
         except OSError:
             continue
-        if solution.suffix == ".slnx":
-            paths = re.findall(r"<Project\b[^>]*\bPath\s*=\s*[\"']([^\"']+)[\"']", text)
+        if solution.suffix.lower() == ".slnx":
+            paths = re.findall(r"<Project\b[^>]*\bPath\s*=\s*[\"']([^\"']+)[\"']", text, re.IGNORECASE)
         else:
-            paths = re.findall(r'^Project\("\{[^}]+\}"\)\s*=\s*"[^"]*",\s*"([^"]+)"', text, re.MULTILINE)
+            paths = re.findall(r'^\s*Project\("\{[^}]+\}"\)\s*=\s*"[^"]*",\s*"([^"]+)"', text, re.MULTILINE | re.IGNORECASE)
         for path in paths:
             candidate = (solution.parent / path.replace("\\", "/")).resolve()
             if candidate.is_file():
@@ -139,7 +161,7 @@ def msbuild_files(files, root=None):
     found = []
     for path in files:
         if (path.suffix in MSBUILD_SUFFIXES or path.suffix.endswith("proj") or path.resolve() in listed
-                or xml_root(path) == "Project"):
+                or (xml_root(path) or "").lower() == "project"):
             found.append(path)
     return found
 
@@ -160,6 +182,33 @@ def parse_xml(path, problems):
         return None
 
 
+# Every MSBuild name the rules compare. MSBuild matches property, item, metadata and attribute names
+# without regard to case, so each parsed MSBuild file has them rewritten to these spellings first.
+CANONICAL = {name.lower(): name for name in (
+    *SOURCE_PROPERTIES, *AUDIT_SETTINGS, *WARNING_LISTS, *IMPORT_PROPERTIES,
+    "Project", "PropertyGroup", "ItemGroup", "ImportGroup", "Import", "Sdk", "Target", "Choose", "When", "Otherwise",
+    "PackageReference", "PackageDownload", "GlobalPackageReference", "PackageVersion", "NuGetAuditSuppress",
+    "Include", "Update", "Remove", "Exclude", "Version", "VersionOverride", "Condition", "Reason", "Name",
+)}
+
+
+def parse_msbuild(path, problems):
+    """An MSBuild file, parsed from any encoding, with the names the rules compare in canonical case."""
+    text = xml_text(path)
+    try:
+        xml = ET.fromstring(text) if text is not None else ET.parse(path).getroot()
+    except ET.ParseError as error:
+        problems.append(f"{path.name}: not well-formed XML ({error})")
+        return None
+    for element in xml.iter():
+        name = local(element.tag)
+        element.tag = CANONICAL.get(name.lower(), name)
+        renamed = {CANONICAL.get(key.lower(), key): value for key, value in element.attrib.items()}
+        element.attrib.clear()
+        element.attrib.update(renamed)
+    return xml
+
+
 def property_value(root, name):
     for element in root.iter():
         if local(element.tag) == name and element.text is not None:
@@ -174,7 +223,7 @@ def check_central_versions(root, files, problems):
     if not props.is_file():
         problems.append("Directory.Packages.props is missing; package versions must be central")
         return
-    xml = parse_xml(props, problems)
+    xml = parse_msbuild(props, problems)
     if xml is None:
         return
     if (property_value(xml, "ManagePackageVersionsCentrally") or "").lower() != "true":
@@ -193,7 +242,7 @@ def check_build_props(root, problems):
     if not props.is_file():
         problems.append("Directory.Build.props is missing; it must turn lock files on")
         return
-    xml = parse_xml(props, problems)
+    xml = parse_msbuild(props, problems)
     if xml is None:
         return
     if (property_value(xml, "RestorePackagesWithLockFile") or "").lower() != "true":
@@ -225,7 +274,7 @@ def check_projects(root, files, tracked, problems):
                             "one project per folder keeps each lock file where restore and CI look for it")
     for project in projects:
         relative = project.relative_to(root).as_posix()
-        xml = parse_xml(project, problems)
+        xml = parse_msbuild(project, problems)
         if xml is None:
             continue
         for element in xml.iter():
@@ -252,7 +301,7 @@ def check_msbuild_files(root, files, problems):
     for path in msbuild_files(files, root):
         relative = path.relative_to(root).as_posix()
         is_root = path.parent == root and path.name in ROOT_SETTINGS
-        xml = parse_xml(path, problems)
+        xml = parse_msbuild(path, problems)
         if xml is None:
             continue
         # Parsed values: character references and encodings are already decoded here.
@@ -270,13 +319,15 @@ def check_msbuild_files(root, files, problems):
                         problems.append(f"{relative}: {name} holds {token!r}; warning lists name literal codes only, "
                                         f"besides $({name}) itself")
         sdk = xml.get("Sdk")
-        if sdk is not None and (sdk not in ALLOWED_SDKS or "/" in sdk):
+        if sdk is not None and (sdk.lower() not in {a.lower() for a in ALLOWED_SDKS} or "/" in sdk):
             problems.append(f"{relative}: names SDK {sdk!r}; only versionless Microsoft.NET SDKs are allowed")
         for element in xml.iter():
             name = local(element.tag)
             if name in SOURCE_PROPERTIES and not (is_root and name in ROOT_SETTINGS[path.name]):
                 problems.append(f"{relative}: sets {name}; package sources and folders come only from NuGet.Config, "
                                 "and lock and central-version settings only from the root files")
+            if name in IMPORT_PROPERTIES:
+                problems.append(f"{relative}: sets {name}; MSBuild files import nothing the rules don't read")
             if name in AUDIT_SETTINGS and not (is_root and path.name == "Directory.Build.props"):
                 problems.append(f"{relative}: sets {name}; the audit and warnings-as-errors are set only in the root Directory.Build.props")
             if name == "NuGetAuditSuppress":
