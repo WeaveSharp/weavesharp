@@ -54,3 +54,19 @@ jobs:
           else
             echo "No solution yet: nothing to build."
           fi
+
+  ci-passed:
+    name: ci passed
+    # The single required check: it stays one stable name whatever runners
+    # the matrix uses, and fails unless every matrix job succeeded.
+    needs: build
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Require every build to have passed
+        env:
+          RESULT: ${{ needs.build.result }}
+        run: |
+          echo "build matrix result: $RESULT"
+          test "$RESULT" = "success"
