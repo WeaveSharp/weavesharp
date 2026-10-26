@@ -1,0 +1,4 @@
+{
+  "extends": "../../src/surface/tsconfig.json",
+  "include": ["src", "test"]
+}
