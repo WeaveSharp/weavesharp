@@ -1,0 +1,13 @@
+.ws-canvas, .ws-outline { color: CanvasText; background: Canvas; }
+.ws-label { unicode-bidi: isolate; }
+.graph-drawing { max-width: 100%; height: auto; }
+.node-box, .pin-value { fill: Canvas; stroke: CanvasText; stroke-width: 2; }
+.region-box { fill: none; stroke: GrayText; stroke-width: 1; stroke-dasharray: 6 4; }
+.connection-execution, .connection-arrow { fill: none; stroke: CanvasText; stroke-width: 3; }
+.connection-value { fill: none; stroke: CanvasText; stroke-width: 1.5; }
+.pin-execution { fill: CanvasText; stroke: CanvasText; }
+.focused > *, .graph-item:focus > * { stroke: Highlight; stroke-width: 4; }
+.ws-outline [role="treeitem"]:focus { outline: 3px solid Highlight; outline-offset: 2px; }
+.ws-outline [aria-selected="true"] > .entry-caption { font-weight: bold; }
+.canvas-captions, .ws-outline ul { padding-inline-start: 1.5rem; }
+.entry-caption { padding-block: 0.25rem; }

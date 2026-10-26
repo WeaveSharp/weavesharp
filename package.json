@@ -8,8 +8,8 @@
     "node": ">=24"
   },
   "scripts": {
-    "typecheck": "tsc -p src/surface",
-    "test": "node --test \"src/surface/test/**/*.test.ts\""
+    "typecheck": "tsc -p src/surface && tsc -p experiments/canvas",
+    "test": "node --test \"src/surface/test/**/*.test.ts\" \"experiments/canvas/test/**/*.test.ts\""
   },
   "devDependencies": {
     "@types/node": "24.19.2",
