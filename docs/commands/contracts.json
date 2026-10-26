@@ -1,0 +1,196 @@
+{
+  "$schema": "./contracts.schema.json",
+  "version": 1,
+  "commands": [
+    {
+      "id": "insert-operation",
+      "name": "Add a source operation",
+      "requirement": ["GRF-18", "GRF-04", "SRC-05"],
+      "sourceMeaning": "Place a chosen C# expression or statement at the selected document position, including any declarations needed to use its result.",
+      "preconditions": [
+        "The insertion site belongs to an editable document and resolves in the current compilation.",
+        "The user has selected an operation, its operands and how its result will be used."
+      ],
+      "requiredChecks": [
+        "Bind the new operation; check argument modes, conversions, overload selection and result type.",
+        "Check lexical scope, definite assignment and the destination document.",
+        "Preview the affected text and diagnostics, then recheck document and context revisions before applying an undoable edit."
+      ],
+      "behaviorChange": {
+        "mayChange": true,
+        "previewRequirement": "Show the added execution or evaluation and describe its intended effect before applying it."
+      }
+    },
+    {
+      "id": "connect-value",
+      "name": "Supply an expression",
+      "requirement": ["GRF-18", "GRF-04", "GRF-05", "GRF-06", "GRF-09"],
+      "sourceMeaning": "Replace an operand at its use site, or introduce a local whose value or reference is reused when that alternative is explicitly chosen.",
+      "preconditions": [
+        "The receiving expression and proposed input bind in the selected project context.",
+        "The choice between evaluating an expression and reusing a previously stored result is explicit."
+      ],
+      "requiredChecks": [
+        "Compare evaluation counts, ordering, conditional execution and exception timing, including receiver and argument effects.",
+        "Rebind overloads and conversions; check nullability, definite assignment and any lifetime or alias restrictions.",
+        "Show all introduced locals, casts and affected text; reject a candidate whose preservation claim lacks evidence."
+      ],
+      "behaviorChange": {
+        "mayChange": true,
+        "previewRequirement": "Identify any intended difference in calls, values or effects; caching must be visible as a behavior change."
+      }
+    },
+    {
+      "id": "connect-execution",
+      "name": "Reshape control flow",
+      "requirement": ["GRF-18", "GRF-06", "GRF-07", "GRF-08", "GRF-10", "GRF-11"],
+      "sourceMeaning": "Rewrite C# sequencing or a structured construct according to the selected control operation. A drawn edge alone cannot schedule work.",
+      "preconditions": [
+        "The source and destination resolve to statement or region boundaries with known ownership.",
+        "The intended sequence, branch or loop rewrite has a defined C# expansion."
+      ],
+      "requiredChecks": [
+        "Validate every exit and target against scope, loop and protected-region rules.",
+        "Retain short-circuiting, exception handling, cleanup and return ordering unless the requested change explicitly alters them.",
+        "Inspect the candidate for unrequested jumps or task scheduling, and bind any explicitly chosen await or coordination API."
+      ],
+      "behaviorChange": {
+        "mayChange": true,
+        "previewRequirement": "Explain the changed paths and operation starts, including any effect of starting work before an earlier result is awaited."
+      }
+    },
+    {
+      "id": "disconnect-value",
+      "name": "Remove an input connection",
+      "requirement": ["GRF-18", "GRF-04", "GRF-05"],
+      "sourceMeaning": "Omit an optional argument when legal, substitute a user-selected expression, or perform another explicit source replacement.",
+      "preconditions": [
+        "The current use site is known and editable.",
+        "A legal omission or a concrete replacement has been chosen; a detached wire is insufficient."
+      ],
+      "requiredChecks": [
+        "Rebind the call or enclosing expression after the edit, including overloads and optional-parameter values.",
+        "Account for effects removed with the old input; do not silently insert a fallback value.",
+        "Regenerate the graph from the candidate and check for unresolved required inputs and new diagnostics."
+      ],
+      "behaviorChange": {
+        "mayChange": true,
+        "previewRequirement": "Display the replacement or omission and state which evaluations or supplied values will change."
+      }
+    },
+    {
+      "id": "delete-operation",
+      "name": "Remove source behavior",
+      "requirement": ["GRF-18", "SRC-04", "SRC-07"],
+      "sourceMeaning": "Delete the selected source span with an explicit disposition for its result users and attached comments.",
+      "preconditions": [
+        "The removal span and all known dependent uses have been identified.",
+        "Required outputs have replacements, or remaining source diagnostics will be shown for deliberate follow-up editing."
+      ],
+      "requiredChecks": [
+        "Inspect scope changes, result dependencies and diagnostics in the affected context.",
+        "Review comment ownership and ensure untouched text is preserved.",
+        "Enumerate removed effects and check that the graph represents the resulting source, including incomplete uses."
+      ],
+      "behaviorChange": {
+        "mayChange": true,
+        "previewRequirement": "Make the deleted execution and any unresolved dependents visible in the proposed source change."
+      }
+    },
+    {
+      "id": "duplicate-source",
+      "name": "Copy executable structure",
+      "requirement": ["GRF-18", "SRC-08", "GRF-05", "GRF-13"],
+      "sourceMeaning": "Insert a second copy of chosen C# structure at a specified document location, resolving references for that destination.",
+      "preconditions": [
+        "The user selected a semantic copy and an editable destination.",
+        "The selection has known declarations, captured values and source boundaries."
+      ],
+      "requiredChecks": [
+        "Resolve collisions in declaration and label names, imports and referenced symbols.",
+        "Check capture meaning, scope and binding in the destination compilation.",
+        "Count added evaluations and executions; duplicating a view must never invoke this operation implicitly."
+      ],
+      "behaviorChange": {
+        "mayChange": true,
+        "previewRequirement": "Show the inserted source and describe the additional work it can perform."
+      }
+    },
+    {
+      "id": "move-execution-order",
+      "name": "Reorder source evaluation",
+      "requirement": ["GRF-18", "GRF-05", "GRF-06", "GRF-08"],
+      "sourceMeaning": "Move selected statements or expressions to a new source order under an explicitly requested semantic edit.",
+      "preconditions": [
+        "Both positions and the affected expressions have resolved source owners.",
+        "The request states whether equivalence is required or a particular behavior change is intended."
+      ],
+      "requiredChecks": [
+        "Analyze reads, writes, aliases and assignment dependencies across the move.",
+        "Check scope, condition coverage, exception timing and cleanup boundaries.",
+        "Treat calls, accessors, conversions and overloaded operators as potentially effectful; refuse an equivalence claim when their ordering cannot be justified."
+      ],
+      "behaviorChange": {
+        "mayChange": true,
+        "previewRequirement": "Explain how the new ordering changes observations, or provide the evidence for preserving them."
+      }
+    },
+    {
+      "id": "extract-reusable-code",
+      "name": "Introduce a C# callable",
+      "requirement": ["GRF-18", "GRF-02", "GRF-08", "GRF-09", "GRF-10", "GRF-13"],
+      "sourceMeaning": "Replace a selected region with a call to a newly declared method, local function or other chosen C# abstraction.",
+      "preconditions": [
+        "The selected boundary has known inputs, outputs, captured storage and control exits.",
+        "A destination and callable form can express the region without changing its observable behavior."
+      ],
+      "requiredChecks": [
+        "Rebind parameters, return values and captures; preserve reference passing and mutable storage identity.",
+        "Check exits, cleanup, exceptions and the placement of evaluations relative to the new call.",
+        "Retain async and iterator semantics, including suspension, deferred execution and lifetime restrictions."
+      ],
+      "behaviorChange": {
+        "mayChange": false,
+        "previewRequirement": "Show the declaration and replacement call as a preservation operation; any intended behavior change requires a separate explicit edit and preview."
+      }
+    },
+    {
+      "id": "change-declaration",
+      "name": "Revise a declared symbol",
+      "requirement": ["GRF-18", "SRC-03", "SRC-05", "SRC-08"],
+      "sourceMeaning": "Edit a declaration's name, signature, visibility, type or members together with the affected references in the chosen scope.",
+      "preconditions": [
+        "The symbol, participating documents and available host refactoring services are known.",
+        "The requested scope can be applied coherently, and unavailable project contexts are identified."
+      ],
+      "requiredChecks": [
+        "Rebind affected uses, overloads and destinations, including partial and linked declarations.",
+        "Validate each known compilation context and list any contexts that remain unevaluated.",
+        "Use supported host refactoring and document transactions; detect intervening edits before committing the candidate."
+      ],
+      "behaviorChange": {
+        "mayChange": true,
+        "previewRequirement": "Show the affected declarations and references and explain any intended change to callers or runtime behavior."
+      }
+    },
+    {
+      "id": "change-presentation",
+      "name": "Adjust the graph view",
+      "requirement": ["GRF-18", "SRC-04", "GRF-13"],
+      "sourceMeaning": "Update layout or view metadata for position, routing, grouping, folding or annotations; the C# document receives no edit.",
+      "preconditions": [
+        "The command is identified as a view operation and has the relevant metadata revision.",
+        "Existing user layout data can be retained or a revision conflict can be reported."
+      ],
+      "requiredChecks": [
+        "Compare C# document bytes before and after the operation; no formatting or normalization is allowed.",
+        "Preserve unrelated user metadata and detect conflicting layout revisions.",
+        "Ensure grouping and copying a view neither extracts nor duplicates executable code."
+      ],
+      "behaviorChange": {
+        "mayChange": false,
+        "previewRequirement": "Identify the operation as a view adjustment; a request to change behavior must use a semantic command with its own source preview."
+      }
+    }
+  ]
+}
