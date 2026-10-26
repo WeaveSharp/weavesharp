@@ -18,6 +18,10 @@
         {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
         }
       ]
     },
@@ -38,6 +42,58 @@
         {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.CodeAnalysis.Analyzers",
+      "version": "5.9.0-1.26328.17",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "HP9NNk8ZjOSI2hgOyXnQg+kv7/X837Vr2nAlXiGAtqtYnYKjRRa1UmQFr8KFs5ynGYKqfbb8zB9APoWjiAGdMg==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.CodeAnalysis.Common",
+      "version": "5.9.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "IYaIaUWdIx539AReKZOBEqTskFusZfCh/wFSPilDvCn5Say8MegLw2LONcSIcVy+v3Gzv53qYBspgvBGSErfbQ==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.CodeAnalysis.CSharp",
+      "version": "5.9.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "7JGDA0UT1+h7k9ZcA3rF4eFC8+QPq1xyYaXxag4p8r/zzPurEJxvdi7aM+MRL/SfP7XADXpWF/pl/eUYXOq/ww==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "direct"
         }
       ]
     },
@@ -57,6 +113,10 @@
         },
         {
           "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
           "dependency": "transitive"
         }
       ]
@@ -78,6 +138,10 @@
         {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
         }
       ]
     },
@@ -97,6 +161,10 @@
         },
         {
           "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
           "dependency": "transitive"
         }
       ]
@@ -118,6 +186,10 @@
         {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
         }
       ]
     },
@@ -137,6 +209,10 @@
         },
         {
           "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
           "dependency": "transitive"
         }
       ]
@@ -158,6 +234,10 @@
         {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
         }
       ]
     },
@@ -177,6 +257,10 @@
         },
         {
           "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
           "dependency": "transitive"
         }
       ]
@@ -198,6 +282,10 @@
         {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "direct"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "direct"
         }
       ]
     },
@@ -217,6 +305,10 @@
         },
         {
           "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
           "dependency": "transitive"
         }
       ]
@@ -238,6 +330,10 @@
         {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
         }
       ]
     },
@@ -257,6 +353,10 @@
         },
         {
           "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
           "dependency": "transitive"
         }
       ]
@@ -278,6 +378,10 @@
         {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
         }
       ]
     },
@@ -297,6 +401,10 @@
         },
         {
           "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
           "dependency": "transitive"
         }
       ]
@@ -318,6 +426,10 @@
         {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
         }
       ]
     },
@@ -337,6 +449,10 @@
         },
         {
           "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
           "dependency": "transitive"
         }
       ]
