@@ -1,0 +1,6815 @@
+{
+  "$schema": "csharp-14.schema.json",
+  "baseline": {
+    "language": "C#",
+    "languageVersion": "14",
+    "framework": ".NET 10",
+    "roslynVersion": "5.9.0",
+    "newestLanguageVersion": "CSharp14"
+  },
+  "families": [
+    {
+      "id": "compilation-and-names",
+      "name": "Files, namespaces and imports"
+    },
+    {
+      "id": "type-declarations",
+      "name": "Type definitions and relationships"
+    },
+    {
+      "id": "members-and-modifiers",
+      "name": "Members and declaration modifiers"
+    },
+    {
+      "id": "types-and-signatures",
+      "name": "Type shapes and signatures"
+    },
+    {
+      "id": "literals-and-expressions",
+      "name": "Values and expression operators"
+    },
+    {
+      "id": "calls-and-construction",
+      "name": "Calls, creation and initialization"
+    },
+    {
+      "id": "variables-and-patterns",
+      "name": "Variables, matching and deconstruction"
+    },
+    {
+      "id": "structured-statements",
+      "name": "Control flow statements"
+    },
+    {
+      "id": "exceptions-and-lifetime",
+      "name": "Exception handling and resource scopes"
+    },
+    {
+      "id": "callables-and-closures",
+      "name": "Callable bodies and captured values"
+    },
+    {
+      "id": "asynchrony-and-iteration",
+      "name": "Awaiting and sequence traversal"
+    },
+    {
+      "id": "queries-and-dynamic",
+      "name": "Queries, expression trees and dynamic calls"
+    },
+    {
+      "id": "memory-and-interop",
+      "name": "Memory access and interoperation"
+    },
+    {
+      "id": "compile-time-metadata",
+      "name": "Attributes, directives and compiler metadata"
+    },
+    {
+      "id": "generated-and-partial",
+      "name": "Generated source and declaration provenance"
+    },
+    {
+      "id": "csharp-14-additions",
+      "name": "C# 14 feature additions"
+    }
+  ],
+  "features": [
+    {
+      "id": "compilation-units",
+      "family": "compilation-and-names",
+      "name": "Source file roots",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "CompilationUnit"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "names-and-aliases",
+      "family": "compilation-and-names",
+      "name": "Identifier paths and aliases",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "IdentifierName",
+        "QualifiedName",
+        "NameEquals"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "generic-names",
+      "family": "compilation-and-names",
+      "name": "Names with type arguments",
+      "languageVersion": "2",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "GenericName",
+        "TypeArgumentList"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "namespace-declarations",
+      "family": "compilation-and-names",
+      "name": "Namespace blocks",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "NamespaceDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "file-scoped-namespaces",
+      "family": "compilation-and-names",
+      "name": "Namespace headers",
+      "languageVersion": "10",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "FileScopedNamespaceDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "using-directives",
+      "family": "compilation-and-names",
+      "name": "Namespace imports and alias directives",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "UsingDirective"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "extern-aliases",
+      "family": "compilation-and-names",
+      "name": "External assembly aliases",
+      "languageVersion": "2",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "ExternAliasDirective",
+        "AliasQualifiedName"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "static-imports",
+      "family": "compilation-and-names",
+      "name": "Static member imports",
+      "languageVersion": "6",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "global-imports",
+      "family": "compilation-and-names",
+      "name": "Imports shared across files",
+      "languageVersion": "10",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "file-local-types",
+      "family": "compilation-and-names",
+      "name": "Types scoped to one file",
+      "languageVersion": "11",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "top-level-statements",
+      "family": "compilation-and-names",
+      "name": "Entry point statements outside a type",
+      "languageVersion": "9",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "GlobalStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "using-type-aliases",
+      "family": "compilation-and-names",
+      "name": "Aliases for additional type forms",
+      "languageVersion": "12",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "class-struct-interface",
+      "family": "type-declarations",
+      "name": "Class, struct and interface definitions",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "ClassDeclaration",
+        "StructDeclaration",
+        "InterfaceDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "enums",
+      "family": "type-declarations",
+      "name": "Enumeration types and values",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "EnumDeclaration",
+        "EnumMemberDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "delegate-types",
+      "family": "type-declarations",
+      "name": "Delegate type definitions",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "DelegateDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "nested-types",
+      "family": "type-declarations",
+      "name": "Types declared within types",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "partial-types",
+      "family": "type-declarations",
+      "name": "Type definitions split across files",
+      "languageVersion": "2",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "inheritance",
+      "family": "type-declarations",
+      "name": "Base types and implemented interfaces",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "BaseList",
+        "SimpleBaseType"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "generic-parameters",
+      "family": "type-declarations",
+      "name": "Generic type and method parameters",
+      "languageVersion": "2",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "TypeParameterList",
+        "TypeParameter"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "generic-constraints",
+      "family": "type-declarations",
+      "name": "Bounds on generic parameters",
+      "languageVersion": "2",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "TypeParameterConstraintClause",
+        "ConstructorConstraint",
+        "ClassConstraint",
+        "StructConstraint",
+        "TypeConstraint"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "unmanaged-constraints",
+      "family": "type-declarations",
+      "name": "Unmanaged generic bounds",
+      "languageVersion": "7.3",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "nullable-generic-constraints",
+      "family": "type-declarations",
+      "name": "Nullability constraints on type parameters",
+      "languageVersion": "8",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "override-default-constraints",
+      "family": "type-declarations",
+      "name": "Default constraints in overrides",
+      "languageVersion": "9",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "DefaultConstraint"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "ref-struct-constraints",
+      "family": "type-declarations",
+      "name": "Generic arguments that allow ref structs",
+      "languageVersion": "13",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "AllowsConstraintClause",
+        "RefStructConstraint"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "record-classes",
+      "family": "type-declarations",
+      "name": "Record classes and positional bases",
+      "languageVersion": "9",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "RecordDeclaration",
+        "PrimaryConstructorBaseType"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "record-structs",
+      "family": "type-declarations",
+      "name": "Value type records",
+      "languageVersion": "10",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "RecordStructDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "primary-constructors",
+      "family": "type-declarations",
+      "name": "Primary constructors on classes and structs",
+      "languageVersion": "12",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "fields-and-constants",
+      "family": "members-and-modifiers",
+      "name": "Fields and constant declarations",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "FieldDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "constructors",
+      "family": "members-and-modifiers",
+      "name": "Constructors and constructor delegation",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "ConstructorDeclaration",
+        "BaseConstructorInitializer",
+        "ThisConstructorInitializer"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "finalizers",
+      "family": "members-and-modifiers",
+      "name": "Finalizer bodies",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "DestructorDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "methods",
+      "family": "members-and-modifiers",
+      "name": "Method declarations",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "MethodDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "properties-and-indexers",
+      "family": "members-and-modifiers",
+      "name": "Properties, indexers and accessors",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "PropertyDeclaration",
+        "IndexerDeclaration",
+        "AccessorList",
+        "GetAccessorDeclaration",
+        "SetAccessorDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "events",
+      "family": "members-and-modifiers",
+      "name": "Events and subscription accessors",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "EventDeclaration",
+        "EventFieldDeclaration",
+        "AddAccessorDeclaration",
+        "RemoveAccessorDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "explicit-interface-members",
+      "family": "members-and-modifiers",
+      "name": "Explicit interface member declarations",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "ExplicitInterfaceSpecifier"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "member-modifiers",
+      "family": "members-and-modifiers",
+      "name": "Accessibility, static members and virtual dispatch",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "auto-properties",
+      "family": "members-and-modifiers",
+      "name": "Automatically implemented properties",
+      "languageVersion": "3",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "partial-methods",
+      "family": "members-and-modifiers",
+      "name": "Partial method declarations",
+      "languageVersion": "3",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "extended-partial-methods",
+      "family": "members-and-modifiers",
+      "name": "Partial methods with broader signatures",
+      "languageVersion": "9",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "partial-properties-indexers",
+      "family": "members-and-modifiers",
+      "name": "Partial properties and indexers",
+      "languageVersion": "13",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "expression-bodies",
+      "family": "members-and-modifiers",
+      "name": "Expression bodies for members",
+      "languageVersion": "6",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "ArrowExpressionClause"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "init-accessors",
+      "family": "members-and-modifiers",
+      "name": "Initialization-only property setters",
+      "languageVersion": "9",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "InitAccessorDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "default-interface-members",
+      "family": "members-and-modifiers",
+      "name": "Interface members with implementations",
+      "languageVersion": "8",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "static-abstract-interface-members",
+      "family": "members-and-modifiers",
+      "name": "Static abstract interface contracts",
+      "languageVersion": "11",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "predefined-types",
+      "family": "types-and-signatures",
+      "name": "Predefined type references",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "PredefinedType"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "array-types",
+      "family": "types-and-signatures",
+      "name": "Array types and ranks",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ArrayType",
+        "ArrayRankSpecifier"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "nullable-value-types",
+      "family": "types-and-signatures",
+      "name": "Nullable value type syntax",
+      "languageVersion": "2",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "NullableType"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "nullable-reference-types",
+      "family": "types-and-signatures",
+      "name": "Reference type nullability",
+      "languageVersion": "8",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "tuple-types",
+      "family": "types-and-signatures",
+      "name": "Tuple signatures and element names",
+      "languageVersion": "7",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "TupleType",
+        "TupleElement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "unbound-generic-types",
+      "family": "types-and-signatures",
+      "name": "Generic types without bound arguments",
+      "languageVersion": "2",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "OmittedTypeArgument"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "generic-variance",
+      "family": "types-and-signatures",
+      "name": "Covariant and contravariant parameters",
+      "languageVersion": "4",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "parameters",
+      "family": "types-and-signatures",
+      "name": "Parameter lists and ref or out passing",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ParameterList",
+        "BracketedParameterList",
+        "Parameter"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "in-parameters",
+      "family": "types-and-signatures",
+      "name": "Readonly references in parameters",
+      "languageVersion": "7.2",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "ref-returns",
+      "family": "types-and-signatures",
+      "name": "Reference returns and locals",
+      "languageVersion": "7",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "RefType",
+        "RefExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "ref-readonly-parameters",
+      "family": "types-and-signatures",
+      "name": "Explicit readonly reference parameters",
+      "languageVersion": "12",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "ref-like-types",
+      "family": "types-and-signatures",
+      "name": "Stack restricted structs and readonly structs",
+      "languageVersion": "7.2",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "required-members",
+      "family": "types-and-signatures",
+      "name": "Required member contracts",
+      "languageVersion": "11",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "scoped-references",
+      "family": "types-and-signatures",
+      "name": "Scoped reference annotations",
+      "languageVersion": "11",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ScopedType"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "native-integer-types",
+      "family": "types-and-signatures",
+      "name": "Native integer type binding",
+      "languageVersion": "9",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "literals",
+      "family": "literals-and-expressions",
+      "name": "Numeric, character, string, boolean and null values",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "NumericLiteralExpression",
+        "StringLiteralExpression",
+        "CharacterLiteralExpression",
+        "TrueLiteralExpression",
+        "FalseLiteralExpression",
+        "NullLiteralExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "interpolated-strings",
+      "family": "literals-and-expressions",
+      "name": "Interpolated strings and format components",
+      "languageVersion": "6",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "InterpolatedStringExpression",
+        "Interpolation",
+        "InterpolatedStringText",
+        "InterpolationAlignmentClause",
+        "InterpolationFormatClause"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "raw-strings",
+      "family": "literals-and-expressions",
+      "name": "Raw string delimiters and interpolation",
+      "languageVersion": "11",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "SingleLineRawStringLiteralToken",
+        "MultiLineRawStringLiteralToken",
+        "InterpolatedSingleLineRawStringStartToken",
+        "InterpolatedMultiLineRawStringStartToken",
+        "InterpolatedRawStringEndToken"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "utf8-strings",
+      "family": "literals-and-expressions",
+      "name": "UTF8 encoded string literals",
+      "languageVersion": "11",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "Utf8StringLiteralExpression",
+        "Utf8StringLiteralToken",
+        "Utf8SingleLineRawStringLiteralToken",
+        "Utf8MultiLineRawStringLiteralToken"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "default-values",
+      "family": "literals-and-expressions",
+      "name": "Default values with an explicit type",
+      "languageVersion": "2",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "DefaultExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "default-literals",
+      "family": "literals-and-expressions",
+      "name": "Default values with inferred types",
+      "languageVersion": "7.1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "DefaultLiteralExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "parentheses-and-conditionals",
+      "family": "literals-and-expressions",
+      "name": "Grouped expressions and conditional values",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ParenthesizedExpression",
+        "ConditionalExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "member-and-element-access",
+      "family": "literals-and-expressions",
+      "name": "Member and element selection",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "SimpleMemberAccessExpression",
+        "ElementAccessExpression",
+        "ThisExpression",
+        "BaseExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "arithmetic-and-bitwise",
+      "family": "literals-and-expressions",
+      "name": "Arithmetic, shifts and bitwise operations",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "AddExpression",
+        "SubtractExpression",
+        "MultiplyExpression",
+        "DivideExpression",
+        "ModuloExpression",
+        "LeftShiftExpression",
+        "RightShiftExpression",
+        "BitwiseOrExpression",
+        "BitwiseAndExpression",
+        "ExclusiveOrExpression",
+        "UnaryPlusExpression",
+        "UnaryMinusExpression",
+        "BitwiseNotExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "comparisons-and-logic",
+      "family": "literals-and-expressions",
+      "name": "Comparison and boolean operations",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "LogicalOrExpression",
+        "LogicalAndExpression",
+        "EqualsExpression",
+        "NotEqualsExpression",
+        "LessThanExpression",
+        "LessThanOrEqualExpression",
+        "GreaterThanExpression",
+        "GreaterThanOrEqualExpression",
+        "LogicalNotExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "assignments",
+      "family": "literals-and-expressions",
+      "name": "Simple and compound assignments",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "SimpleAssignmentExpression",
+        "AddAssignmentExpression",
+        "SubtractAssignmentExpression",
+        "MultiplyAssignmentExpression",
+        "DivideAssignmentExpression",
+        "ModuloAssignmentExpression",
+        "AndAssignmentExpression",
+        "ExclusiveOrAssignmentExpression",
+        "OrAssignmentExpression",
+        "LeftShiftAssignmentExpression",
+        "RightShiftAssignmentExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "increments",
+      "family": "literals-and-expressions",
+      "name": "Prefix and postfix increments or decrements",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "PreIncrementExpression",
+        "PreDecrementExpression",
+        "PostIncrementExpression",
+        "PostDecrementExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "casts-and-type-tests",
+      "family": "literals-and-expressions",
+      "name": "Casts, is tests and as conversions",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "CastExpression",
+        "IsExpression",
+        "AsExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "checked-expressions",
+      "family": "literals-and-expressions",
+      "name": "Overflow checking in expressions",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "CheckedExpression",
+        "UncheckedExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "null-coalescing",
+      "family": "literals-and-expressions",
+      "name": "Null coalescing values",
+      "languageVersion": "2",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "CoalesceExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "conditional-access",
+      "family": "literals-and-expressions",
+      "name": "Conditional member and element access",
+      "languageVersion": "6",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ConditionalAccessExpression",
+        "MemberBindingExpression",
+        "ElementBindingExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "null-coalescing-assignment",
+      "family": "literals-and-expressions",
+      "name": "Null coalescing assignment",
+      "languageVersion": "8",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "CoalesceAssignmentExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "null-forgiving",
+      "family": "literals-and-expressions",
+      "name": "Nullable warning suppression expressions",
+      "languageVersion": "8",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "SuppressNullableWarningExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "indices-and-ranges",
+      "family": "literals-and-expressions",
+      "name": "Indices from the end and ranges",
+      "languageVersion": "8",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "IndexExpression",
+        "RangeExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "unsigned-shifts",
+      "family": "literals-and-expressions",
+      "name": "Unsigned right shifts and assignment",
+      "languageVersion": "11",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "UnsignedRightShiftExpression",
+        "UnsignedRightShiftAssignmentExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "tuple-values",
+      "family": "literals-and-expressions",
+      "name": "Tuple expression values",
+      "languageVersion": "7",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "TupleExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "invocations-and-arguments",
+      "family": "calls-and-construction",
+      "name": "Calls, overload selection and arguments",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "InvocationExpression",
+        "ArgumentList",
+        "BracketedArgumentList",
+        "Argument"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "named-optional-arguments",
+      "family": "calls-and-construction",
+      "name": "Named arguments and optional parameters",
+      "languageVersion": "4",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "NameColon"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "params-arrays",
+      "family": "calls-and-construction",
+      "name": "Parameter arrays",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "params-collections",
+      "family": "calls-and-construction",
+      "name": "Parameter collections beyond arrays",
+      "languageVersion": "13",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "object-and-array-creation",
+      "family": "calls-and-construction",
+      "name": "Object and explicit array construction",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ObjectCreationExpression",
+        "ArrayCreationExpression",
+        "ArrayInitializerExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "implicit-arrays",
+      "family": "calls-and-construction",
+      "name": "Arrays with inferred element types",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ImplicitArrayCreationExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "object-collection-initializers",
+      "family": "calls-and-construction",
+      "name": "Object and collection initializers",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ObjectInitializerExpression",
+        "CollectionInitializerExpression",
+        "ComplexElementInitializerExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "index-initializers",
+      "family": "calls-and-construction",
+      "name": "Indexer entries in initializers",
+      "languageVersion": "6",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ImplicitElementAccess"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "anonymous-objects",
+      "family": "calls-and-construction",
+      "name": "Anonymous object construction",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "AnonymousObjectCreationExpression",
+        "AnonymousObjectMemberDeclarator"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "target-typed-construction",
+      "family": "calls-and-construction",
+      "name": "Object construction with inferred type",
+      "languageVersion": "9",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ImplicitObjectCreationExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "collection-expressions",
+      "family": "calls-and-construction",
+      "name": "Collection values and spread elements",
+      "languageVersion": "12",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "CollectionExpression",
+        "ExpressionElement",
+        "SpreadElement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "with-expressions",
+      "family": "calls-and-construction",
+      "name": "Copies with replacement member values",
+      "languageVersion": "9",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "WithExpression",
+        "WithInitializerExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "user-defined-operators",
+      "family": "calls-and-construction",
+      "name": "Operator and conversion declarations",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "OperatorDeclaration",
+        "ConversionOperatorDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "checked-user-operators",
+      "family": "calls-and-construction",
+      "name": "Checked operator implementations",
+      "languageVersion": "11",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "extension-methods",
+      "family": "calls-and-construction",
+      "name": "Extension method binding",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "variable-declarations",
+      "family": "variables-and-patterns",
+      "name": "Local variables and initial values",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "LocalDeclarationStatement",
+        "VariableDeclaration",
+        "VariableDeclarator",
+        "EqualsValueClause"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "implicit-locals",
+      "family": "variables-and-patterns",
+      "name": "Locals with inferred types",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "deconstruction",
+      "family": "variables-and-patterns",
+      "name": "Deconstruction declarations and destinations",
+      "languageVersion": "7",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "DeclarationExpression",
+        "SingleVariableDesignation",
+        "ParenthesizedVariableDesignation"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "discards",
+      "family": "variables-and-patterns",
+      "name": "Discarded variable destinations",
+      "languageVersion": "7",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "DiscardDesignation"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "discard-patterns",
+      "family": "variables-and-patterns",
+      "name": "Patterns that accept any input",
+      "languageVersion": "8",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "DiscardPattern"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "declaration-constant-patterns",
+      "family": "variables-and-patterns",
+      "name": "Declaration, constant and var patterns",
+      "languageVersion": "7",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "IsPatternExpression",
+        "DeclarationPattern",
+        "ConstantPattern",
+        "VarPattern",
+        "CasePatternSwitchLabel",
+        "WhenClause"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "recursive-patterns",
+      "family": "variables-and-patterns",
+      "name": "Property and positional pattern structure",
+      "languageVersion": "8",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "RecursivePattern",
+        "PropertyPatternClause",
+        "PositionalPatternClause",
+        "Subpattern"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "switch-expressions",
+      "family": "variables-and-patterns",
+      "name": "Switch expression arms",
+      "languageVersion": "8",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "SwitchExpression",
+        "SwitchExpressionArm"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "relational-logical-patterns",
+      "family": "variables-and-patterns",
+      "name": "Relational, type and logical patterns",
+      "languageVersion": "9",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ParenthesizedPattern",
+        "RelationalPattern",
+        "TypePattern",
+        "OrPattern",
+        "AndPattern",
+        "NotPattern"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "extended-property-patterns",
+      "family": "variables-and-patterns",
+      "name": "Nested property paths in patterns",
+      "languageVersion": "10",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ExpressionColon"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "list-slice-patterns",
+      "family": "variables-and-patterns",
+      "name": "List patterns and slices",
+      "languageVersion": "11",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ListPattern",
+        "SlicePattern"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "blocks-and-simple-statements",
+      "family": "structured-statements",
+      "name": "Blocks, expression statements and empty statements",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "Block",
+        "ExpressionStatement",
+        "EmptyStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "conditionals",
+      "family": "structured-statements",
+      "name": "If and else branches",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "IfStatement",
+        "ElseClause"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "switch-statements",
+      "family": "structured-statements",
+      "name": "Switch sections and constant labels",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "SwitchStatement",
+        "SwitchSection",
+        "CaseSwitchLabel",
+        "DefaultSwitchLabel"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "loops",
+      "family": "structured-statements",
+      "name": "While, do and for loops",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "WhileStatement",
+        "DoStatement",
+        "ForStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "returns-and-loop-jumps",
+      "family": "structured-statements",
+      "name": "Return, break and continue statements",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ReturnStatement",
+        "BreakStatement",
+        "ContinueStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "throws",
+      "family": "structured-statements",
+      "name": "Throw statements",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ThrowStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "throw-expressions",
+      "family": "structured-statements",
+      "name": "Throw expressions",
+      "languageVersion": "7",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ThrowExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "labels-and-goto",
+      "family": "structured-statements",
+      "name": "Labels and goto destinations",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "LabeledStatement",
+        "GotoStatement",
+        "GotoCaseStatement",
+        "GotoDefaultStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "exception-handlers",
+      "family": "exceptions-and-lifetime",
+      "name": "Try, catch and finally regions",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "TryStatement",
+        "CatchClause",
+        "CatchDeclaration",
+        "FinallyClause"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "exception-filters",
+      "family": "exceptions-and-lifetime",
+      "name": "Catch filter conditions",
+      "languageVersion": "6",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "CatchFilterClause"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "using-statements",
+      "family": "exceptions-and-lifetime",
+      "name": "Resource disposal statements",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "UsingStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "using-declarations",
+      "family": "exceptions-and-lifetime",
+      "name": "Resource disposal declarations",
+      "languageVersion": "8",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "async-disposal",
+      "family": "exceptions-and-lifetime",
+      "name": "Awaited disposal scopes",
+      "languageVersion": "8",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "lock-statements",
+      "family": "exceptions-and-lifetime",
+      "name": "Lock scopes",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "LockStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "lock-type-binding",
+      "family": "exceptions-and-lifetime",
+      "name": "System.Threading.Lock binding",
+      "languageVersion": "13",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "checked-blocks",
+      "family": "exceptions-and-lifetime",
+      "name": "Overflow checking for statement blocks",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "CheckedStatement",
+        "UncheckedStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "delegate-values",
+      "family": "callables-and-closures",
+      "name": "Delegate conversions and invocation lists",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "anonymous-methods",
+      "family": "callables-and-closures",
+      "name": "Anonymous method bodies",
+      "languageVersion": "2",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "AnonymousMethodExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "lambda-expressions",
+      "family": "callables-and-closures",
+      "name": "Simple and parenthesized lambdas",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "SimpleLambdaExpression",
+        "ParenthesizedLambdaExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "captures",
+      "family": "callables-and-closures",
+      "name": "Captured local state",
+      "languageVersion": "2",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "local-functions",
+      "family": "callables-and-closures",
+      "name": "Functions within bodies",
+      "languageVersion": "7",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "LocalFunctionStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "static-local-functions",
+      "family": "callables-and-closures",
+      "name": "Local functions without captures",
+      "languageVersion": "8",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "static-lambdas",
+      "family": "callables-and-closures",
+      "name": "Lambdas without captures",
+      "languageVersion": "9",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "lambda-signature-attributes",
+      "family": "callables-and-closures",
+      "name": "Explicit lambda return types and attributes",
+      "languageVersion": "10",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "lambda-default-parameters",
+      "family": "callables-and-closures",
+      "name": "Optional and params lambda parameters",
+      "languageVersion": "12",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "async-bodies",
+      "family": "callables-and-closures",
+      "name": "Async methods and anonymous functions",
+      "languageVersion": "5",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "iterator-bodies",
+      "family": "callables-and-closures",
+      "name": "Iterator method bodies",
+      "languageVersion": "2",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "await-expressions",
+      "family": "asynchrony-and-iteration",
+      "name": "Await operations",
+      "languageVersion": "5",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "AwaitExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "async-return-shapes",
+      "family": "asynchrony-and-iteration",
+      "name": "Task and void async return contracts",
+      "languageVersion": "5",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "custom-async-return-shapes",
+      "family": "asynchrony-and-iteration",
+      "name": "Custom async method builders",
+      "languageVersion": "7",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "iterator-yields",
+      "family": "asynchrony-and-iteration",
+      "name": "Iterator yields and termination",
+      "languageVersion": "2",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "YieldReturnStatement",
+        "YieldBreakStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "foreach-loops",
+      "family": "asynchrony-and-iteration",
+      "name": "Foreach iteration",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ForEachStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "deconstructing-foreach",
+      "family": "asynchrony-and-iteration",
+      "name": "Foreach with deconstruction",
+      "languageVersion": "7",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ForEachVariableStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "await-foreach",
+      "family": "asynchrony-and-iteration",
+      "name": "Asynchronous enumeration",
+      "languageVersion": "8",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "custom-awaitables",
+      "family": "asynchrony-and-iteration",
+      "name": "Awaiter pattern binding",
+      "languageVersion": "5",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "enumeration-patterns",
+      "family": "asynchrony-and-iteration",
+      "name": "Enumerator pattern binding",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "extension-enumeration",
+      "family": "asynchrony-and-iteration",
+      "name": "Extension GetEnumerator binding",
+      "languageVersion": "9",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "cancellation-arguments",
+      "family": "asynchrony-and-iteration",
+      "name": "Explicit cancellation arguments in async calls",
+      "languageVersion": "5",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "query-pipelines",
+      "family": "queries-and-dynamic",
+      "name": "Query roots, bodies and continuations",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "QueryExpression",
+        "QueryBody",
+        "QueryContinuation"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "query-range-clauses",
+      "family": "queries-and-dynamic",
+      "name": "From, let and where clauses",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "FromClause",
+        "LetClause",
+        "WhereClause"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "query-joins",
+      "family": "queries-and-dynamic",
+      "name": "Join clauses and group joins",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "JoinClause",
+        "JoinIntoClause"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "query-ordering",
+      "family": "queries-and-dynamic",
+      "name": "Ordering clauses and directions",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "OrderByClause",
+        "AscendingOrdering",
+        "DescendingOrdering"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "query-projections",
+      "family": "queries-and-dynamic",
+      "name": "Select and group clauses",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "SelectClause",
+        "GroupClause"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "expression-trees",
+      "family": "queries-and-dynamic",
+      "name": "Expression tree conversions",
+      "languageVersion": "3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "dynamic-binding",
+      "family": "queries-and-dynamic",
+      "name": "Dynamic member and invocation binding",
+      "languageVersion": "4",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "unsafe-and-fixed",
+      "family": "memory-and-interop",
+      "name": "Unsafe scopes and fixed statements",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "UnsafeStatement",
+        "FixedStatement"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "fixed-buffers",
+      "family": "memory-and-interop",
+      "name": "Fixed size struct buffers",
+      "languageVersion": "2",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "stack-allocation",
+      "family": "memory-and-interop",
+      "name": "Explicit stack allocations",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "StackAllocArrayCreationExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "inferred-stack-allocation",
+      "family": "memory-and-interop",
+      "name": "Stack allocation with inferred element type",
+      "languageVersion": "7.3",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ImplicitStackAllocArrayCreationExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "pointer-operations",
+      "family": "memory-and-interop",
+      "name": "Pointer types and address operations",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "PointerType",
+        "PointerMemberAccessExpression",
+        "PointerIndirectionExpression",
+        "AddressOfExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "function-pointers",
+      "family": "memory-and-interop",
+      "name": "Function pointer signatures and conventions",
+      "languageVersion": "9",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "FunctionPointerType",
+        "FunctionPointerParameter",
+        "FunctionPointerParameterList",
+        "FunctionPointerCallingConvention",
+        "FunctionPointerUnmanagedCallingConventionList",
+        "FunctionPointerUnmanagedCallingConvention"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "interop-signatures",
+      "family": "memory-and-interop",
+      "name": "External signatures and marshaling declarations",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "typed-references",
+      "family": "memory-and-interop",
+      "name": "Typed references and variable argument access",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ArgListExpression",
+        "MakeRefExpression",
+        "RefValueExpression",
+        "RefTypeExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "inline-arrays",
+      "family": "memory-and-interop",
+      "name": "Inline array storage",
+      "languageVersion": "12",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "ref-safety",
+      "family": "memory-and-interop",
+      "name": "Reference lifetime and escape rules",
+      "languageVersion": "7",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "expanded-ref-struct-contexts",
+      "family": "memory-and-interop",
+      "name": "Ref structs in interfaces and async scopes",
+      "languageVersion": "13",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "attributes",
+      "family": "compile-time-metadata",
+      "name": "Attributes and argument bindings",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "AttributeList",
+        "AttributeTargetSpecifier",
+        "Attribute",
+        "AttributeArgumentList",
+        "AttributeArgument"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "generic-attributes",
+      "family": "compile-time-metadata",
+      "name": "Attributes with generic type arguments",
+      "languageVersion": "11",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "type-and-size-queries",
+      "family": "compile-time-metadata",
+      "name": "Type and storage size queries",
+      "languageVersion": "1",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "TypeOfExpression",
+        "SizeOfExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "nameof-expressions",
+      "family": "compile-time-metadata",
+      "name": "Compile time symbol names",
+      "languageVersion": "6",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "NameOfKeyword"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "preprocessor-directives",
+      "family": "compile-time-metadata",
+      "name": "Conditional source and compiler directives",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "nullable-directives",
+      "family": "compile-time-metadata",
+      "name": "Nullable annotation and warning context",
+      "languageVersion": "8",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "enhanced-line-directives",
+      "family": "compile-time-metadata",
+      "name": "Line mappings with source ranges",
+      "languageVersion": "10",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "documentation-comments",
+      "family": "compile-time-metadata",
+      "name": "XML documentation and symbol references",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "inactive-source",
+      "family": "compile-time-metadata",
+      "name": "Source disabled by conditional compilation",
+      "languageVersion": "1",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "generated-members",
+      "family": "generated-and-partial",
+      "name": "Members supplied by source generators",
+      "languageVersion": "9",
+      "plannedMaturity": "context-dependent",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "cross-document-partials",
+      "family": "generated-and-partial",
+      "name": "Partial declarations across source documents",
+      "languageVersion": "2",
+      "plannedMaturity": "context-dependent",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "generated-implementations",
+      "family": "generated-and-partial",
+      "name": "Generated implementations of partial members",
+      "languageVersion": "9",
+      "plannedMaturity": "context-dependent",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "metadata-declarations",
+      "family": "generated-and-partial",
+      "name": "Declarations available only from metadata",
+      "languageVersion": "1",
+      "plannedMaturity": "context-dependent",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "extension-members",
+      "family": "csharp-14-additions",
+      "name": "Extension blocks and their members",
+      "languageVersion": "14",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "ExtensionBlockDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "null-conditional-assignment",
+      "family": "csharp-14-additions",
+      "name": "Assignment through conditional access",
+      "languageVersion": "14",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "ConditionalAccessExpression",
+        "SimpleAssignmentExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "unbound-generics-in-nameof",
+      "family": "csharp-14-additions",
+      "name": "Open generic names in nameof",
+      "languageVersion": "14",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "OmittedTypeArgument",
+        "NameOfKeyword"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "implicit-span-conversions",
+      "family": "csharp-14-additions",
+      "name": "Implicit conversions involving spans",
+      "languageVersion": "14",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "simple-lambda-parameter-modifiers",
+      "family": "csharp-14-additions",
+      "name": "Modifiers on inferred lambda parameters",
+      "languageVersion": "14",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "SimpleLambdaExpression",
+        "Parameter"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "field-backed-properties",
+      "family": "csharp-14-additions",
+      "name": "Properties using compiler provided field storage",
+      "languageVersion": "14",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "FieldExpression"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "partial-events-and-constructors",
+      "family": "csharp-14-additions",
+      "name": "Partial event and constructor declarations",
+      "languageVersion": "14",
+      "plannedMaturity": "structural",
+      "syntaxKinds": [
+        "EventDeclaration",
+        "EventFieldDeclaration",
+        "ConstructorDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "user-defined-compound-assignment",
+      "family": "csharp-14-additions",
+      "name": "Custom compound assignment operators",
+      "languageVersion": "14",
+      "plannedMaturity": "dedicated",
+      "syntaxKinds": [
+        "OperatorDeclaration"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    },
+    {
+      "id": "file-based-app-directives",
+      "family": "csharp-14-additions",
+      "name": "Application configuration in source directives",
+      "languageVersion": "14",
+      "plannedMaturity": "context-dependent",
+      "syntaxKinds": [
+        "IgnoredDirectiveTrivia"
+      ],
+      "dimensions": {
+        "preserve": {
+          "status": "unverified"
+        },
+        "render": {
+          "status": "unverified"
+        },
+        "dedicatedAuthoring": {
+          "status": "unverified"
+        },
+        "semanticValidation": {
+          "status": "unverified"
+        },
+        "debugMapping": {
+          "status": "unverified"
+        },
+        "traceObservation": {
+          "status": "unverified"
+        }
+      }
+    }
+  ],
+  "sharedSyntaxKinds": [
+    "ConditionalAccessExpression",
+    "ConstructorDeclaration",
+    "EventDeclaration",
+    "EventFieldDeclaration",
+    "NameOfKeyword",
+    "OmittedTypeArgument",
+    "OperatorDeclaration",
+    "Parameter",
+    "SimpleAssignmentExpression",
+    "SimpleLambdaExpression"
+  ],
+  "classifiedSyntaxKinds": [
+    {
+      "syntaxKind": "None",
+      "category": "list-or-placeholder"
+    },
+    {
+      "syntaxKind": "List",
+      "category": "list-or-placeholder"
+    },
+    {
+      "syntaxKind": "TildeToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "ExclamationToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "DollarToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "PercentToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "CaretToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "AmpersandToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "AsteriskToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "OpenParenToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "CloseParenToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "MinusToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "PlusToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "EqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "OpenBraceToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "CloseBraceToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "OpenBracketToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "CloseBracketToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "BarToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "BackslashToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "ColonToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "SemicolonToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "DoubleQuoteToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "SingleQuoteToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "LessThanToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "CommaToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "GreaterThanToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "DotToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "QuestionToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "HashToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "SlashToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "DotDotToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "SlashGreaterThanToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "LessThanSlashToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "XmlCommentStartToken",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlCommentEndToken",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlCDataStartToken",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlCDataEndToken",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlProcessingInstructionStartToken",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlProcessingInstructionEndToken",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "BarBarToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "AmpersandAmpersandToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "MinusMinusToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "PlusPlusToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "ColonColonToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "QuestionQuestionToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "MinusGreaterThanToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "ExclamationEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "EqualsEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "EqualsGreaterThanToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "LessThanEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "LessThanLessThanToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "LessThanLessThanEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "GreaterThanEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "GreaterThanGreaterThanToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "GreaterThanGreaterThanEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "SlashEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "AsteriskEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "BarEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "AmpersandEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "PlusEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "MinusEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "CaretEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "PercentEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "QuestionQuestionEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "GreaterThanGreaterThanGreaterThanToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "GreaterThanGreaterThanGreaterThanEqualsToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "BoolKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ByteKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "SByteKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ShortKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "UShortKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "IntKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "UIntKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "LongKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ULongKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "DoubleKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "FloatKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "DecimalKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "StringKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "CharKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "VoidKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ObjectKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "TypeOfKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "SizeOfKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "NullKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "TrueKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "FalseKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "IfKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ElseKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "WhileKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ForKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ForEachKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "DoKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "SwitchKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "CaseKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "DefaultKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "TryKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "CatchKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "FinallyKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "LockKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "GotoKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "BreakKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ContinueKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ReturnKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ThrowKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "PublicKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "PrivateKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "InternalKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ProtectedKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "StaticKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ReadOnlyKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "SealedKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ConstKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "FixedKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "StackAllocKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "VolatileKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "NewKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "OverrideKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "AbstractKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "VirtualKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "EventKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ExternKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "RefKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "OutKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "InKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "IsKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "AsKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ParamsKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ArgListKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "MakeRefKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "RefTypeKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "RefValueKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ThisKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "BaseKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "NamespaceKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "UsingKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ClassKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "StructKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "InterfaceKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "EnumKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "DelegateKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "CheckedKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "UncheckedKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "UnsafeKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "OperatorKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ExplicitKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ImplicitKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "YieldKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "PartialKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "AliasKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "GlobalKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "AssemblyKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ModuleKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "TypeKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "FieldKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "MethodKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ParamKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "PropertyKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "TypeVarKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "GetKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "SetKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "AddKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "RemoveKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "WhereKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "FromKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "GroupKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "JoinKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "IntoKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "LetKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ByKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "SelectKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "OrderByKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "OnKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "EqualsKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "AscendingKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "DescendingKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "AsyncKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "AwaitKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "WhenKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "OrKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "AndKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "NotKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "WithKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "InitKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "RecordKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ManagedKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "UnmanagedKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "RequiredKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ScopedKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "FileKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "AllowsKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ExtensionKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "UnionKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ClosedKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "SafeKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ElifKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "EndIfKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "RegionKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "EndRegionKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "DefineKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "UndefKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "WarningKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ErrorKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "LineKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "PragmaKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "HiddenKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ChecksumKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "DisableKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "RestoreKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "ReferenceKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "InterpolatedStringStartToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "InterpolatedStringEndToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "InterpolatedVerbatimStringStartToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "LoadKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "NullableKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "EnableKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "WarningsKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "AnnotationsKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "VarKeyword",
+      "category": "keyword"
+    },
+    {
+      "syntaxKind": "UnderscoreToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "OmittedTypeArgumentToken",
+      "category": "list-or-placeholder"
+    },
+    {
+      "syntaxKind": "OmittedArraySizeExpressionToken",
+      "category": "list-or-placeholder"
+    },
+    {
+      "syntaxKind": "EndOfDirectiveToken",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "EndOfDocumentationCommentToken",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "EndOfFileToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "BadToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "IdentifierToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "NumericLiteralToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "CharacterLiteralToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "StringLiteralToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "XmlEntityLiteralToken",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlTextLiteralToken",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlTextLiteralNewLineToken",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "InterpolatedStringToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "InterpolatedStringTextToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "RazorContentToken",
+      "category": "token"
+    },
+    {
+      "syntaxKind": "EndOfLineTrivia",
+      "category": "trivia"
+    },
+    {
+      "syntaxKind": "WhitespaceTrivia",
+      "category": "trivia"
+    },
+    {
+      "syntaxKind": "SingleLineCommentTrivia",
+      "category": "trivia"
+    },
+    {
+      "syntaxKind": "MultiLineCommentTrivia",
+      "category": "trivia"
+    },
+    {
+      "syntaxKind": "DocumentationCommentExteriorTrivia",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "SingleLineDocumentationCommentTrivia",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "MultiLineDocumentationCommentTrivia",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "DisabledTextTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "PreprocessingMessageTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "IfDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "ElifDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "ElseDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "EndIfDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "RegionDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "EndRegionDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "DefineDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "UndefDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "ErrorDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "WarningDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "LineDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "PragmaWarningDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "PragmaChecksumDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "ReferenceDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "BadDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "SkippedTokensTrivia",
+      "category": "structured-trivia"
+    },
+    {
+      "syntaxKind": "ConflictMarkerTrivia",
+      "category": "trivia"
+    },
+    {
+      "syntaxKind": "XmlElement",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlElementStartTag",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlElementEndTag",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlEmptyElement",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlTextAttribute",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlCrefAttribute",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlNameAttribute",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlName",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlPrefix",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlText",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlCDataSection",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlComment",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "XmlProcessingInstruction",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "TypeCref",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "QualifiedCref",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "NameMemberCref",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "IndexerMemberCref",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "OperatorMemberCref",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "ConversionOperatorMemberCref",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "CrefParameterList",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "CrefBracketedParameterList",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "CrefParameter",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "ExtensionMemberCref",
+      "category": "documentation-comment"
+    },
+    {
+      "syntaxKind": "OmittedArraySizeExpression",
+      "category": "list-or-placeholder"
+    },
+    {
+      "syntaxKind": "UnsafeExpression",
+      "category": "other",
+      "note": "Preview expression form beyond the C# 14 inventory."
+    },
+    {
+      "syntaxKind": "UnknownAccessorDeclaration",
+      "category": "list-or-placeholder"
+    },
+    {
+      "syntaxKind": "IncompleteMember",
+      "category": "list-or-placeholder"
+    },
+    {
+      "syntaxKind": "ShebangDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "LoadDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "NullableDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "LineDirectivePosition",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "LineSpanDirectiveTrivia",
+      "category": "preprocessor"
+    },
+    {
+      "syntaxKind": "WithElement",
+      "category": "other",
+      "note": "Preview collection element form beyond the C# 14 inventory."
+    },
+    {
+      "syntaxKind": "UnionDeclaration",
+      "category": "other",
+      "note": "Preview type declaration beyond the C# 14 inventory."
+    }
+  ]
+}

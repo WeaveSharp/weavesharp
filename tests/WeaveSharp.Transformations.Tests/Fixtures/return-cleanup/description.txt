@@ -1,0 +1,1 @@
+Extracting a return value inside try must preserve cleanup on success or failure and the exception that ultimately escapes.

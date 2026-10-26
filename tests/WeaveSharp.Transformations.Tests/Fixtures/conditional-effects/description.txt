@@ -1,0 +1,1 @@
+Expanding a Boolean conjunction must leave the second operand and its possible exception behind the first condition.

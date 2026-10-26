@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "C# construct coverage inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "baseline",
+    "families",
+    "features",
+    "sharedSyntaxKinds",
+    "classifiedSyntaxKinds"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "csharp-14.schema.json"
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language",
+        "languageVersion",
+        "framework",
+        "roslynVersion",
+        "newestLanguageVersion"
+      ],
+      "properties": {
+        "language": {
+          "const": "C#"
+        },
+        "languageVersion": {
+          "const": "14"
+        },
+        "framework": {
+          "const": ".NET 10"
+        },
+        "roslynVersion": {
+          "const": "5.9.0"
+        },
+        "newestLanguageVersion": {
+          "const": "CSharp14"
+        }
+      }
+    },
+    "families": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "compilation-and-names",
+              "type-declarations",
+              "members-and-modifiers",
+              "types-and-signatures",
+              "literals-and-expressions",
+              "calls-and-construction",
+              "variables-and-patterns",
+              "structured-statements",
+              "exceptions-and-lifetime",
+              "callables-and-closures",
+              "asynchrony-and-iteration",
+              "queries-and-dynamic",
+              "memory-and-interop",
+              "compile-time-metadata",
+              "generated-and-partial",
+              "csharp-14-additions"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "minItems": 16,
+      "uniqueItems": true
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/feature"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "sharedSyntaxKinds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[A-Z][A-Za-z0-9]*$"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "classifiedSyntaxKinds": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/classification"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "family",
+        "name",
+        "languageVersion",
+        "plannedMaturity",
+        "syntaxKinds",
+        "dimensions"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+        },
+        "family": {
+          "enum": [
+            "compilation-and-names",
+            "type-declarations",
+            "members-and-modifiers",
+            "types-and-signatures",
+            "literals-and-expressions",
+            "calls-and-construction",
+            "variables-and-patterns",
+            "structured-statements",
+            "exceptions-and-lifetime",
+            "callables-and-closures",
+            "asynchrony-and-iteration",
+            "queries-and-dynamic",
+            "memory-and-interop",
+            "compile-time-metadata",
+            "generated-and-partial",
+            "csharp-14-additions"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "languageVersion": {
+          "enum": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "7.1",
+            "7.2",
+            "7.3",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14"
+          ]
+        },
+        "plannedMaturity": {
+          "enum": [
+            "dedicated",
+            "structural",
+            "source-region",
+            "context-dependent"
+          ]
+        },
+        "syntaxKinds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[A-Z][A-Za-z0-9]*$"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "preserve",
+            "render",
+            "dedicatedAuthoring",
+            "semanticValidation",
+            "debugMapping",
+            "traceObservation"
+          ],
+          "properties": {
+            "preserve": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unverified"
+                }
+              }
+            },
+            "render": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unverified"
+                }
+              }
+            },
+            "dedicatedAuthoring": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unverified"
+                }
+              }
+            },
+            "semanticValidation": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unverified"
+                }
+              }
+            },
+            "debugMapping": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unverified"
+                }
+              }
+            },
+            "traceObservation": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "status": {
+                  "const": "unverified"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "syntaxKind",
+        "category"
+      ],
+      "properties": {
+        "syntaxKind": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Z][A-Za-z0-9]*$"
+        },
+        "category": {
+          "enum": [
+            "token",
+            "keyword",
+            "trivia",
+            "structured-trivia",
+            "documentation-comment",
+            "preprocessor",
+            "list-or-placeholder",
+            "other"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

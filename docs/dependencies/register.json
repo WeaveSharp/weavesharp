@@ -1,0 +1,541 @@
+{
+  "about": "Every NuGet package WeaveSharp's projects restore, generated from the committed lock files by .github/scripts/dependency-register.py. Do not edit it by hand; see docs/dependencies/README.md.",
+  "packages": [
+    {
+      "id": "Microsoft.ApplicationInsights",
+      "version": "2.23.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "nWArUZTdU7iqZLycLKWe0TDms48KKGE6pONH2terYNa8REXiqixrMOkf1sk5DHGMaUTqONU2YkS4SAXBhLStgw==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.Bcl.AsyncInterfaces",
+      "version": "6.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "UcSjPsst+DfAdJGVDsu346FX0ci0ah+lw3WRtn18NUwEqRt70HaOQ7lI72vy3+1LxtqI3T5GWwV39rQSrCzAeg==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.CodeAnalysis.Analyzers",
+      "version": "5.9.0-1.26328.17",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "HP9NNk8ZjOSI2hgOyXnQg+kv7/X837Vr2nAlXiGAtqtYnYKjRRa1UmQFr8KFs5ynGYKqfbb8zB9APoWjiAGdMg==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.CodeAnalysis.Common",
+      "version": "5.9.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "IYaIaUWdIx539AReKZOBEqTskFusZfCh/wFSPilDvCn5Say8MegLw2LONcSIcVy+v3Gzv53qYBspgvBGSErfbQ==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.CodeAnalysis.CSharp",
+      "version": "5.9.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "7JGDA0UT1+h7k9ZcA3rF4eFC8+QPq1xyYaXxag4p8r/zzPurEJxvdi7aM+MRL/SfP7XADXpWF/pl/eUYXOq/ww==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "direct"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "direct"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.Testing.Extensions.Telemetry",
+      "version": "2.5.1",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "mu2iyoHovwl0q1mGeeRU0h8+LALXC7HqbxniLa1shTKYdJGl+KPoCEgjWIQ8MLzk1tlTGPOfg1JsxdH3RxhMCA==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.Testing.Extensions.TrxReport.Abstractions",
+      "version": "2.5.1",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "DYTZAguaHz0wNJdHDTTGYOXtnlDoLoIbTMDKSApNNcytm55DJcnwpwELfQGLk5DB5QlgaEjNhnGo1Pu5QvL5VA==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.Testing.Platform",
+      "version": "2.5.1",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "FAMaFFWnULW+hDHMb40Qzhcgz9cAU2/EtgRCBNX/DdQoKo0sPG2EiY+w7bQdl/BgHnf/DbpXLbf5Xy0o15M8NA==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.Testing.Platform.MSBuild",
+      "version": "2.5.1",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "lYawcAwY+h76rQmpma2n0HaL8zkOFbbKapso0Eb+uOAUQn7333pIByLftEuiO67csAoZufHNMwi6PqhNemWQXA==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.Win32.Registry",
+      "version": "5.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "dDoKi0PnDz31yAyETfRntsLArTlVAVzUzCIvvEDsDsucrl33Dl8pIJG06ePTJTI3tGpeyHS9Cq7Foc/s4EeKcg==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Security.AccessControl",
+      "version": "6.0.1",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "IQ4NXP/B3Ayzvw0rDQzVTYsCKyy0Jp9KI6aYcK7UnGVlR9+Awz++TIPCQtPYfLJfOpm8ajowMR09V7quD3sEHw==",
+      "license": "MIT",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "xunit.analyzers",
+      "version": "2.2.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "dXMIIztipcAyL3a19gtUrih/RLrE33/4VJdICoinYqIXXo1KLtsMPsaQ9dO2pE8xajDguwE2kqVbBqE5/EoJ0Q==",
+      "license": "Apache-2.0",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "xunit.v3",
+      "version": "4.0.2",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "TdjM2OAx7w/0E88E6PgaigLoTbQaxbSR3HF/8p92plchTjf29jPHW27ylvEOz+Nx8CvPwWKGQlOR1fDv6/Qh5A==",
+      "license": "Apache-2.0",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "direct"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "direct"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "direct"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "direct"
+        }
+      ]
+    },
+    {
+      "id": "xunit.v3.assert",
+      "version": "4.0.2",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "5PKRexYlvufWFdXenRcRGKqvaJBBZFJZpqUGlUs9p13eKEgVdOrLpkPknjzUvLY5kEUicK9871DIUDcCPA6AXA==",
+      "license": "Apache-2.0",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "xunit.v3.common",
+      "version": "4.0.2",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "++CtT8daIf6qfieQev/8V88U3zViIDWou5cj+oWps1/Hf73UoaY/L0hKyi3v7Zlt3BmbU0pUc73zCB1GiB4nYA==",
+      "license": "Apache-2.0",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "xunit.v3.core.mtp-v2",
+      "version": "4.0.2",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "XyPMcQRsnUQLhmBBRRgYWsuPc8TyiANzcXtqfzyWfDpPuyh3Q0K4oWozZYQKZRNGnqJ97ifD6qUDWhsEEe32uw==",
+      "license": "Apache-2.0",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "xunit.v3.extensibility.core",
+      "version": "4.0.2",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "ARTt+pGyd86mdtiFBkKpyBQvRC3u0rr8oidBlII2GsAg7D6TfOsDFCsoQtFij83V5pE57m3whUIqT4xjiARXbQ==",
+      "license": "Apache-2.0",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "xunit.v3.mtp-v2",
+      "version": "4.0.2",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "XLV32FhkuvheBStvX0DvjfPEtI+4SOVcIhnlTS+549r8VfVwsjpWdkJtQmQ7D23PA+Zoaqo+sTjBkRSkidC6Tw==",
+      "license": "Apache-2.0",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "xunit.v3.runner.common",
+      "version": "4.0.2",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "YlYKVhTJVcwEgJ6rm59Pjf71lQqKwKxEHqVRxWUuwrwm/nxB/mNFP/lP4vlntDO3GclNnLT9BjYOpJH9gViGQg==",
+      "license": "Apache-2.0",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "xunit.v3.runner.inproc.console",
+      "version": "4.0.2",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "cg4XNpCN4Ry9nswutknpreN3ckSUBwtjMRmEQSNK/sIKPo6KN5tDGGGCaHDm5HGA4yFVVtTJX65tLCsZArUNfQ==",
+      "license": "Apache-2.0",
+      "uses": [
+        "test"
+      ],
+      "projects": [
+        {
+          "path": "tests/WeaveSharp.Coverage.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    }
+  ]
+}
