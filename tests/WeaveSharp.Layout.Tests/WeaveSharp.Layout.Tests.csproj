@@ -11,4 +11,8 @@
   <ItemGroup>
     <ProjectReference Include="../../src/WeaveSharp.Layout/WeaveSharp.Layout.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="../../docs/layout/visual-1.xsd" Link="visual-1.xsd" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Fixtures/**/*.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<visualDocument xmlns="urn:weavesharp:visual:1" schemaVersion="1" source="Sketches/TileCatalog.cs">
+  <view id="catalog" memberHint="TileCatalog.Find" contextHint="desktop" flow="right-to-left">
+    <node id="load" syntaxKind="InvocationExpression" collapsed="false" x="-12" y="45">
+      <anchor syntaxPathHint="Body/Expression" memberSignature="TileCatalog.Find(int)" syntaxRole="Value" fingerprint="tile-lookup" />
+      <extent along="150" across="60" />
+    </node>
+    <node id="return" syntaxKind="ReturnStatement">
+      <anchor syntaxRole="Result" />
+    </node>
+    <note id="caption" x="20" y="-30">
+      <text>Choose a tile &amp; inspect its label.</text>
+      <extent along="180" across="75" />
+    </note>
+    <group id="selection" title="Tile selection" collapsed="true" note="Keep these nearby.">
+      <member node="return" />
+      <member node="load" />
+      <member node="retired" />
+    </group>
+    <edgeRoute id="lookup-result" from="load" fromPort="result" to="return" toPort="value">
+      <point x="70" y="40" />
+      <point x="10" y="-20" />
+    </edgeRoute>
+    <edgeRoute id="retired-link" from="absent" fromPort="next" to="retired" toPort="previous">
+      <point x="0" y="0" />
+    </edgeRoute>
+  </view>
+  <view id="unused">
+  </view>
+</visualDocument>
