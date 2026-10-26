@@ -2220,6 +2220,23 @@
     },
     {
       "ecosystem": "npm",
+      "id": "@types/vscode",
+      "version": "1.140.0",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-KAB5RBZIgnUhpp4mKsVJPPHLOQKu6WtGy2xpfWjaajEXO4xIIC+UESAXLiQ9ewx6QD1uBmvC/S8BJzkbvv4bRA==",
+      "license": "MIT",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "direct"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
       "id": "@typescript/typescript-aix-ppc64",
       "version": "7.0.2",
       "source": "https://registry.npmjs.org/",
