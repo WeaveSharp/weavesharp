@@ -35,7 +35,14 @@ import xml.etree.ElementTree as ET
 # Used only outside a git work tree; inside one, .gitignore decides.
 IGNORED_WITHOUT_GIT = {".git", "bin", "obj", "node_modules", ".vericairn", "TestResults"}
 PROJECT_SUFFIXES = {".csproj", ".fsproj", ".vbproj", ".proj"}
-MSBUILD_SUFFIXES = PROJECT_SUFFIXES | {".props", ".targets"}
+IMPORTED_SUFFIXES = {".props", ".targets", ".projitems"}
+MSBUILD_SUFFIXES = PROJECT_SUFFIXES | IMPORTED_SUFFIXES
+# MSBuild reads any XML file whose root is <Project>, whatever its extension (.msbuildproj, .vcxproj, ...).
+MSBUILD_CONTENT = re.compile(r"^\ufeff?\s*(<\?xml[^>]*\?>\s*)?(<!--.*?-->\s*)*<Project[\s>/]", re.DOTALL)
+# The audit and the warnings that make it fail a build: set only in the root Directory.Build.props.
+AUDIT_SETTINGS = {"NuGetAudit": "true", "NuGetAuditMode": "all", "NuGetAuditLevel": "low", "TreatWarningsAsErrors": "true"}
+# npm runs these around the scripts CI calls by name, and on install.
+SCRIPT_HOOKS = re.compile(r"^(pre|post)|^(install|prepare|prepublish|prepublishOnly|prepack|postpack|dependencies)$")
 SOURCE_PROPERTIES = ("RestoreSources", "RestoreAdditionalProjectSources", "RestoreFallbackFolders",
                      "RestoreAdditionalProjectFallbackFolders", "RestoreConfigFile", "NuGetLockFilePath",
                      "RestorePackagesPath", "RestoreLockedMode", "RestorePackagesWithLockFile",
@@ -43,7 +50,7 @@ SOURCE_PROPERTIES = ("RestoreSources", "RestoreAdditionalProjectSources", "Resto
                      "CentralPackageVersionOverrideEnabled", "DisableImplicitNuGetFallbackFolder")
 # Where the lock and central-version settings may be set, and which ones.
 ROOT_SETTINGS = {
-    "Directory.Build.props": {"RestorePackagesWithLockFile", "RestoreLockedMode"},
+    "Directory.Build.props": {"RestorePackagesWithLockFile", "RestoreLockedMode", *AUDIT_SETTINGS},
     "Directory.Packages.props": {"ManagePackageVersionsCentrally", "CentralPackageTransitivePinningEnabled"},
 }
 ALLOWED_SDKS = {"Microsoft.NET.Sdk", "Microsoft.NET.Sdk.Web", "Microsoft.NET.Sdk.Razor", "Microsoft.NET.Sdk.WindowsDesktop"}
@@ -73,6 +80,27 @@ def tracked_files(root):
     except (OSError, subprocess.CalledProcessError):
         return None
     return {p for p in out.stdout.decode("utf-8").split("\0") if p}
+
+
+def msbuild_files(files):
+    """Every file MSBuild could read as a project or import: known extensions, any *proj, or a <Project> root."""
+    found = []
+    for path in files:
+        if path.suffix in MSBUILD_SUFFIXES or path.suffix.endswith("proj"):
+            found.append(path)
+            continue
+        try:
+            with open(path, "rb") as handle:
+                head = handle.read(4096).decode("utf-8", errors="ignore")
+        except OSError:
+            continue
+        if MSBUILD_CONTENT.match(head):
+            found.append(path)
+    return found
+
+
+def is_project(path):
+    return path.suffix not in IMPORTED_SUFFIXES
 
 
 def local(tag):
@@ -121,12 +149,36 @@ def check_build_props(root, problems):
         problems.append("Directory.Build.props is missing; it must turn lock files on")
         return
     xml = parse_xml(props, problems)
-    if xml is not None and (property_value(xml, "RestorePackagesWithLockFile") or "").lower() != "true":
+    if xml is None:
+        return
+    if (property_value(xml, "RestorePackagesWithLockFile") or "").lower() != "true":
         problems.append("Directory.Build.props must set RestorePackagesWithLockFile to true")
+    for name, value in AUDIT_SETTINGS.items():
+        if (property_value(xml, name) or "").lower() != value:
+            problems.append(f"Directory.Build.props must set {name} to {value}")
+    # The settings that keep restores locked and audited hold unconditionally; only locked mode waits for CI.
+    for group in (e for e in xml.iter() if local(e.tag) == "PropertyGroup"):
+        for element in group:
+            name = local(element.tag)
+            if name in AUDIT_SETTINGS or name == "RestorePackagesWithLockFile":
+                if group.get("Condition") is not None or element.get("Condition") is not None:
+                    problems.append(f"Directory.Build.props: {name} must not carry a Condition")
+            if name == "RestoreLockedMode" and (group.get("Condition") is not None or
+                                               (element.get("Condition") or "").replace(" ", "") not in ("", "'$(CI)'=='true'")):
+                problems.append("Directory.Build.props: RestoreLockedMode may be conditioned only on CI")
 
 
 def check_projects(root, files, tracked, problems):
-    for project in (p for p in files if p.suffix in PROJECT_SUFFIXES):
+    projects = [p for p in msbuild_files(files) if is_project(p)]
+    folders = {}
+    for project in projects:
+        folders.setdefault(project.parent, []).append(project)
+    for folder, members in sorted(folders.items()):
+        if len(members) > 1:
+            names = ", ".join(p.name for p in sorted(members))
+            problems.append(f"{folder.relative_to(root).as_posix() or '.'}: holds {len(members)} projects ({names}); "
+                            "one project per folder keeps each lock file where restore and CI look for it")
+    for project in projects:
         relative = project.relative_to(root).as_posix()
         xml = parse_xml(project, problems)
         if xml is None:
@@ -152,12 +204,15 @@ def check_msbuild_files(root, files, problems):
     """Package sources come only from NuGet.Config, and every MSBuild file stays inside the rules."""
     for path in (p for p in files if p.suffix == ".rsp"):
         problems.append(f"{path.relative_to(root).as_posix()}: response files can change every restore; none may exist")
-    for path in (p for p in files if p.suffix in MSBUILD_SUFFIXES):
+    for path in msbuild_files(files):
         relative = path.relative_to(root).as_posix()
         is_root = path.parent == root and path.name in ROOT_SETTINGS
         xml = parse_xml(path, problems)
         if xml is None:
             continue
+        if re.search(r"NU190\d", path.read_text(encoding="utf-8", errors="ignore"), re.IGNORECASE):
+            problems.append(f"{relative}: names a NuGet audit warning (NU1900-NU1909); advisories are never silenced, "
+                            "only suppressed by advisory with a reason in the root Directory.Build.props")
         sdk = xml.get("Sdk")
         if sdk is not None and (sdk not in ALLOWED_SDKS or "/" in sdk):
             problems.append(f"{relative}: names SDK {sdk!r}; only versionless Microsoft.NET SDKs are allowed")
@@ -166,12 +221,20 @@ def check_msbuild_files(root, files, problems):
             if name in SOURCE_PROPERTIES and not (is_root and name in ROOT_SETTINGS[path.name]):
                 problems.append(f"{relative}: sets {name}; package sources and folders come only from NuGet.Config, "
                                 "and lock and central-version settings only from the root files")
+            if name in AUDIT_SETTINGS and not (is_root and path.name == "Directory.Build.props"):
+                problems.append(f"{relative}: sets {name}; the audit and warnings-as-errors are set only in the root Directory.Build.props")
+            if name == "NuGetAuditSuppress":
+                reason = element.get("Reason") or next((c.text for c in element if local(c.tag) == "Reason"), None)
+                if not (is_root and path.name == "Directory.Build.props"):
+                    problems.append(f"{relative}: suppresses an advisory; suppressions belong in the root Directory.Build.props")
+                elif not (reason or "").strip():
+                    problems.append(f"{relative}: suppresses {element.get('Include') or '?'} without a Reason")
             if name in ("Import", "Sdk"):
                 problems.append(f"{relative}: has an {name} element; MSBuild files import nothing beyond their SDK")
             if name in ("PackageVersion", "GlobalPackageReference", "PackageDownload") and path.name != "Directory.Packages.props":
                 item = element.get("Include") or element.get("Update") or "?"
                 problems.append(f"{relative}: declares {name} {item}; versions belong in Directory.Packages.props")
-            elif name == "PackageReference" and path.suffix in (".props", ".targets"):
+            elif name == "PackageReference" and not is_project(path):
                 item = element.get("Include") or element.get("Update") or "?"
                 problems.append(f"{relative}: declares PackageReference {item}; packages belong in projects")
     global_json = root / "global.json"
@@ -272,25 +335,68 @@ WORKFLOW_RULES = [
 ]
 
 
+def command_lines(text):
+    """Logical command lines: shell and PowerShell continuations joined, quotes removed, comment lines dropped."""
+    lines = []
+    pending, start = "", 0
+    for number, line in enumerate(text.splitlines(), 1):
+        if not pending:
+            start = number
+        if line.lstrip().startswith("#") and not pending:
+            continue
+        # A continued line joins the next one with nothing between them. YAML removes a block's
+        # indentation before the shell sees it, so the next line's leading space is dropped too:
+        # "n\\" then "px" in a run block reaches the shell as "npx".
+        stripped = line.rstrip()
+        piece = line.lstrip() if pending else line
+        if stripped.endswith("\\") or stripped.endswith("`"):
+            pending += (stripped.lstrip() if pending else stripped)[:-1]
+            continue
+        lines.append((start, (pending + piece).replace('"', "").replace("'", "")))
+        pending = ""
+    if pending:
+        lines.append((start, pending.replace('"', "").replace("'", "")))
+    return lines
+
+
+def check_commands(where_prefix, text, problems):
+    for number, code in command_lines(text):
+        where = f"{where_prefix}:{number}"
+        if re.search(r"\bdotnet\s+restore\b", code) and "--locked-mode" not in code:
+            problems.append(f"{where}: dotnet restore must use --locked-mode")
+        if re.search(r"\bdotnet\s+(restore|build|test|run|pack|publish)\b", code) and re.search(r"(\s--source\b|\s-s\s|--configfile\b|RestoreSources|RestoreConfigFile)", code):
+            problems.append(f"{where}: package sources come only from NuGet.Config, never from the command line")
+        if re.search(r"\bdotnet\s+nuget\s+(add|update|enable)\s+source\b", code):
+            problems.append(f"{where}: workflows never add package sources")
+        if re.search(r"\bnpm\s+ci\b", code) and not re.search(r"--ignore-scripts(?!\s*=)", code):
+            problems.append(f"{where}: npm ci must use --ignore-scripts")
+        for pattern, message in WORKFLOW_RULES:
+            if pattern.search(code):
+                problems.append(f"{where}: {message}")
+
+
 def check_workflows(root, problems):
     workflows = root / ".github" / "workflows"
     if not workflows.is_dir():
         return
     for workflow in sorted(list(workflows.glob("*.yml")) + list(workflows.glob("*.yaml"))):
-        for number, line in enumerate(workflow.read_text(encoding="utf-8").splitlines(), 1):
-            code = line.split(" #", 1)[0] if not line.lstrip().startswith("#") else ""
-            where = f"{workflow.relative_to(root).as_posix()}:{number}"
-            if re.search(r"\bdotnet\s+restore\b", code) and "--locked-mode" not in code:
-                problems.append(f"{where}: dotnet restore must use --locked-mode")
-            if re.search(r"\bdotnet\s+(restore|build|test|run|pack|publish)\b", code) and re.search(r"(\s--source\b|\s-s\s|--configfile\b|RestoreSources|RestoreConfigFile)", code):
-                problems.append(f"{where}: package sources come only from NuGet.Config, never from the command line")
-            if re.search(r"\bdotnet\s+nuget\s+(add|update|enable)\s+source\b", code):
-                problems.append(f"{where}: workflows never add package sources")
-            if re.search(r"\bnpm\s+ci\b", code) and not re.search(r"--ignore-scripts(?!\s*=)", code):
-                problems.append(f"{where}: npm ci must use --ignore-scripts")
-            for pattern, message in WORKFLOW_RULES:
-                if pattern.search(code):
-                    problems.append(f"{where}: {message}")
+        check_commands(workflow.relative_to(root).as_posix(), workflow.read_text(encoding="utf-8"), problems)
+
+
+def check_package_scripts(root, files, problems):
+    """CI runs package.json scripts by name, so they keep the workflow rules, and npm's hooks never run."""
+    for package in (p for p in files if p.name == "package.json"):
+        relative = package.relative_to(root).as_posix()
+        try:
+            scripts = json.loads(package.read_text(encoding="utf-8")).get("scripts") or {}
+        except (json.JSONDecodeError, AttributeError):
+            problems.append(f"{relative}: not valid JSON")
+            continue
+        for name, command in scripts.items():
+            if SCRIPT_HOOKS.search(name):
+                problems.append(f"{relative}: script {name!r} is an npm hook that runs implicitly; none may exist")
+            if isinstance(command, str):
+                check_commands(f"{relative} scripts.{name}", command, problems)
 
 
 def check(root):
@@ -305,6 +411,7 @@ def check(root):
     check_nuget_config(root, files, problems)
     check_npm(root, files, tracked, problems)
     check_workflows(root, problems)
+    check_package_scripts(root, files, problems)
     return problems
 
 
