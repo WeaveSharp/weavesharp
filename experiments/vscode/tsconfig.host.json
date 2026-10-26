@@ -1,0 +1,13 @@
+{
+  "extends": "../../src/surface/tsconfig.json",
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "verbatimModuleSyntax": false,
+    "noEmit": false,
+    "rewriteRelativeImportExtensions": true,
+    "rootDir": "../..",
+    "outDir": "out/host"
+  },
+  "include": ["src/extension.ts", "test/**/*.ts"]
+}

@@ -8,8 +8,8 @@
     "node": ">=24"
   },
   "scripts": {
-    "typecheck": "tsc -p src/surface && tsc -p experiments/canvas",
-    "test": "node --test \"src/surface/test/**/*.test.ts\" \"experiments/canvas/test/**/*.test.ts\""
+    "typecheck": "tsc -p src/surface && tsc -p experiments/canvas && tsc -p experiments/vscode/tsconfig.host.json --noEmit && tsc -p experiments/vscode/tsconfig.webview.json --noEmit",
+    "test": "node --test \"src/surface/test/**/*.test.ts\" \"experiments/canvas/test/**/*.test.ts\" && node node_modules/typescript/bin/tsc -p experiments/vscode/tsconfig.host.json && node node_modules/typescript/bin/tsc -p experiments/vscode/tsconfig.webview.json && node experiments/vscode/copy-resources.cjs && node --test \"experiments/vscode/out/host/experiments/vscode/test/*.test.js\""
   },
   "devDependencies": {
     "@types/node": "24.19.2",
