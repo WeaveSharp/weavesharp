@@ -1,0 +1,56 @@
+name: ci
+
+# Pull requests build and test on Linux and Windows; main, the weekly run and
+# manual runs add macOS. Every job always runs and decides inside what to
+# build, so no required check is ever skipped.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "41 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build and test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ${{ fromJSON(github.event_name == 'pull_request' && '["ubuntu-24.04","windows-2025"]' || '["ubuntu-24.04","windows-2025","macos-15"]') }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check workflow action pins
+        if: runner.os == 'Linux'
+        run: python3 .github/scripts/check-actions.py
+
+      - name: Set up .NET from global.json
+        if: hashFiles('global.json') != ''
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          global-json-file: global.json
+
+      - name: Build and test
+        run: |
+          if compgen -G "*.slnx" >/dev/null || compgen -G "*.sln" >/dev/null; then
+            dotnet restore --locked-mode
+            dotnet build --no-restore --configuration Release
+            dotnet test --no-build --configuration Release
+          else
+            echo "No solution yet: nothing to build."
+          fi
