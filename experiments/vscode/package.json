@@ -1,0 +1,27 @@
+{
+  "name": "weavesharp-vscode-spike",
+  "displayName": "WeaveSharp Graph Experiment",
+  "description": "A document-backed graph experiment for a small C# sample.",
+  "private": true,
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "engines": { "vscode": "^1.140.0" },
+  "main": "./out/host/experiments/vscode/src/extension.js",
+  "extensionKind": ["workspace"],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "This experiment is available in trusted workspaces only."
+    },
+    "virtualWorkspaces": false
+  },
+  "contributes": {
+    "customEditors": [{
+      "viewType": "weavesharp.graph",
+      "displayName": "WeaveSharp Graph Experiment",
+      "selector": [{ "filenamePattern": "*.cs" }],
+      "priority": "option"
+    }]
+  }
+}
