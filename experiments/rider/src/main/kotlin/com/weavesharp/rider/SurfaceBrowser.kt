@@ -55,9 +55,9 @@ class SurfaceBrowser(private val browser: JBCefBrowser, private val resources: S
             }
         }, cef)
         client.addDownloadHandler(object : CefDownloadHandlerAdapter() {
-            override fun onBeforeDownload(browser: CefBrowser, item: CefDownloadItem, suggestedName: String, callback: CefBeforeDownloadCallback) {
-                // Leaving the continuation unused declines the download.
-            }
+            // Returning false leaves the download to JCEF's default handling, which cancels it;
+            // the continuation is never called, and onDownloadUpdated cancels it as well.
+            override fun onBeforeDownload(browser: CefBrowser, item: CefDownloadItem, suggestedName: String, callback: CefBeforeDownloadCallback): Boolean = false
             override fun onDownloadUpdated(browser: CefBrowser, item: CefDownloadItem, callback: CefDownloadItemCallback) {
                 callback.cancel()
             }
