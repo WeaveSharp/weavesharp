@@ -8,9 +8,14 @@
       "contentHash": "nWArUZTdU7iqZLycLKWe0TDms48KKGE6pONH2terYNa8REXiqixrMOkf1sk5DHGMaUTqONU2YkS4SAXBhLStgw==",
       "license": "MIT",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -44,9 +49,14 @@
       "contentHash": "UcSjPsst+DfAdJGVDsu346FX0ci0ah+lw3WRtn18NUwEqRt70HaOQ7lI72vy3+1LxtqI3T5GWwV39rQSrCzAeg==",
       "license": "MIT",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -80,9 +90,18 @@
       "contentHash": "HP9NNk8ZjOSI2hgOyXnQg+kv7/X837Vr2nAlXiGAtqtYnYKjRRa1UmQFr8KFs5ynGYKqfbb8zB9APoWjiAGdMg==",
       "license": "MIT",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike",
+          "dependency": "transitive"
+        },
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -100,9 +119,18 @@
       "contentHash": "IYaIaUWdIx539AReKZOBEqTskFusZfCh/wFSPilDvCn5Say8MegLw2LONcSIcVy+v3Gzv53qYBspgvBGSErfbQ==",
       "license": "MIT",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike",
+          "dependency": "transitive"
+        },
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -120,9 +148,18 @@
       "contentHash": "7JGDA0UT1+h7k9ZcA3rF4eFC8+QPq1xyYaXxag4p8r/zzPurEJxvdi7aM+MRL/SfP7XADXpWF/pl/eUYXOq/ww==",
       "license": "MIT",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike",
+          "dependency": "direct"
+        },
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "direct"
@@ -140,9 +177,14 @@
       "contentHash": "mu2iyoHovwl0q1mGeeRU0h8+LALXC7HqbxniLa1shTKYdJGl+KPoCEgjWIQ8MLzk1tlTGPOfg1JsxdH3RxhMCA==",
       "license": "MIT",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -176,9 +218,14 @@
       "contentHash": "DYTZAguaHz0wNJdHDTTGYOXtnlDoLoIbTMDKSApNNcytm55DJcnwpwELfQGLk5DB5QlgaEjNhnGo1Pu5QvL5VA==",
       "license": "MIT",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -212,9 +259,14 @@
       "contentHash": "FAMaFFWnULW+hDHMb40Qzhcgz9cAU2/EtgRCBNX/DdQoKo0sPG2EiY+w7bQdl/BgHnf/DbpXLbf5Xy0o15M8NA==",
       "license": "MIT",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -248,9 +300,14 @@
       "contentHash": "lYawcAwY+h76rQmpma2n0HaL8zkOFbbKapso0Eb+uOAUQn7333pIByLftEuiO67csAoZufHNMwi6PqhNemWQXA==",
       "license": "MIT",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -284,9 +341,14 @@
       "contentHash": "dDoKi0PnDz31yAyETfRntsLArTlVAVzUzCIvvEDsDsucrl33Dl8pIJG06ePTJTI3tGpeyHS9Cq7Foc/s4EeKcg==",
       "license": "MIT",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -320,9 +382,14 @@
       "contentHash": "IQ4NXP/B3Ayzvw0rDQzVTYsCKyy0Jp9KI6aYcK7UnGVlR9+Awz++TIPCQtPYfLJfOpm8ajowMR09V7quD3sEHw==",
       "license": "MIT",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -356,9 +423,14 @@
       "contentHash": "dXMIIztipcAyL3a19gtUrih/RLrE33/4VJdICoinYqIXXo1KLtsMPsaQ9dO2pE8xajDguwE2kqVbBqE5/EoJ0Q==",
       "license": "Apache-2.0",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -392,9 +464,14 @@
       "contentHash": "TdjM2OAx7w/0E88E6PgaigLoTbQaxbSR3HF/8p92plchTjf29jPHW27ylvEOz+Nx8CvPwWKGQlOR1fDv6/Qh5A==",
       "license": "Apache-2.0",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "direct"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "direct"
@@ -428,9 +505,14 @@
       "contentHash": "5PKRexYlvufWFdXenRcRGKqvaJBBZFJZpqUGlUs9p13eKEgVdOrLpkPknjzUvLY5kEUicK9871DIUDcCPA6AXA==",
       "license": "Apache-2.0",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -464,9 +546,14 @@
       "contentHash": "++CtT8daIf6qfieQev/8V88U3zViIDWou5cj+oWps1/Hf73UoaY/L0hKyi3v7Zlt3BmbU0pUc73zCB1GiB4nYA==",
       "license": "Apache-2.0",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -500,9 +587,14 @@
       "contentHash": "XyPMcQRsnUQLhmBBRRgYWsuPc8TyiANzcXtqfzyWfDpPuyh3Q0K4oWozZYQKZRNGnqJ97ifD6qUDWhsEEe32uw==",
       "license": "Apache-2.0",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -536,9 +628,14 @@
       "contentHash": "ARTt+pGyd86mdtiFBkKpyBQvRC3u0rr8oidBlII2GsAg7D6TfOsDFCsoQtFij83V5pE57m3whUIqT4xjiARXbQ==",
       "license": "Apache-2.0",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -572,9 +669,14 @@
       "contentHash": "XLV32FhkuvheBStvX0DvjfPEtI+4SOVcIhnlTS+549r8VfVwsjpWdkJtQmQ7D23PA+Zoaqo+sTjBkRSkidC6Tw==",
       "license": "Apache-2.0",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -608,9 +710,14 @@
       "contentHash": "YlYKVhTJVcwEgJ6rm59Pjf71lQqKwKxEHqVRxWUuwrwm/nxB/mNFP/lP4vlntDO3GclNnLT9BjYOpJH9gViGQg==",
       "license": "Apache-2.0",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
@@ -644,9 +751,14 @@
       "contentHash": "cg4XNpCN4Ry9nswutknpreN3ckSUBwtjMRmEQSNK/sIKPo6KN5tDGGGCaHDm5HGA4yFVVtTJX65tLCsZArUNfQ==",
       "license": "Apache-2.0",
       "uses": [
+        "experiment",
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "tests/WeaveSharp.Coverage.Tests",
           "dependency": "transitive"
