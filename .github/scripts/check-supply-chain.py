@@ -3,19 +3,28 @@
 
     python3 .github/scripts/check-supply-chain.py [repository root]
 
-Exits 0 when every rule holds and 1 otherwise. The rules:
+Exits 0 when every rule holds and 1 otherwise. It reads every file git does not
+ignore, tracked or not, so nothing outside .gitignore escapes it. The rules:
 
-- NuGet versions are exact and set only in Directory.Packages.props.
-- Every project restores with a lock file, and its packages.lock.json is committed.
-- No MSBuild file adds package sources or fallback folders, or references or
-  versions a package outside the central file.
-- NuGet.Config clears inherited sources, uses nuget.org alone and maps every package to it.
-- No other NuGet configuration file exists in the repository.
-- npm never runs install scripts, and every package.json has a committed package-lock.json.
-- Workflows restore .NET packages only in locked mode and install npm packages only
-  with `npm ci --ignore-scripts`.
+- NuGet versions are exact and set only in the root Directory.Packages.props.
+- Every project restores with a lock file at its default path, and its
+  packages.lock.json is committed.
+- No MSBuild file adds package sources or fallback folders, moves a lock file,
+  turns lock files or central versions off, imports another file, names an SDK
+  that could come from a feed, or references or versions a package outside the
+  central file; no response file or nested central-version file exists; and
+  global.json names no MSBuild SDKs.
+- NuGet.Config clears inherited sources, uses nuget.org alone and maps every
+  package to it, and no other NuGet configuration file exists.
+- npm uses the npmjs.org registry and never runs install scripts; every
+  package.json has a committed package-lock.json whose every package resolves
+  from that registry with a sha512 integrity.
+- Workflows restore .NET packages only in locked mode, install npm packages only
+  with `npm ci --ignore-scripts`, and run no other package installer, no
+  downloaded script, and no source or registry override.
 """
 
+import json
 import os
 import pathlib
 import re
@@ -23,20 +32,38 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
-SKIP = {".git", "bin", "obj", "node_modules", ".vericairn", "TestResults", "artifacts"}
-PROJECT_SUFFIXES = {".csproj", ".fsproj", ".vbproj"}
+# Used only outside a git work tree; inside one, .gitignore decides.
+IGNORED_WITHOUT_GIT = {".git", "bin", "obj", "node_modules", ".vericairn", "TestResults"}
+PROJECT_SUFFIXES = {".csproj", ".fsproj", ".vbproj", ".proj"}
 MSBUILD_SUFFIXES = PROJECT_SUFFIXES | {".props", ".targets"}
 SOURCE_PROPERTIES = ("RestoreSources", "RestoreAdditionalProjectSources", "RestoreFallbackFolders",
-                     "RestoreAdditionalProjectFallbackFolders", "RestoreConfigFile")
+                     "RestoreAdditionalProjectFallbackFolders", "RestoreConfigFile", "NuGetLockFilePath",
+                     "RestorePackagesPath", "RestoreLockedMode", "RestorePackagesWithLockFile",
+                     "ManagePackageVersionsCentrally", "CentralPackageTransitivePinningEnabled",
+                     "CentralPackageVersionOverrideEnabled", "DisableImplicitNuGetFallbackFolder")
+# Where the lock and central-version settings may be set, and which ones.
+ROOT_SETTINGS = {
+    "Directory.Build.props": {"RestorePackagesWithLockFile", "RestoreLockedMode"},
+    "Directory.Packages.props": {"ManagePackageVersionsCentrally", "CentralPackageTransitivePinningEnabled"},
+}
+ALLOWED_SDKS = {"Microsoft.NET.Sdk", "Microsoft.NET.Sdk.Web", "Microsoft.NET.Sdk.Razor", "Microsoft.NET.Sdk.WindowsDesktop"}
 NUGET_ORG = "https://api.nuget.org/v3/index.json"
+NPM_REGISTRY = "https://registry.npmjs.org/"
 EXACT_VERSION = re.compile(r"^\d+\.\d+\.\d+(\.\d+)?(-[0-9A-Za-z.-]+)?$")
 
 
-def walk(root):
-    for directory, subdirectories, names in os.walk(root):
-        subdirectories[:] = sorted(d for d in subdirectories if d not in SKIP)
-        for name in sorted(names):
-            yield pathlib.Path(directory) / name
+def repository_files(root):
+    """Every file git does not ignore, tracked or untracked; or, outside git, every file not in a build folder."""
+    try:
+        out = subprocess.run(["git", "-C", str(root), "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+                             capture_output=True, check=True)
+        return sorted({root / p for p in out.stdout.decode("utf-8").split("\0") if p and (root / p).is_file()})
+    except (OSError, subprocess.CalledProcessError):
+        files = []
+        for directory, subdirectories, names in os.walk(root):
+            subdirectories[:] = sorted(d for d in subdirectories if d not in IGNORED_WITHOUT_GIT)
+            files.extend(pathlib.Path(directory) / name for name in sorted(names))
+        return files
 
 
 def tracked_files(root):
@@ -67,8 +94,10 @@ def property_value(root, name):
     return None
 
 
-def check_central_versions(root, problems):
+def check_central_versions(root, files, problems):
     props = root / "Directory.Packages.props"
+    for other in (p for p in files if p.name == "Directory.Packages.props" and p != props):
+        problems.append(f"{other.relative_to(root).as_posix()}: only the root Directory.Packages.props may set versions")
     if not props.is_file():
         problems.append("Directory.Packages.props is missing; package versions must be central")
         return
@@ -111,8 +140,6 @@ def check_projects(root, files, tracked, problems):
             for attribute in ("Version", "VersionOverride"):
                 if element.get(attribute) is not None or any(local(c.tag) == attribute for c in element):
                     problems.append(f"{relative}: {name} sets {attribute}; versions belong in Directory.Packages.props")
-        if (property_value(xml, "RestorePackagesWithLockFile") or "true").lower() == "false":
-            problems.append(f"{relative}: turns lock files off")
         lock = project.parent / "packages.lock.json"
         lock_relative = lock.relative_to(root).as_posix()
         if not lock.is_file():
@@ -122,20 +149,38 @@ def check_projects(root, files, tracked, problems):
 
 
 def check_msbuild_files(root, files, problems):
-    """Package sources come only from NuGet.Config, and package items only from projects without versions."""
+    """Package sources come only from NuGet.Config, and every MSBuild file stays inside the rules."""
+    for path in (p for p in files if p.suffix == ".rsp"):
+        problems.append(f"{path.relative_to(root).as_posix()}: response files can change every restore; none may exist")
     for path in (p for p in files if p.suffix in MSBUILD_SUFFIXES):
         relative = path.relative_to(root).as_posix()
+        is_root = path.parent == root and path.name in ROOT_SETTINGS
         xml = parse_xml(path, problems)
         if xml is None:
             continue
+        sdk = xml.get("Sdk")
+        if sdk is not None and (sdk not in ALLOWED_SDKS or "/" in sdk):
+            problems.append(f"{relative}: names SDK {sdk!r}; only versionless Microsoft.NET SDKs are allowed")
         for element in xml.iter():
             name = local(element.tag)
-            if name in SOURCE_PROPERTIES:
-                problems.append(f"{relative}: sets {name}; package sources and folders come only from NuGet.Config")
-            if path.suffix in (".props", ".targets") and path.name != "Directory.Packages.props" and name in (
-                    "PackageReference", "PackageVersion", "GlobalPackageReference", "PackageDownload"):
+            if name in SOURCE_PROPERTIES and not (is_root and name in ROOT_SETTINGS[path.name]):
+                problems.append(f"{relative}: sets {name}; package sources and folders come only from NuGet.Config, "
+                                "and lock and central-version settings only from the root files")
+            if name in ("Import", "Sdk"):
+                problems.append(f"{relative}: has an {name} element; MSBuild files import nothing beyond their SDK")
+            if name in ("PackageVersion", "GlobalPackageReference", "PackageDownload") and path.name != "Directory.Packages.props":
                 item = element.get("Include") or element.get("Update") or "?"
-                problems.append(f"{relative}: declares {name} {item}; packages belong in projects and versions in Directory.Packages.props")
+                problems.append(f"{relative}: declares {name} {item}; versions belong in Directory.Packages.props")
+            elif name == "PackageReference" and path.suffix in (".props", ".targets"):
+                item = element.get("Include") or element.get("Update") or "?"
+                problems.append(f"{relative}: declares PackageReference {item}; packages belong in projects")
+    global_json = root / "global.json"
+    if global_json.is_file():
+        try:
+            if "msbuild-sdks" in json.loads(global_json.read_text(encoding="utf-8")):
+                problems.append("global.json: msbuild-sdks would restore SDKs from a feed; none may be named")
+        except json.JSONDecodeError:
+            problems.append("global.json: not valid JSON")
 
 
 def check_nuget_config(root, files, problems):
@@ -157,8 +202,8 @@ def check_nuget_config(root, files, problems):
     if [(e.get("value") or "") for e in added] != [NUGET_ORG]:
         problems.append(f"NuGet.Config: the only package source must be {NUGET_ORG}")
     key = added[0].get("key") if len(added) == 1 else None
-    if any(local(e.tag) in ("disabledPackageSources", "fallbackPackageFolders", "packageSourceCredentials") for e in xml):
-        problems.append("NuGet.Config: no disabled sources, fallback folders or source credentials")
+    if any(local(e.tag) in ("disabledPackageSources", "fallbackPackageFolders", "packageSourceCredentials", "config") for e in xml):
+        problems.append("NuGet.Config: no disabled sources, fallback folders, source credentials or config settings")
     mapping = next((e for e in xml if local(e.tag) == "packageSourceMapping"), None)
     mapped = []
     if mapping is not None:
@@ -180,6 +225,11 @@ def check_npm(root, files, tracked, problems):
                 settings[name] = value
     if settings.get("ignore-scripts") != "true":
         problems.append(".npmrc must set ignore-scripts=true")
+    if settings.get("registry") != NPM_REGISTRY:
+        problems.append(f".npmrc must set registry={NPM_REGISTRY}")
+    for name in settings:
+        if name.startswith("@") or name.startswith("//") or name in ("strict-ssl", "ca", "cafile", "proxy", "https-proxy"):
+            problems.append(f".npmrc: {name} would change where or how packages are fetched")
     for other in (p for p in files if p.name == ".npmrc" and p != npmrc):
         problems.append(f"{other.relative_to(root).as_posix()}: only the root .npmrc may configure npm")
     for package in (p for p in files if p.name == "package.json"):
@@ -187,10 +237,39 @@ def check_npm(root, files, tracked, problems):
         lock_relative = lock.relative_to(root).as_posix()
         if not lock.is_file():
             problems.append(f"{package.relative_to(root).as_posix()}: has no package-lock.json")
-        elif tracked is not None and lock_relative not in tracked:
+            continue
+        if tracked is not None and lock_relative not in tracked:
             problems.append(f"{lock_relative}: exists but is not committed")
+        try:
+            data = json.loads(lock.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            problems.append(f"{lock_relative}: not valid JSON")
+            continue
+        if data.get("lockfileVersion", 0) < 2:
+            problems.append(f"{lock_relative}: lockfileVersion 2 or later is required")
+        for key, info in data.get("packages", {}).items():
+            if not key or info.get("link"):
+                continue
+            if not str(info.get("resolved", "")).startswith(NPM_REGISTRY):
+                problems.append(f"{lock_relative}: {key} does not resolve from {NPM_REGISTRY}")
+            if not str(info.get("integrity", "")).startswith("sha512-"):
+                problems.append(f"{lock_relative}: {key} has no sha512 integrity")
     for other in (p for p in files if p.name in ("yarn.lock", "pnpm-lock.yaml", "npm-shrinkwrap.json")):
         problems.append(f"{other.relative_to(root).as_posix()}: npm with package-lock.json is the only JavaScript package manager")
+
+
+WORKFLOW_RULES = [
+    (re.compile(r"\bnpm\s+(install|i|add|update|exec)\b"), "use npm ci --ignore-scripts, never npm install or npm exec"),
+    (re.compile(r"\bnpx\b"), "npx fetches and runs packages; it is not used"),
+    (re.compile(r"\b(yarn|pnpm|bun)\b"), "npm is the only JavaScript package manager"),
+    (re.compile(r"\b(pip3?|pipx|uv|poetry)\s+(install|add|run|sync)\b|\bpython3?\s+-m\s+pip\b"), "workflows install no Python packages"),
+    (re.compile(r"\bdotnet\s+tool\b"), "workflows install and run no .NET tools"),
+    (re.compile(r"\b(curl|wget|iwr|Invoke-WebRequest)\b.*\|\s*(sudo\s+)?(sh|bash|zsh|pwsh|iex|python3?)\b"), "workflows never run a downloaded script"),
+    (re.compile(r"--ignore-scripts\s*=\s*(false|0)\b"), "npm ci must use --ignore-scripts"),
+    (re.compile(r"^\s*(source-url|registry-url|config-file)\s*:"), "a setup action may not point at another package source"),
+    (re.compile(r"^\s*(NUGET_[A-Z_]*|NPM_CONFIG_[A-Z_]*|npm_config_[a-z_]*|RestoreSources|RestoreAdditionalProjectSources|RestoreConfigFile)\s*:"),
+     "workflows set no package-source environment"),
+]
 
 
 def check_workflows(root, problems):
@@ -199,7 +278,7 @@ def check_workflows(root, problems):
         return
     for workflow in sorted(list(workflows.glob("*.yml")) + list(workflows.glob("*.yaml"))):
         for number, line in enumerate(workflow.read_text(encoding="utf-8").splitlines(), 1):
-            code = line.split("#", 1)[0]
+            code = line.split(" #", 1)[0] if not line.lstrip().startswith("#") else ""
             where = f"{workflow.relative_to(root).as_posix()}:{number}"
             if re.search(r"\bdotnet\s+restore\b", code) and "--locked-mode" not in code:
                 problems.append(f"{where}: dotnet restore must use --locked-mode")
@@ -207,20 +286,19 @@ def check_workflows(root, problems):
                 problems.append(f"{where}: package sources come only from NuGet.Config, never from the command line")
             if re.search(r"\bdotnet\s+nuget\s+(add|update|enable)\s+source\b", code):
                 problems.append(f"{where}: workflows never add package sources")
-            if re.search(r"\bnpm\s+(install|i|add|update)\b", code):
-                problems.append(f"{where}: use npm ci --ignore-scripts, never npm install")
-            if re.search(r"\bnpm\s+ci\b", code) and "--ignore-scripts" not in code:
+            if re.search(r"\bnpm\s+ci\b", code) and not re.search(r"--ignore-scripts(?!\s*=)", code):
                 problems.append(f"{where}: npm ci must use --ignore-scripts")
-            if re.search(r"\b(yarn|pnpm)\b", code):
-                problems.append(f"{where}: npm is the only JavaScript package manager")
+            for pattern, message in WORKFLOW_RULES:
+                if pattern.search(code):
+                    problems.append(f"{where}: {message}")
 
 
 def check(root):
     root = pathlib.Path(root).resolve()
-    files = list(walk(root))
+    files = repository_files(root)
     tracked = tracked_files(root)
     problems = []
-    check_central_versions(root, problems)
+    check_central_versions(root, files, problems)
     check_build_props(root, problems)
     check_projects(root, files, tracked, problems)
     check_msbuild_files(root, files, problems)

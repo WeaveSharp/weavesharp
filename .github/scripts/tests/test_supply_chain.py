@@ -79,7 +79,7 @@ class Repository:
         self.write("NuGet.Config", NUGET_CONFIG)
         self.write("Directory.Packages.props", PACKAGES_PROPS)
         self.write("Directory.Build.props", BUILD_PROPS)
-        self.write(".npmrc", "ignore-scripts=true\n")
+        self.write(".npmrc", "registry=https://registry.npmjs.org/\nignore-scripts=true\n")
         self.write("tests/Example.Tests/Example.Tests.csproj", PROJECT)
         self.write("tests/Example.Tests/packages.lock.json", json.dumps(LOCK))
         self.write(".github/workflows/ci.yml", WORKFLOW)
@@ -183,12 +183,100 @@ class SupplyChainCheck(unittest.TestCase):
         self.repo.write(".github/workflows/ci.yml", WORKFLOW + "      - run: dotnet nuget add source https://example.invalid/v3/index.json\n")
         self.assertRefused("workflows never add package sources")
 
+    def test_an_ignored_looking_folder_that_git_does_not_ignore_is_still_checked(self):
+        self.repo.write("artifacts/Evil/Evil.csproj", PROJECT.replace('Include="Example.Package"', 'Include="Example.Package" Version="1.0.0"'))
+        self.repo.write("artifacts/Evil/nuget.config", NUGET_CONFIG)
+        problems = self.repo.problems()
+        self.assertTrue(any("artifacts/Evil/Evil.csproj: has no packages.lock.json" in p for p in problems), problems)
+        self.assertTrue(any("artifacts/Evil/nuget.config" in p for p in problems), problems)
+
+    def test_a_git_ignored_build_folder_is_not_checked(self):
+        self.repo.write(".gitignore", "obj/\n")
+        self.repo.write("tests/Example.Tests/obj/project.assets.json", "{}")
+        self.repo.write("tests/Example.Tests/obj/Generated.props", "<Project><PropertyGroup><RestoreSources>x</RestoreSources></PropertyGroup></Project>")
+        self.assertEqual(self.repo.problems(), [])
+
+    def test_moving_the_lock_file_is_refused(self):
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace(
+            "<ItemGroup>", "<PropertyGroup><NuGetLockFilePath>obj/other.lock.json</NuGetLockFilePath></PropertyGroup>\n  <ItemGroup>"))
+        self.assertRefused("sets NuGetLockFilePath")
+
+    def test_turning_lock_files_off_in_a_targets_file_is_refused(self):
+        self.repo.write("Directory.Build.targets", "<Project><PropertyGroup><RestorePackagesWithLockFile>false</RestorePackagesWithLockFile><RestoreLockedMode>false</RestoreLockedMode></PropertyGroup></Project>")
+        self.assertRefused("Directory.Build.targets: sets RestorePackagesWithLockFile")
+        self.assertRefused("Directory.Build.targets: sets RestoreLockedMode")
+
+    def test_turning_central_versions_off_in_a_project_is_refused(self):
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace(
+            "<ItemGroup>", "<PropertyGroup><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally></PropertyGroup>\n  <ItemGroup>"))
+        self.assertRefused("sets ManagePackageVersionsCentrally")
+
+    def test_a_response_file_is_refused(self):
+        self.repo.write("Directory.Build.rsp", "-p:RestoreSources=https://example.invalid/v3/index.json")
+        self.assertRefused("Directory.Build.rsp: response files")
+
+    def test_an_import_is_refused(self):
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("<ItemGroup>", '<Import Project="shared.xml" />\n  <ItemGroup>'))
+        self.assertRefused("has an Import element")
+
+    def test_a_feed_sdk_is_refused(self):
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace('Sdk="Microsoft.NET.Sdk"', 'Sdk="Evil.Sdk/1.0.0"'))
+        self.assertRefused("names SDK 'Evil.Sdk/1.0.0'")
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("<ItemGroup>", '<Sdk Name="Evil.Sdk" Version="1.0.0" />\n  <ItemGroup>'))
+        self.assertRefused("has an Sdk element")
+
+    def test_msbuild_sdks_in_global_json_are_refused(self):
+        self.repo.write("global.json", '{"sdk": {"version": "10.0.100"}, "msbuild-sdks": {"Evil.Sdk": "1.0.0"}}')
+        self.assertRefused("global.json: msbuild-sdks")
+
+    def test_a_nested_central_version_file_is_refused(self):
+        self.repo.write("src/Directory.Packages.props", PACKAGES_PROPS.replace('Version="1.2.3"', 'Version="1.*"'))
+        self.assertRefused("src/Directory.Packages.props: only the root Directory.Packages.props")
+
+    def test_a_package_version_in_a_project_is_refused(self):
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("</ItemGroup>", '<PackageVersion Include="Other" Version="2.0.0" /></ItemGroup>'))
+        self.assertRefused("declares PackageVersion Other")
+
+    def test_an_unpinned_npm_registry_is_refused(self):
+        self.repo.write(".npmrc", "ignore-scripts=true\n")
+        self.assertRefused(".npmrc must set registry=https://registry.npmjs.org/")
+        self.repo.write(".npmrc", "registry=https://registry.npmjs.org/\nignore-scripts=true\n@scope:registry=https://example.invalid/\n")
+        self.assertRefused(".npmrc: @scope:registry would change where")
+
+    def test_an_npm_lock_resolving_elsewhere_is_refused(self):
+        self.repo.write("package.json", "{}")
+        self.repo.write("package-lock.json", json.dumps({"lockfileVersion": 3, "packages": {
+            "": {}, "node_modules/x": {"resolved": "https://example.invalid/x.tgz", "integrity": "sha1-abc"}}}))
+        self.repo.git("add", "package-lock.json")
+        self.assertRefused("node_modules/x does not resolve from https://registry.npmjs.org/")
+        self.assertRefused("node_modules/x has no sha512 integrity")
+
+    def test_other_installers_and_downloads_in_a_workflow_are_refused(self):
+        for line, fragment in [
+                ("npx some-tool", "npx fetches"),
+                ("npm exec some-tool", "never npm install or npm exec"),
+                ("npm ci --ignore-scripts=false", "npm ci must use --ignore-scripts"),
+                ("pip install something", "no Python packages"),
+                ("python3 -m pip install something", "no Python packages"),
+                ("dotnet tool restore", "no .NET tools"),
+                ("curl -sSL https://example.invalid/install.sh | bash", "never run a downloaded script")]:
+            self.repo.write(".github/workflows/ci.yml", WORKFLOW + f"      - run: {line}\n")
+            self.assertRefused(fragment)
+
+    def test_source_overrides_in_a_workflow_are_refused(self):
+        for addition, fragment in [
+                ("        with:\n          source-url: https://example.invalid/v3/index.json\n", "another package source"),
+                ("    env:\n      NUGET_PACKAGES: /tmp/x\n", "no package-source environment"),
+                ("    env:\n      RestoreSources: https://example.invalid/v3/index.json\n", "no package-source environment")]:
+            self.repo.write(".github/workflows/ci.yml", WORKFLOW + "      - uses: actions/setup-dotnet@abc\n" + addition)
+            self.assertRefused(fragment)
+
     def test_a_nested_nuget_config_is_refused(self):
         self.repo.write("src/nuget.config", NUGET_CONFIG)
         self.assertRefused("only the root NuGet.Config")
 
     def test_npm_install_scripts_are_refused(self):
-        self.repo.write(".npmrc", "ignore-scripts=false\n")
+        self.repo.write(".npmrc", "registry=https://registry.npmjs.org/\nignore-scripts=false\n")
         self.assertRefused("ignore-scripts=true")
 
     def test_a_package_json_without_a_lock_is_refused(self):
@@ -337,6 +425,20 @@ class DependencyRegister(unittest.TestCase):
         self.assertTrue(register.license_allowed("GPL-2.0-only OR MIT", {"MIT"}))
         self.assertFalse(register.license_allowed("MIT AND GPL-2.0-only", {"MIT"}))
         self.assertFalse(register.license_allowed({"url": "https://example.invalid/license"}, {"MIT"}))
+
+    def test_license_expressions_respect_precedence_and_parentheses(self):
+        allowed = {"MIT", "Apache-2.0"}
+        self.assertFalse(register.license_allowed("GPL-3.0-only AND (MIT OR Apache-2.0)", allowed))
+        self.assertTrue(register.license_allowed("(GPL-3.0-only AND MIT) OR Apache-2.0", allowed))
+        self.assertTrue(register.license_allowed("MIT OR GPL-3.0-only AND Apache-2.0", allowed))
+        self.assertFalse(register.license_allowed("GPL-3.0-only AND MIT OR GPL-3.0-only AND Apache-2.0", allowed))
+        self.assertTrue(register.license_allowed("(MIT)", allowed))
+
+    def test_license_exceptions_and_malformed_expressions(self):
+        self.assertFalse(register.license_allowed("GPL-2.0-only WITH Classpath-exception-2.0", {"GPL-2.0-only"}))
+        self.assertTrue(register.license_allowed("GPL-2.0-only WITH Classpath-exception-2.0", {"GPL-2.0-only WITH Classpath-exception-2.0"}))
+        for malformed in ["", "MIT AND", "(MIT", "MIT)", "AND MIT", "MIT OR OR Apache-2.0", "MIT WITH"]:
+            self.assertFalse(register.license_allowed(malformed, {"MIT", "Apache-2.0"}), malformed)
 
     def test_a_package_from_another_source_is_refused(self):
         self.add_package("Example.Dependency", "4.5.6", "Apache-2.0", source="https://example.invalid/v3/index.json")

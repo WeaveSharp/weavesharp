@@ -1,0 +1,11 @@
+b0 Count n$ Block/Block body @118+128 | Debug:Approximate/SpanIntersection | Release:Approximate/SpanIntersection
+b0 Count n$/0 Loop/ForStatement statement @128+91 | Debug:Approximate/SpanIntersection | Release:Approximate/SpanIntersection
+b0 Count n$/0/0/1/0/0 Operation/NumericLiteralExpression initialize @144+1 | Debug:Approximate/SharedSequencePoint | Release:Approximate/SharedSequencePoint
+b0 Count n$/0/1 Operation/LessThanExpression condition @147+12 | Debug:Exact/AnchorEquality | Release:Exact/AnchorEquality
+b0 Count n$/0/1/0 Operation/IdentifierName operand @147+4 | Debug:Approximate/SharedSequencePoint | Release:Approximate/SharedSequencePoint
+b0 Count n$/0/1/1 Operation/IdentifierName operand @154+5 | Debug:Approximate/SharedSequencePoint | Release:Approximate/SharedSequencePoint
+b0 Count n$/0/2 Operation/PostIncrementExpression increment @161+6 | Debug:Exact/AnchorEquality | Release:Exact/AnchorEquality
+b0 Count n$/0/2/0 Operation/IdentifierName target @161+4 | Debug:Approximate/SharedSequencePoint | Release:Approximate/SharedSequencePoint
+b0 Count n$/0/3 Block/Block body @177+42 | Debug:Approximate/SpanIntersection | Release:Approximate/SpanIntersection
+b0 Count n$/0/3/0 CSharpRegion/YieldReturnStatement statement @191+18 | Debug:Exact/AnchorEquality | Release:Exact/AnchorEquality
+b0 Count n$/1 CSharpRegion/YieldBreakStatement statement @228+12 | Debug:Exact/AnchorEquality | Release:Exact/AnchorEquality

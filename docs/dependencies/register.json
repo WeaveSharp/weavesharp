@@ -48,6 +48,10 @@
       ],
       "projects": [
         {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
         },
@@ -89,6 +93,10 @@
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
@@ -149,6 +157,14 @@
       ],
       "projects": [
         {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike",
+          "dependency": "transitive"
+        },
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "experiments/projection/WeaveSharp.Projection.Spike",
           "dependency": "transitive"
         },
@@ -179,6 +195,14 @@
       ],
       "projects": [
         {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike",
+          "dependency": "transitive"
+        },
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "experiments/projection/WeaveSharp.Projection.Spike",
           "dependency": "transitive"
         },
@@ -208,6 +232,14 @@
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike",
+          "dependency": "direct"
+        },
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "experiments/projection/WeaveSharp.Projection.Spike",
           "dependency": "direct"
@@ -396,6 +428,10 @@
       ],
       "projects": [
         {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
         },
@@ -437,6 +473,10 @@
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
@@ -480,6 +520,10 @@
       ],
       "projects": [
         {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
         },
@@ -521,6 +565,10 @@
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
@@ -1005,6 +1053,10 @@
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
@@ -1549,6 +1601,10 @@
       ],
       "projects": [
         {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
         },
@@ -1744,6 +1800,10 @@
       ],
       "projects": [
         {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
         },
@@ -1785,6 +1845,10 @@
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "direct"
+        },
         {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "direct"
@@ -1828,6 +1892,10 @@
       ],
       "projects": [
         {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
         },
@@ -1869,6 +1937,10 @@
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
@@ -1912,6 +1984,10 @@
       ],
       "projects": [
         {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
         },
@@ -1953,6 +2029,10 @@
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
@@ -1996,6 +2076,10 @@
       ],
       "projects": [
         {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
         },
@@ -2038,6 +2122,10 @@
       ],
       "projects": [
         {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
         },
@@ -2079,6 +2167,10 @@
         "test"
       ],
       "projects": [
+        {
+          "path": "experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests",
+          "dependency": "transitive"
+        },
         {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
           "dependency": "transitive"
