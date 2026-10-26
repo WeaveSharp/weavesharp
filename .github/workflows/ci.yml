@@ -22,7 +22,8 @@ env:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # Superseded pull request runs stop; every commit on main keeps its own run.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
@@ -49,6 +50,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           python3 .github/scripts/tests/test_supply_chain.py
+          python3 .github/scripts/tests/test_check_actions.py
           python3 .github/scripts/check-supply-chain.py
 
       - name: Set up .NET from global.json
