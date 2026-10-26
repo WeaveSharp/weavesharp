@@ -1,0 +1,29 @@
+{
+  "version": {
+    "major": 0,
+    "minor": 0
+  },
+  "family": "read-or-save-layout",
+  "requestId": "req-1",
+  "kind": "query",
+  "payload": {
+    "schemaVersion": 1,
+    "context": {
+      "workspaceId": "workspace-a",
+      "projectId": "app",
+      "compilationContextId": "ctx-3",
+      "snapshot": {
+        "hostId": "host-a",
+        "documentUri": "workspace://sample/Counter.cs",
+        "hostVersion": "v8",
+        "snapshotId": "s8"
+      }
+    },
+    "view": "personal",
+    "operation": "save",
+    "revision": "layout-2",
+    "positions": [],
+    "conflicts": []
+  },
+  "extensions": {}
+}

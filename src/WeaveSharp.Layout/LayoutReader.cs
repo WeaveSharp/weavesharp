@@ -26,6 +26,7 @@ public static partial class LayoutReader
     public const int SupportedSchemaVersion = 1;
 
     private const string XmlnsNamespace = "http://www.w3.org/2000/xmlns/";
+    private const string XmlNamespace = "http://www.w3.org/XML/1998/namespace";
     private static readonly UTF8Encoding StrictUtf8 = new(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: true);
     private static readonly byte[] Utf8ByteOrderMark = [0xEF, 0xBB, 0xBF];
 
@@ -289,6 +290,10 @@ public static partial class LayoutReader
 
         public bool HasText => Text.ToString().Trim().Length > 0;
 
+        /// <summary>True when every attribute is one of the unqualified names given; the model keeps nothing else here.</summary>
+        public bool OnlyAttributes(params string[] known) =>
+            Attributes.All(a => a.Namespace.Length == 0 && known.Contains(a.LocalName));
+
         public XElement ToXElement()
         {
             var element = new XElement(XName.Get(LocalName, Namespace));
@@ -542,7 +547,8 @@ public static partial class LayoutReader
 
             var texts = note.Children.Where(c => c.Is("text")).ToList();
             var extents = note.Children.Where(c => c.Is("extent")).ToList();
-            if (!Position(note, out var position) || note.HasText || texts.Count != 1 || texts[0].Children.Count > 0 || extents.Count > 1)
+            if (!Position(note, out var position) || note.HasText || texts.Count != 1 || texts[0].Children.Count > 0 ||
+                !texts[0].Attributes.All(IsPreserveSpace) || extents.Count > 1)
             {
                 return Invalid<LayoutNote>(note, $"Note {id} needs exactly one text, at most one extent and a valid position.");
             }
@@ -574,7 +580,7 @@ public static partial class LayoutReader
             foreach (var member in group.Children.Where(c => c.Is("member")))
             {
                 var node = member.Attribute("node");
-                if (node is null || !IdentifierPattern().IsMatch(node) || member.Children.Count > 0 || member.HasText)
+                if (node is null || !IdentifierPattern().IsMatch(node) || member.Children.Count > 0 || member.HasText || !member.OnlyAttributes("node"))
                 {
                     return Invalid<PresentationGroup>(member, $"Group {id} has a member that names no valid node.");
                 }
@@ -623,7 +629,7 @@ public static partial class LayoutReader
             var points = new List<LayoutPoint>();
             foreach (var point in route.Children.Where(c => c.Is("point")))
             {
-                if (!Position(point, out var value) || value is null || point.Children.Count > 0 || point.HasText)
+                if (!Position(point, out var value) || value is null || point.Children.Count > 0 || point.HasText || !point.OnlyAttributes("x", "y"))
                 {
                     return Invalid<EdgeRoute>(point, $"Edge route {id} has a point without valid whole-number coordinates.");
                 }
@@ -657,7 +663,7 @@ public static partial class LayoutReader
             var along = extent.Attribute("along");
             var across = extent.Attribute("across");
             if (along is null || across is null || !ExtentPattern().IsMatch(along) || !ExtentPattern().IsMatch(across) ||
-                extent.Children.Count > 0 || extent.HasText)
+                extent.Children.Count > 0 || extent.HasText || !extent.OnlyAttributes("along", "across"))
             {
                 return Invalid<LayoutExtent?>(extent, $"Record {recordId} has an extent without whole-number along and across values.");
             }
@@ -748,6 +754,10 @@ public static partial class LayoutReader
             }
         }
     }
+
+    // A note's text may say xml:space="preserve", which keeps whitespace-only text; a writer re-derives it.
+    private static bool IsPreserveSpace(UnknownAttribute attribute) =>
+        attribute.Namespace == XmlNamespace && attribute.LocalName == "space" && attribute.Value == "preserve";
 
     private static bool IsSafeRelativePath(string path)
     {

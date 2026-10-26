@@ -1,0 +1,25 @@
+{
+  "version": {
+    "major": 0,
+    "minor": 0
+  },
+  "family": "initialize",
+  "requestId": "req-1",
+  "kind": "query",
+  "payload": {
+    "components": [
+      {
+        "name": "graph-service",
+        "version": "0.1"
+      }
+    ],
+    "hostId": "host-a",
+    "workspaceId": "workspace-a",
+    "capabilities": [
+      "graph.read",
+      "edit.prepare"
+    ],
+    "trustState": "restricted"
+  },
+  "extensions": {}
+}
