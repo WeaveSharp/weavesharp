@@ -1,0 +1,12 @@
+b0 Work n$ Block/Block body @73+69 | Debug:Approximate/SpanIntersection | Release:Approximate/SpanIntersection
+b0 Work n$/0 Statement/EmptyStatement statement @83+1 | Debug:Approximate/OneConfigurationOnly | Release:Unavailable/NoVisibleSequencePoint
+b0 Work n$/1 Statement/ExpressionStatement statement @93+11 | Debug:Exact/AnchorEquality | Release:Exact/AnchorEquality
+b0 Work n$/1/0 Operation/AddAssignmentExpression operand @93+10 | Debug:Approximate/SharedSequencePoint | Release:Approximate/SharedSequencePoint
+b0 Work n$/1/0/0 Operation/IdentifierName target @93+5 | Debug:Approximate/SharedSequencePoint | Release:Approximate/SharedSequencePoint
+b0 Work n$/1/0/1 Operation/NumericLiteralExpression operand @102+1 | Debug:Approximate/SharedSequencePoint | Release:Approximate/SharedSequencePoint
+b0 Work n$/2 Statement/EmptyStatement statement @113+1 | Debug:Approximate/OneConfigurationOnly | Release:Unavailable/NoVisibleSequencePoint
+b0 Work n$/3 Statement/ReturnStatement statement @123+13 | Debug:Exact/AnchorEquality | Release:Exact/AnchorEquality
+b0 Work n$/3/0 Operation/IdentifierName operand @130+5 | Debug:Approximate/SharedSequencePoint | Release:Approximate/SharedSequencePoint
+b1 Empty n$ Block/Block body @179+27 | Debug:Approximate/SpanIntersection | Release:Approximate/SpanIntersection
+b1 Empty n$/0 Statement/EmptyStatement statement @189+1 | Debug:Approximate/OneConfigurationOnly | Release:Unavailable/NoVisibleSequencePoint
+b1 Empty n$/1 Statement/EmptyStatement statement @199+1 | Debug:Approximate/OneConfigurationOnly | Release:Unavailable/NoVisibleSequencePoint
