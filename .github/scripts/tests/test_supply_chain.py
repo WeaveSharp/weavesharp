@@ -160,6 +160,29 @@ class SupplyChainCheck(unittest.TestCase):
         self.repo.write("NuGet.Config", NUGET_CONFIG.replace('pattern="*"', 'pattern="Example.*"'))
         self.assertRefused("packageSourceMapping")
 
+    def test_a_restore_source_property_is_refused(self):
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace(
+            "<ItemGroup>", "<PropertyGroup><RestoreSources>https://example.invalid/v3/index.json</RestoreSources></PropertyGroup>\n  <ItemGroup>"))
+        self.assertRefused("sets RestoreSources")
+
+    def test_an_additional_source_in_a_props_file_is_refused(self):
+        self.repo.write("Directory.Build.props", BUILD_PROPS.replace(
+            "</PropertyGroup>", "<RestoreAdditionalProjectSources>https://example.invalid/v3/index.json</RestoreAdditionalProjectSources></PropertyGroup>"))
+        self.assertRefused("sets RestoreAdditionalProjectSources")
+
+    def test_a_package_reference_in_a_targets_file_is_refused(self):
+        self.repo.write("Directory.Build.targets",
+                        '<Project><ItemGroup><PackageReference Include="Example.Package" Version="9.9.9" /></ItemGroup></Project>')
+        self.assertRefused("declares PackageReference Example.Package")
+
+    def test_a_source_on_the_command_line_in_a_workflow_is_refused(self):
+        self.repo.write(".github/workflows/ci.yml", WORKFLOW + "      - run: dotnet restore --locked-mode --source https://example.invalid/v3/index.json\n")
+        self.assertRefused("never from the command line")
+
+    def test_adding_a_source_in_a_workflow_is_refused(self):
+        self.repo.write(".github/workflows/ci.yml", WORKFLOW + "      - run: dotnet nuget add source https://example.invalid/v3/index.json\n")
+        self.assertRefused("workflows never add package sources")
+
     def test_a_nested_nuget_config_is_refused(self):
         self.repo.write("src/nuget.config", NUGET_CONFIG)
         self.assertRefused("only the root NuGet.Config")
