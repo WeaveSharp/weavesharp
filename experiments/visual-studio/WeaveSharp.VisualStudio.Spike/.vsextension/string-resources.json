@@ -1,0 +1,5 @@
+{
+  "Spike.DisplayName": "WeaveSharp host spike",
+  "Spike.Description": "A small command and tool window for checking the Visual Studio extension build.",
+  "Spike.OpenWindow": "Open WeaveSharp host spike"
+}
