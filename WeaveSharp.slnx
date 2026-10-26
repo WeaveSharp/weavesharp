@@ -4,6 +4,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/WeaveSharp.Tests/WeaveSharp.Tests.csproj" />
+    <Project Path="tests/WeaveSharp.Transformations.Tests/WeaveSharp.Transformations.Tests.csproj" />
   </Folder>
   <Folder Name="/experiments/">
     <File Path="experiments/README.md" />
