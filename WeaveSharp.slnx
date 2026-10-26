@@ -14,6 +14,8 @@
   </Folder>
   <Folder Name="/experiments/">
     <File Path="experiments/README.md" />
+    <Project Path="experiments/debug-mapping/WeaveSharp.DebugMapping.Spike/WeaveSharp.DebugMapping.Spike.csproj" />
+    <Project Path="experiments/debug-mapping/WeaveSharp.DebugMapping.Spike.Tests/WeaveSharp.DebugMapping.Spike.Tests.csproj" />
     <Project Path="experiments/projection/WeaveSharp.Projection.Spike/WeaveSharp.Projection.Spike.csproj" />
     <Project Path="experiments/projection/WeaveSharp.Projection.Spike.Tests/WeaveSharp.Projection.Spike.Tests.csproj" />
   </Folder>
