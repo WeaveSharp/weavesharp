@@ -1,8 +1,10 @@
 <Solution>
   <Folder Name="/src/">
     <File Path="src/README.md" />
+    <Project Path="src/WeaveSharp.Layout/WeaveSharp.Layout.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/WeaveSharp.Layout.Tests/WeaveSharp.Layout.Tests.csproj" />
     <Project Path="tests/WeaveSharp.Tests/WeaveSharp.Tests.csproj" />
     <Project Path="tests/WeaveSharp.Transformations.Tests/WeaveSharp.Transformations.Tests.csproj" />
   </Folder>
