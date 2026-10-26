@@ -1,0 +1,433 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://weavesharp.example/protocol/v0/publish-graph.schema.json",
+  "type": "object",
+  "properties": {
+    "version": {
+      "$ref": "envelope.schema.json#/$defs/version"
+    },
+    "family": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 13,
+      "const": "publish-graph"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "kind": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 12,
+      "enum": [
+        "response",
+        "notification"
+      ]
+    },
+    "payload": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "context": {
+              "$ref": "envelope.schema.json#/$defs/context"
+            },
+            "graphId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "nodes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "typeName": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 512
+                  }
+                },
+                "required": [
+                  "id",
+                  "kind",
+                  "typeName"
+                ],
+                "additionalProperties": false,
+                "maxProperties": 3
+              },
+              "minItems": 0,
+              "maxItems": 16384
+            },
+            "edges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "from": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "to": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  }
+                },
+                "required": [
+                  "id",
+                  "from",
+                  "to",
+                  "kind"
+                ],
+                "additionalProperties": false,
+                "maxProperties": 4
+              },
+              "minItems": 0,
+              "maxItems": 32768
+            },
+            "regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "nodeIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "minItems": 0,
+                    "maxItems": 16384,
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "id",
+                  "kind",
+                  "nodeIds"
+                ],
+                "additionalProperties": false,
+                "maxProperties": 3
+              },
+              "minItems": 0,
+              "maxItems": 4096
+            },
+            "mappings": {
+              "type": "array",
+              "items": {
+                "$ref": "envelope.schema.json#/$defs/mapping"
+              },
+              "minItems": 0,
+              "maxItems": 32768
+            },
+            "diagnostics": {
+              "type": "array",
+              "items": {
+                "$ref": "envelope.schema.json#/$defs/diagnostic"
+              },
+              "minItems": 0,
+              "maxItems": 4096
+            },
+            "coverage": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 11,
+              "enum": [
+                "complete",
+                "partial",
+                "unavailable"
+              ]
+            },
+            "mode": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8,
+              "const": "complete"
+            }
+          },
+          "required": [
+            "context",
+            "graphId",
+            "revision",
+            "nodes",
+            "edges",
+            "regions",
+            "mappings",
+            "diagnostics",
+            "coverage",
+            "mode"
+          ],
+          "additionalProperties": false,
+          "maxProperties": 10
+        },
+        {
+          "type": "object",
+          "properties": {
+            "context": {
+              "$ref": "envelope.schema.json#/$defs/context"
+            },
+            "graphId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "revision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "nodes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "typeName": {
+                    "type": "string",
+                    "minLength": 0,
+                    "maxLength": 512
+                  }
+                },
+                "required": [
+                  "id",
+                  "kind",
+                  "typeName"
+                ],
+                "additionalProperties": false,
+                "maxProperties": 3
+              },
+              "minItems": 0,
+              "maxItems": 16384
+            },
+            "edges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "from": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "to": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  }
+                },
+                "required": [
+                  "id",
+                  "from",
+                  "to",
+                  "kind"
+                ],
+                "additionalProperties": false,
+                "maxProperties": 4
+              },
+              "minItems": 0,
+              "maxItems": 32768
+            },
+            "regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "nodeIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "minItems": 0,
+                    "maxItems": 16384,
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "id",
+                  "kind",
+                  "nodeIds"
+                ],
+                "additionalProperties": false,
+                "maxProperties": 3
+              },
+              "minItems": 0,
+              "maxItems": 4096
+            },
+            "mappings": {
+              "type": "array",
+              "items": {
+                "$ref": "envelope.schema.json#/$defs/mapping"
+              },
+              "minItems": 0,
+              "maxItems": 32768
+            },
+            "diagnostics": {
+              "type": "array",
+              "items": {
+                "$ref": "envelope.schema.json#/$defs/diagnostic"
+              },
+              "minItems": 0,
+              "maxItems": 4096
+            },
+            "coverage": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 11,
+              "enum": [
+                "complete",
+                "partial",
+                "unavailable"
+              ]
+            },
+            "mode": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 11,
+              "const": "incremental"
+            },
+            "baseRevision": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "removedNodeIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "minItems": 0,
+              "maxItems": 16384,
+              "uniqueItems": true
+            },
+            "removedEdgeIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "minItems": 0,
+              "maxItems": 32768,
+              "uniqueItems": true
+            },
+            "removedRegionIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "minItems": 0,
+              "maxItems": 4096,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "context",
+            "graphId",
+            "revision",
+            "nodes",
+            "edges",
+            "regions",
+            "mappings",
+            "diagnostics",
+            "coverage",
+            "mode",
+            "baseRevision",
+            "removedNodeIds",
+            "removedEdgeIds",
+            "removedRegionIds"
+          ],
+          "additionalProperties": false,
+          "maxProperties": 14
+        }
+      ]
+    },
+    "extensions": {
+      "$ref": "envelope.schema.json#/$defs/extensions"
+    }
+  },
+  "required": [
+    "version",
+    "family",
+    "requestId",
+    "kind",
+    "payload",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "maxProperties": 6
+}

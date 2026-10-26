@@ -1,0 +1,478 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://weavesharp.example/protocol/v0/read-or-save-layout.schema.json",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "$ref": "envelope.schema.json#/$defs/version"
+        },
+        "family": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 19,
+          "const": "read-or-save-layout"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 5,
+          "enum": [
+            "query"
+          ]
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "integer",
+              "const": 1,
+              "minimum": 1,
+              "maximum": 1
+            },
+            "context": {
+              "$ref": "envelope.schema.json#/$defs/context"
+            },
+            "view": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8,
+              "enum": [
+                "shared",
+                "personal"
+              ]
+            },
+            "revision": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "positions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "nodeId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "x": {
+                    "type": "number",
+                    "minimum": -1000000,
+                    "maximum": 1000000
+                  },
+                  "y": {
+                    "type": "number",
+                    "minimum": -1000000,
+                    "maximum": 1000000
+                  }
+                },
+                "required": [
+                  "nodeId",
+                  "x",
+                  "y"
+                ],
+                "additionalProperties": false,
+                "maxProperties": 3
+              },
+              "minItems": 0,
+              "maxItems": 16384
+            },
+            "conflicts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "minItems": 0,
+              "maxItems": 256
+            },
+            "operation": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4,
+              "const": "read"
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "context",
+            "view",
+            "revision",
+            "positions",
+            "conflicts",
+            "operation"
+          ],
+          "additionalProperties": false,
+          "maxProperties": 7
+        },
+        "extensions": {
+          "$ref": "envelope.schema.json#/$defs/extensions"
+        }
+      },
+      "required": [
+        "version",
+        "family",
+        "requestId",
+        "kind",
+        "payload",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 6
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "$ref": "envelope.schema.json#/$defs/version"
+        },
+        "family": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 19,
+          "const": "read-or-save-layout"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8,
+          "enum": [
+            "mutation"
+          ]
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "integer",
+              "const": 1,
+              "minimum": 1,
+              "maximum": 1
+            },
+            "context": {
+              "$ref": "envelope.schema.json#/$defs/context"
+            },
+            "view": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8,
+              "enum": [
+                "shared",
+                "personal"
+              ]
+            },
+            "revision": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "positions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "nodeId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "x": {
+                    "type": "number",
+                    "minimum": -1000000,
+                    "maximum": 1000000
+                  },
+                  "y": {
+                    "type": "number",
+                    "minimum": -1000000,
+                    "maximum": 1000000
+                  }
+                },
+                "required": [
+                  "nodeId",
+                  "x",
+                  "y"
+                ],
+                "additionalProperties": false,
+                "maxProperties": 3
+              },
+              "minItems": 0,
+              "maxItems": 16384
+            },
+            "conflicts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4096
+              },
+              "minItems": 0,
+              "maxItems": 256
+            },
+            "operation": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4,
+              "const": "save"
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "context",
+            "view",
+            "revision",
+            "positions",
+            "conflicts",
+            "operation"
+          ],
+          "additionalProperties": false,
+          "maxProperties": 7
+        },
+        "extensions": {
+          "$ref": "envelope.schema.json#/$defs/extensions"
+        }
+      },
+      "required": [
+        "version",
+        "family",
+        "requestId",
+        "kind",
+        "payload",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 6
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "$ref": "envelope.schema.json#/$defs/version"
+        },
+        "family": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 19,
+          "const": "read-or-save-layout"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8,
+          "enum": [
+            "response"
+          ]
+        },
+        "payload": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "integer",
+                  "const": 1,
+                  "minimum": 1,
+                  "maximum": 1
+                },
+                "context": {
+                  "$ref": "envelope.schema.json#/$defs/context"
+                },
+                "view": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8,
+                  "enum": [
+                    "shared",
+                    "personal"
+                  ]
+                },
+                "revision": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "positions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "nodeId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "x": {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      "y": {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      }
+                    },
+                    "required": [
+                      "nodeId",
+                      "x",
+                      "y"
+                    ],
+                    "additionalProperties": false,
+                    "maxProperties": 3
+                  },
+                  "minItems": 0,
+                  "maxItems": 16384
+                },
+                "conflicts": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "minItems": 0,
+                  "maxItems": 256
+                },
+                "operation": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4,
+                  "const": "read"
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "context",
+                "view",
+                "revision",
+                "positions",
+                "conflicts",
+                "operation"
+              ],
+              "additionalProperties": false,
+              "maxProperties": 7
+            },
+            {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "integer",
+                  "const": 1,
+                  "minimum": 1,
+                  "maximum": 1
+                },
+                "context": {
+                  "$ref": "envelope.schema.json#/$defs/context"
+                },
+                "view": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8,
+                  "enum": [
+                    "shared",
+                    "personal"
+                  ]
+                },
+                "revision": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "positions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "nodeId": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "x": {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      "y": {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      }
+                    },
+                    "required": [
+                      "nodeId",
+                      "x",
+                      "y"
+                    ],
+                    "additionalProperties": false,
+                    "maxProperties": 3
+                  },
+                  "minItems": 0,
+                  "maxItems": 16384
+                },
+                "conflicts": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4096
+                  },
+                  "minItems": 0,
+                  "maxItems": 256
+                },
+                "operation": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4,
+                  "const": "save"
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "context",
+                "view",
+                "revision",
+                "positions",
+                "conflicts",
+                "operation"
+              ],
+              "additionalProperties": false,
+              "maxProperties": 7
+            }
+          ]
+        },
+        "extensions": {
+          "$ref": "envelope.schema.json#/$defs/extensions"
+        }
+      },
+      "required": [
+        "version",
+        "family",
+        "requestId",
+        "kind",
+        "payload",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 6
+    }
+  ]
+}

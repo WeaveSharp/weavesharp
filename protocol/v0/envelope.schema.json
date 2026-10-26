@@ -1,0 +1,283 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://weavesharp.example/protocol/v0/envelope.schema.json",
+  "oneOf": [
+    {
+      "$ref": "initialize.schema.json"
+    },
+    {
+      "$ref": "set-compilation-context.schema.json"
+    },
+    {
+      "$ref": "publish-source-snapshot.schema.json"
+    },
+    {
+      "$ref": "request-graph.schema.json"
+    },
+    {
+      "$ref": "publish-graph.schema.json"
+    },
+    {
+      "$ref": "prepare-edit.schema.json"
+    },
+    {
+      "$ref": "edit-result.schema.json"
+    },
+    {
+      "$ref": "publish-execution-state.schema.json"
+    },
+    {
+      "$ref": "read-or-save-layout.schema.json"
+    },
+    {
+      "$ref": "cancel-or-dispose.schema.json"
+    }
+  ],
+  "$defs": {
+    "version": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "minor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        }
+      },
+      "required": [
+        "major",
+        "minor"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 2
+    },
+    "snapshot": {
+      "type": "object",
+      "properties": {
+        "hostId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "documentUri": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^[a-z][a-z0-9+.-]*://[^\\s]+$"
+        },
+        "hostVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "snapshotId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "hostId",
+        "documentUri",
+        "hostVersion",
+        "snapshotId"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 4
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "workspaceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "projectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "compilationContextId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "snapshot": {
+          "$ref": "envelope.schema.json#/$defs/snapshot"
+        }
+      },
+      "required": [
+        "workspaceId",
+        "projectId",
+        "compilationContextId",
+        "snapshot"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 4
+    },
+    "span": {
+      "type": "object",
+      "properties": {
+        "snapshot": {
+          "$ref": "envelope.schema.json#/$defs/snapshot"
+        },
+        "coordinates": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12,
+          "const": "utf16-offset"
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        },
+        "length": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647
+        }
+      },
+      "required": [
+        "snapshot",
+        "coordinates",
+        "start",
+        "length"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 4
+    },
+    "namedValue": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "value": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "name",
+        "value"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 2
+    },
+    "change": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "$ref": "envelope.schema.json#/$defs/span"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 1048576
+        }
+      },
+      "required": [
+        "span",
+        "text"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 2
+    },
+    "mapping": {
+      "type": "object",
+      "properties": {
+        "nodeId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "source": {
+          "$ref": "envelope.schema.json#/$defs/span"
+        }
+      },
+      "required": [
+        "nodeId",
+        "source"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 2
+    },
+    "diagnostic": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "severity": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 7,
+          "enum": [
+            "info",
+            "warning",
+            "error"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "source": {
+          "$ref": "envelope.schema.json#/$defs/span"
+        }
+      },
+      "required": [
+        "code",
+        "severity",
+        "message",
+        "source"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 4
+    },
+    "extensions": {
+      "type": "object",
+      "maxProperties": 32,
+      "additionalProperties": false,
+      "propertyNames": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 64,
+        "pattern": "^[a-z][a-z0-9.-]*$"
+      },
+      "patternProperties": {
+        "^[a-z][a-z0-9.-]*$": {
+          "type": "object",
+          "properties": {
+            "mandatory": {
+              "type": "boolean"
+            },
+            "value": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 4096
+            }
+          },
+          "required": [
+            "mandatory",
+            "value"
+          ],
+          "additionalProperties": false,
+          "maxProperties": 2
+        }
+      }
+    }
+  }
+}

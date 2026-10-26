@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://weavesharp.example/protocol/v0/prepare-edit.schema.json",
+  "type": "object",
+  "properties": {
+    "version": {
+      "$ref": "envelope.schema.json#/$defs/version"
+    },
+    "family": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 12,
+      "const": "prepare-edit"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "kind": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 5,
+      "enum": [
+        "query"
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "context": {
+          "$ref": "envelope.schema.json#/$defs/context"
+        },
+        "command": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "anchors": {
+          "type": "array",
+          "items": {
+            "$ref": "envelope.schema.json#/$defs/span"
+          },
+          "minItems": 1,
+          "maxItems": 256
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "$ref": "envelope.schema.json#/$defs/namedValue"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "destinations": {
+          "type": "array",
+          "items": {
+            "$ref": "envelope.schema.json#/$defs/snapshot"
+          },
+          "minItems": 1,
+          "maxItems": 256
+        }
+      },
+      "required": [
+        "context",
+        "command",
+        "anchors",
+        "choices",
+        "destinations"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 5
+    },
+    "extensions": {
+      "$ref": "envelope.schema.json#/$defs/extensions"
+    }
+  },
+  "required": [
+    "version",
+    "family",
+    "requestId",
+    "kind",
+    "payload",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "maxProperties": 6
+}

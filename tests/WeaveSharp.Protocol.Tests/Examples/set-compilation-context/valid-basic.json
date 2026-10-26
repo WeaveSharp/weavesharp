@@ -1,0 +1,31 @@
+{
+  "version": {
+    "major": 0,
+    "minor": 0
+  },
+  "family": "set-compilation-context",
+  "requestId": "req-1",
+  "kind": "notification",
+  "payload": {
+    "workspaceId": "workspace-a",
+    "projectId": "app",
+    "contextId": "ctx-3",
+    "targetId": "net10.0",
+    "languageVersion": "14",
+    "compilerVersion": "5.9",
+    "options": [
+      {
+        "name": "nullable",
+        "value": "enable"
+      }
+    ],
+    "references": [
+      {
+        "documentUri": "workspace://references/System.Runtime.dll",
+        "revision": "ref-1"
+      }
+    ],
+    "generatedSourceRevision": "gen-2"
+  },
+  "extensions": {}
+}

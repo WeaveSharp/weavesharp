@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://weavesharp.example/protocol/v0/publish-source-snapshot.schema.json",
+  "type": "object",
+  "properties": {
+    "version": {
+      "$ref": "envelope.schema.json#/$defs/version"
+    },
+    "family": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 23,
+      "const": "publish-source-snapshot"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "kind": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 12,
+      "enum": [
+        "notification"
+      ]
+    },
+    "payload": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "context": {
+              "$ref": "envelope.schema.json#/$defs/context"
+            },
+            "provenance": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "encoding": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "mode": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8,
+              "const": "complete"
+            },
+            "text": {
+              "type": "string",
+              "minLength": 0,
+              "maxLength": 1048576
+            }
+          },
+          "required": [
+            "context",
+            "provenance",
+            "mode",
+            "text"
+          ],
+          "additionalProperties": false,
+          "maxProperties": 5
+        },
+        {
+          "type": "object",
+          "properties": {
+            "context": {
+              "$ref": "envelope.schema.json#/$defs/context"
+            },
+            "provenance": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "encoding": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            "mode": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 11,
+              "const": "incremental"
+            },
+            "baseSnapshotId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "changes": {
+              "type": "array",
+              "items": {
+                "$ref": "envelope.schema.json#/$defs/change"
+              },
+              "minItems": 1,
+              "maxItems": 4096
+            }
+          },
+          "required": [
+            "context",
+            "provenance",
+            "mode",
+            "baseSnapshotId",
+            "changes"
+          ],
+          "additionalProperties": false,
+          "maxProperties": 6
+        }
+      ]
+    },
+    "extensions": {
+      "$ref": "envelope.schema.json#/$defs/extensions"
+    }
+  },
+  "required": [
+    "version",
+    "family",
+    "requestId",
+    "kind",
+    "payload",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "maxProperties": 6
+}
