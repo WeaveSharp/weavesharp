@@ -38,6 +38,9 @@ NUGET_CONFIG = """<?xml version="1.0" encoding="utf-8"?>
     <clear />
     <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
   </packageSources>
+  <fallbackPackageFolders>
+    <clear />
+  </fallbackPackageFolders>
   <packageSourceMapping>
     <packageSource key="nuget.org">
       <package pattern="*" />
@@ -371,6 +374,12 @@ class SupplyChainCheck(unittest.TestCase):
         (self.repo.root / "Example.slnx").write_bytes('<Solution><Project Path="src/Odd/Odd.thing" /></Solution>\n'.encode("utf-16"))
         self.repo.write("src/Odd/Odd.thing", "listed, not XML")
         self.assertRefused("Odd.thing: not well-formed XML")
+
+    def test_fallback_folders_must_be_cleared(self):
+        self.repo.write("NuGet.Config", NUGET_CONFIG.replace("  <fallbackPackageFolders>\n    <clear />\n  </fallbackPackageFolders>\n", ""))
+        self.assertRefused("fallbackPackageFolders must hold exactly <clear />")
+        self.repo.write("NuGet.Config", NUGET_CONFIG.replace("    <clear />\n  </fallbackPackageFolders>", '    <clear />\n    <add key="x" value="C:\\packages" />\n  </fallbackPackageFolders>'))
+        self.assertRefused("fallbackPackageFolders must hold exactly <clear />")
 
     def test_a_project_without_a_lock_file_is_refused(self):
         (self.repo.root / "tests/Example.Tests/packages.lock.json").unlink()

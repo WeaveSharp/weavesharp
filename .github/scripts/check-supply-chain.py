@@ -425,8 +425,12 @@ def check_nuget_config(root, files, problems):
     if [(e.get("value") or "") for e in added] != [NUGET_ORG]:
         problems.append(f"NuGet.Config: the only package source must be {NUGET_ORG}")
     key = added[0].get("key") if len(added) == 1 else None
-    if any(local(e.tag) in ("disabledPackageSources", "fallbackPackageFolders", "packageSourceCredentials", "config") for e in xml):
-        problems.append("NuGet.Config: no disabled sources, fallback folders, source credentials or config settings")
+    if any(local(e.tag) in ("disabledPackageSources", "packageSourceCredentials", "config") for e in xml):
+        problems.append("NuGet.Config: no disabled sources, source credentials or config settings")
+    # Machine-wide configurations (Visual Studio's, for one) add fallback folders; the root clears them all.
+    fallback = [e for e in xml if local(e.tag) == "fallbackPackageFolders"]
+    if len(fallback) != 1 or [local(c.tag) for c in fallback[0]] != ["clear"]:
+        problems.append("NuGet.Config: fallbackPackageFolders must hold exactly <clear />")
     mapping = next((e for e in xml if local(e.tag) == "packageSourceMapping"), None)
     mapped = []
     if mapping is not None:
