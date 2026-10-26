@@ -1,0 +1,12 @@
+{
+  "extends": "../../src/surface/tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noEmit": false,
+    "rewriteRelativeImportExtensions": true,
+    "rootDir": "../..",
+    "outDir": "out"
+  },
+  "include": ["webview", "test"]
+}

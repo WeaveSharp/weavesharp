@@ -1,0 +1,15 @@
+[versions]
+intellij-platform = "2.19.0"
+rider = "2026.2.3"
+# Candidate only: Builder must confirm the Kotlin pairing for platform 262.
+kotlin = "2.3.20"
+junit = "5.11.4"
+junit-platform = "1.11.4"
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+intellij-platform = { id = "org.jetbrains.intellij.platform", version.ref = "intellij-platform" }
+
+[libraries]
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform" }
