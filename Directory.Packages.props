@@ -1,8 +1,13 @@
 <Project>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <!-- Central versions also pin transitive packages, so a vulnerable transitive version can be raised here. -->
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
+    <!-- MessagePack: the Visual Studio Extensibility SDK 17.14.40608 brings 2.5.198, which has eight
+         advisories; 2.5.307 is the latest 2.5 patch and fixes all of them. -->
+    <PackageVersion Include="MessagePack" Version="2.5.307" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
     <PackageVersion Include="Microsoft.VisualStudio.Extensibility.Build" Version="17.14.40608" />
     <PackageVersion Include="Microsoft.VisualStudio.Extensibility.Sdk" Version="17.14.40608" />
