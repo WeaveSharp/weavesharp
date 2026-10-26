@@ -58,7 +58,7 @@ logs were directed into `.vericairn/scratch/`. No network operation was used.
 | One Release extension build, `--no-restore` | Failed: CS0246 for `IRemoteUserControl`; zero warnings, one error. |
 | Correct that source error | Added the `Microsoft.VisualStudio.RpcContracts.RemoteUI` import, whose type is documented in the cached package. No second build was run under the brief's single-attempt limit. The final extension remains uncompiled locally. |
 | Inspect generated metadata from the failed attempt | One command and one tool-window contribution, out-of-process hosting, and an intermediate VSIX manifest were present. No VSIX was produced. |
-| Restore the existing solution in locked mode | Passed with one MSBuild node. An earlier restore produced no output and was interrupted; its cause was not established. |
+| Restore the existing solution in locked mode | Passed with one MSBuild node. An earlier restore was interrupted after MSBuild workers failed to open named pipes because socket access was denied; their failure reports were retained in scratch. |
 | Build the existing solution in Release without restore | Passed: zero warnings and zero errors. |
 | Execute the five existing test assemblies directly | Passed: 461 tests, no failures or skips. Counts: Coverage 34, Layout 72, Requirements 325, Smoke 1, Transformations 29. |
 | Run `dotnet test` | Not run; the brief identifies a sandbox socket restriction. CI must exercise the test runner. |
