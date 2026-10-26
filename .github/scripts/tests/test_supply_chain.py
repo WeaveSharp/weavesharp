@@ -247,6 +247,33 @@ class DependencyRegister(unittest.TestCase):
             {"id": "Example.Dependency", "version": "4.5.6", "use": "test", "reason": "test only", "decision": "D0"}]}))
         self.assertEqual(self.run_script("write")[0], 0)
 
+    def test_an_experiment_only_license_is_recorded_not_restricted(self):
+        self.add_package("Example.Package", "1.2.3", "MIT")
+        self.add_package("Example.Dependency", "4.5.6", "LicenseRef-Proprietary")
+        self.repo.write("docs/dependencies/license-policy.json", json.dumps(
+            {"allowed": ["MIT"], "unrestrictedUses": ["experiment"], "exceptions": []}))
+        experiment = json.loads(json.dumps(LOCK))
+        del experiment["dependencies"]["net10.0"]["Example.Package"]
+        experiment["dependencies"]["net10.0"]["Example.Dependency"]["type"] = "Direct"
+        self.repo.write("experiments/Spike/Spike.csproj", PROJECT)
+        self.repo.write("experiments/Spike/packages.lock.json", json.dumps(experiment))
+        self.repo.write("tests/Example.Tests/packages.lock.json", json.dumps(
+            {"version": 1, "dependencies": {"net10.0": {"Example.Package": LOCK["dependencies"]["net10.0"]["Example.Package"]}}}))
+        code, output = self.run_script("write")
+        self.assertEqual(code, 0, output)
+        written = json.loads((self.repo.root / "docs/dependencies/register.json").read_text())
+        dependency = next(p for p in written["packages"] if p["id"] == "Example.Dependency")
+        self.assertEqual(dependency["license"], "LicenseRef-Proprietary")
+        self.assertEqual(dependency["uses"], ["experiment"])
+
+    def test_an_unrestricted_use_does_not_excuse_a_test_use(self):
+        self.add_package("Example.Dependency", "4.5.6", "LicenseRef-Proprietary")
+        self.repo.write("docs/dependencies/license-policy.json", json.dumps(
+            {"allowed": ["MIT", "Apache-2.0"], "unrestrictedUses": ["experiment"], "exceptions": []}))
+        code, output = self.run_script("write")
+        self.assertEqual(code, 1)
+        self.assertIn("is not allowed for test use", output)
+
     def test_an_or_expression_needs_one_allowed_alternative(self):
         self.assertTrue(register.license_allowed("GPL-2.0-only OR MIT", {"MIT"}))
         self.assertFalse(register.license_allowed("MIT AND GPL-2.0-only", {"MIT"}))
