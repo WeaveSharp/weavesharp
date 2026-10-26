@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <File Path="src/README.md" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WeaveSharp.Tests/WeaveSharp.Tests.csproj" />
+  </Folder>
+  <Folder Name="/experiments/">
+    <File Path="experiments/README.md" />
+  </Folder>
+</Solution>
