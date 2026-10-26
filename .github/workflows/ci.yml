@@ -61,6 +61,10 @@ jobs:
         run: |
           if compgen -G "*.slnx" >/dev/null || compgen -G "*.sln" >/dev/null; then
             dotnet restore --locked-mode
+            # Projects outside the solution restore too, so their lock files and packages are checked.
+            for project in experiments/visual-studio/*/*.csproj; do
+              if [ -f "$project" ]; then dotnet restore "$project" --locked-mode; fi
+            done
             # Locked mode still writes a lock file a project lacks, so none may change or appear.
             git diff --exit-code -- '*packages.lock.json'
             created="$(git ls-files --others --exclude-standard -- '*packages.lock.json')"
@@ -71,6 +75,23 @@ jobs:
           else
             echo "No solution yet: nothing to build."
           fi
+
+      - name: Build the Visual Studio spike
+        # Visual Studio extensions build with full MSBuild on Windows; only GitHub-owned
+        # actions are allowed, so MSBuild is found with vswhere rather than an action.
+        if: runner.os == 'Windows' && hashFiles('experiments/visual-studio/**/*.csproj') != ''
+        shell: pwsh
+        run: |
+          $vswhere = Join-Path ${env:ProgramFiles(x86)} 'Microsoft Visual Studio\Installer\vswhere.exe'
+          $msbuild = & $vswhere -latest -products * -requires Microsoft.Component.MSBuild -find 'MSBuild\**\Bin\MSBuild.exe' | Select-Object -First 1
+          if (-not $msbuild) { throw 'MSBuild was not found.' }
+          foreach ($project in Get-ChildItem experiments/visual-studio -Recurse -Filter *.csproj) {
+            & $msbuild $project.FullName /restore /p:RestoreLockedMode=true /p:Configuration=Release /nologo /verbosity:minimal
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          $vsix = Get-ChildItem experiments/visual-studio -Recurse -Filter *.vsix | Select-Object -First 1
+          if (-not $vsix) { throw 'The Visual Studio spike produced no VSIX.' }
+          Write-Host "Built $($vsix.Name), $($vsix.Length) bytes"
 
   ci-passed:
     name: ci passed

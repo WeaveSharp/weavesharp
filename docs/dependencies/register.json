@@ -2,6 +2,38 @@
   "about": "Every NuGet package WeaveSharp's projects restore, generated from the committed lock files by .github/scripts/dependency-register.py. Do not edit it by hand; see docs/dependencies/README.md.",
   "packages": [
     {
+      "id": "MessagePack",
+      "version": "2.5.307",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "P9LNJ2bz/wx8J5W0EQW4Bh7G5BiEikXiiDqGvw/WOMRyRI0QcxVvRM4XkqhidGJG6uzMT7iF89o0uYGLwmGifQ==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "MessagePack.Annotations",
+      "version": "2.5.307",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "kIGiwydfCKWRim1ZoFbZ1qVHDHrQfXdJ+FEFVPEqse/XzvPT7lVUjIb1LOuocP3Tx1+PtFEdEandRhxB64Xd4A==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
       "id": "Microsoft.ApplicationInsights",
       "version": "2.23.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -79,6 +111,22 @@
         },
         {
           "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.Bcl.AsyncInterfaces",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "owmu2Cr3IQ8yQiBleBHlGk8dSQ12oaF2e7TpzwJKEl4m84kkZJjEY1n33L67Y3zM5jPOjmmbdHjbfiL0RqcMRQ==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
           "dependency": "transitive"
         }
       ]
@@ -167,6 +215,154 @@
         {
           "path": "tests/WeaveSharp.Transformations.Tests",
           "dependency": "direct"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.CSharp",
+      "version": "4.7.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.Extensions.DependencyInjection",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "MCPrg7v3QgNMr0vX4vzRXvkNGgLg8vKWX0nKCWUxu2uPyMsaRgiRc1tHBnbTcfJMhMKj2slE/j2M9oGkd25DNw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.Extensions.DependencyInjection.Abstractions",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "+6f2qv2a3dLwd5w6JanPIPs47CxRbnk+ZocMJUhv9NxP88VlOcJYZs9jY+MYSjxvady08bUZn6qgiNh7DadGgg==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.NET.StringTools",
+      "version": "17.14.23",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "ZICz/giMoujjpq9Qy4kaLvOb+MVCy3vMRF5Mp2wEgfOUo1ZnJpU1YEL+LxvzyMI9/WMJ8Y2jF4EHuIV32v1PnA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.NETCore.Platforms",
+      "version": "5.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "VyPlqzH2wavqquTcYpkIIAQ6WdenuKoFN0BdYBbCWsclXacSOHNQn66Gt4z5NBqEYW0FAPm5rlvki9ZiCij5xQ==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.NETCore.Targets",
+      "version": "1.1.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "aOZA3BWfz9RXjpzt0sRJJMjAscAUm3Hoa4UWAfceV9UTYxgwZ1lZt5nO2myFf+/jetYQo4uTP7zS8sJY67BBxg==",
+      "license": {
+        "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.ServiceHub.Analyzers",
+      "version": "4.8.55",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "BrJ18egJTVcSQ8AjvDiW3bBlLGr/tLQ0vW0OrTMdZ0Jm9ML8zJv9BGvRaUeHwaYZT1VYgmE5A4tIHAk1R5oYiQ==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.ServiceHub.Framework",
+      "version": "4.8.55",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "AZCNlrMnQwaHVPrsm8jtAhbXl2xOJl9YAUZPVsb0g42j5a6+3z4Ur4DN7f6ceZbAtKXpYVcirBl+yfVsxzayXg==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.ServiceHub.Resources",
+      "version": "4.6.2052",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "vIE0+m7FoCioF1b24hpv3EicdZlDGNdNexAK5Cr1Q81Ek/04YEi5mvJ03jXYFS0QbqHBbHNgCRsvmvPUtYDxKw==",
+      "license": {
+        "file": "LICENSE.txt"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
         }
       ]
     },
@@ -335,6 +531,424 @@
       ]
     },
     {
+      "id": "Microsoft.VisualStudio.Composition",
+      "version": "17.13.41",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "ZgOA1MXLNNTcfBB2BkFCw8eSeLJIJQDWQMXmUJ9uBJwtA16O8tLSjbAJqq264sSUgY7mBronqVZ2CfZ7p3Dz5w==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Composition.Analyzers",
+      "version": "17.13.41",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "VwmY1nUE8UPuQm2MlCM/nNVgYg+EtR2nw+pVtNL7cfv8IO32iye3ZLWPmbGG+OLYQFjoJDJNH4WEGDJZ7F1TaA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.CoreUtility",
+      "version": "17.14.275",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "nhETA2Pp0zvt57o1WfQH0ZwSHUc9uCqHr9xtYdpTybCg6/8/fX+eVKRdDTbRsOGzqdaOiDdXReklJVLaM9DjgA==",
+      "license": {
+        "file": "LICENSE"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Extensibility",
+      "version": "17.14.2098",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "wsVVbnt9oOUe3HwcKyAJAPIefHiqdBOPKmyfCHGW/+6lTmoLur31h2b9Kxxpjea59CUfN0lKDbnF+pPPVnSjqw==",
+      "license": {
+        "file": "LICENSE"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Extensibility.Build",
+      "version": "17.14.40608",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "+xrRITgFcgbG6a80N1a4KMF3Rh6cGz1kiWcbZSb1SpC5UM271mOPAoAoPey6IABtIGbq2l5tWt2QruRESbzpZw==",
+      "license": {
+        "file": "LICENSE.txt"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "direct"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Extensibility.Contracts",
+      "version": "17.14.2098",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "V3fNABE4VNCCRnsqyrJBrYHL5Aebrn1kgvT9FBj7qOK+ot1ejtoViu0goPdLYqvOuVzkURNg7GTYTnT2KnFOfA==",
+      "license": {
+        "file": "LICENSE"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Extensibility.Editor.Contracts",
+      "version": "17.14.275",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "ClZ9DCtrCPprKZqgeXSmQsH0ZvDUa/A/KfSgVw5whcdYCYFzWMMA1sYmmoGIXG+Vue5QegbhyThpU4oNY+ANxQ==",
+      "license": {
+        "file": "LICENSE"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Extensibility.Framework",
+      "version": "17.14.2098",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "r5mw7uHr8pdyDL51QAoADlhDqTga0FITUHn/CGOjHWLNyeBzULlSiO8s6kikHIVNLh2TnrdeqLES14W6dWpKOQ==",
+      "license": {
+        "file": "LICENSE"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Extensibility.JsonGenerators.Sdk",
+      "version": "17.14.2098",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "eFHnsURyLYJd3gob00S4TFeQSSWNYY4BGu24khYbg/cNZvSUZu84KvhGp0u9X2H+CAhFO8a0/UWuMzDimiXYtA==",
+      "license": {
+        "file": "LICENSE"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Extensibility.Sdk",
+      "version": "17.14.40608",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "q65I9XIlnYl1HXNMg25LI5kVww9PsZSE+33JYkeM2jU2zuUUsI+5VT8StISyUcGtNMj9afhOecPuMOgze22QfQ==",
+      "license": {
+        "file": "LICENSE.txt"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "direct"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime",
+      "version": "17.14.39777",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "sYlZ++xf/EDEmnTbwDxnsjDyhT0IGf3b9nkEECnkewtulyiLaDysNsXxK/pV9wRJL8GJAcfkNAMAxwG3UukXrg==",
+      "license": {
+        "file": "LICENSE.txt"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.ProjectSystem.Query",
+      "version": "17.14.145",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "Sx9iAxQZw3yIBKD5oy0AIkHV8257FqM+sG/6G9I/tuAk9REwmHjsqmFFzYQKyAKmgYMaslmof2Nr53FRJU2hHw==",
+      "license": {
+        "file": "LICENSE"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.RemoteControl",
+      "version": "16.3.52",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "+MgP1+Rtt1uJZyqhf7+H6KAQ57wc7v00ixuLhEgFggIbmW2/29YXfPK7gLvXw+vU7vimuM47cqAHrnB7RWYqtg==",
+      "license": {
+        "url": "https://www.visualstudio.com/en-us/support/legal/mt736442"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.RpcContracts",
+      "version": "17.14.20",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "sAU2KIlghJ3jKnr80V3hGB8zE/n0+K6H6Zm3nN+8tcoLZMKtdt79UtiSTEy7p9XNrN0MHI1g42lurXpiX3FkPQ==",
+      "license": {
+        "file": "LICENSE"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.SDK.Analyzers",
+      "version": "17.7.79",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "oJ3C9D1KQCksM0D0MTYrjYkz1vGK7WMBJkdplqse8rpIoxOV4cFj2rntPq+TNEkwY95BkjNm53gIdYV9jm1U0w==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Telemetry",
+      "version": "17.14.18",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "Sin23sZUAe2nvrpQd+AZpnZSo3M8ZFWbjCJgV2Va9q4Jf1PMz5yWkblASuuwX/JsFCd6YoVaspxol6ZJI2XLYg==",
+      "license": {
+        "url": "https://www.visualstudio.com/en-us/support/legal/mt736442"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Threading",
+      "version": "17.14.15",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "1DrCusT3xNLSlaJg77BsUSAzrhjdZBAvvsS0PMzyPM+fGais6SnISOhqdZQop8VVMIBLsYm2gyF9W7THjgavwA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Threading.Analyzers",
+      "version": "17.14.15",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "mXQPJsbuUD2ydq4/ffd8h8tSOFCXec+2xJOVNCvXjuMOq/+5EKHq3D2m2MC2+nUaXeFMSt66VS/J4HdKBixgcw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Threading.Only",
+      "version": "17.14.15",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "NqONyw1RXyj9P3k5e1uU2k9kc1ptwuU5NJQzG+MPq7vQVHUzBY8HLuJf/N2Rw5H/myD96CVxziDxmjawPuzntw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Utilities",
+      "version": "17.13.39620",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "3lNqxaJMTMhez5U20Q1OewGrIBfm3RJFfGAtLwZFFbDJaIXlpY0p+B3b+5w2RnTzRb5CB54XGaGuMMbXrPfQyA==",
+      "license": {
+        "file": "LICENSE.txt"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Utilities.Internal",
+      "version": "16.3.90",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "joWRXcBhOAzEaBfgV4OHa++VESjShwUGB0kqy7vdEiJg08wXpxYt9afQDEwiwy8XGKPKabByYXA+CGMLxYo/TQ==",
+      "license": {
+        "url": "https://www.visualstudio.com/en-us/support/legal/mt736439"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VisualStudio.Validation",
+      "version": "17.8.8",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "rWXThIpyQd4YIXghNkiv2+VLvzS+MCMKVRDR0GAMlflsdo+YcAN2g2r5U1Ah98OFjQMRexTFtXQQ2LkajxZi3g==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VSSDK.BuildTools",
+      "version": "17.14.2120",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "5B2zSe5s004XqxeBU8yH1MXrBmaq+aLk8dTZJQTSrWhCUYyDLykBgJ6T1FMjCy6Tm+oN4YPQXs2txE7qiia+mQ==",
+      "license": {
+        "file": "license.txt"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.VsSDK.CompatibilityAnalyzer",
+      "version": "17.14.2120",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "y+hmcpMQdWEPKj71uPuXe/ZTekIjVNc8DoDV9nhh8K8ccAEIqsibMwrmCuthSxbwS4GJjA5X/jwBXdh8fxCrWA==",
+      "license": {
+        "file": "license.txt"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
       "id": "Microsoft.Win32.Registry",
       "version": "5.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -347,6 +961,10 @@
       "projects": [
         {
           "path": "experiments/projection/WeaveSharp.Projection.Spike.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
           "dependency": "transitive"
         },
         {
@@ -371,6 +989,474 @@
         },
         {
           "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Microsoft.Win32.SystemEvents",
+      "version": "8.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "9opKRyOKMCi2xJ7Bj7kxtZ1r9vbzosMvRrdEhVhDz8j8MoBGgB+WmC94yH839NPH+BclAjtQ/pyagvi/8gDLkw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Nerdbank.Streams",
+      "version": "2.12.87",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "oDKOeKZ865I5X8qmU3IXMyrAnssYEiYWTobPGdrqubN3RtTzEHIv+D6fwhdcfrdhPJzHjCkK/ORztR/IsnmA6g==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "Newtonsoft.Json",
+      "version": "13.0.3",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "StreamJsonRpc",
+      "version": "2.22.23",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "Ahq6uUFPnU9alny5h4agyX74th3PRq3NQCRNaDOqWcx20WT06mH/wENSk5IbHDc8BmfreQVEIBx5IXLBbsLFIA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Buffers",
+      "version": "4.6.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "lN6tZi7Q46zFzAbRYXTIvfXcyvQQgxnY7Xm6C6xQ9784dEL1amjM6S6Iw4ZpsvesAKnRVsM4scrDQaDqSClkjA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.CodeDom",
+      "version": "5.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "JPJArwA1kdj8qDAkY2XGjSWoYnqiM7q/3yRNkt6n28Mnn95MuEGkZXUbPBf7qc3IjwrGY5ttQon7yqHZyQJmOQ==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Collections.Immutable",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "QhkXUl2gNrQtvPmtBTQHb0YsUrDiDQ2QS09YbtTTiSjGcf7NBqtYbrG/BE06zcBPCKEwQGzIv13IVdXNOSub2w==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.ComponentModel.Composition",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "HwA28KOsRUSN2Hiei4RvXKDeMlmQe/E6WemYDWY8Iv4AYFS04obS6rDVCE4UNDbc3bsa1Cg9tJ5Dko3T0eDjyA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Composition",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "3Djj70fFTraOarSKmRnmRy/zm4YurICm+kiCtI0dYRqGJnLX6nJ+G3WYuFJ173cAPax/gh96REcbNiVqcrypFQ==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Composition.AttributedModel",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "iri00l/zIX9g4lHMY+Nz0qV1n40+jFYAmgsaiNn16xvt2RDwlqByNG4wgblagnDYxm3YSQQ0jLlC/7Xlk9CzyA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Composition.Convention",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "+vuqVP6xpi582XIjJi6OCsIxuoTZfR0M7WWufk3uGDeCl3wGW6KnpylUJ3iiXdPByPE0vR5TjJgR6hDLez4FQg==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Composition.Hosting",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "OFqSeFeJYr7kHxDfaViGM1ymk7d4JxK//VSoNF9Ux0gpqkLsauDZpu89kTHHNdCWfSljbFcvAafGyBoY094btQ==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Composition.Runtime",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "w1HOlQY1zsOWYussjFGZCEYF2UZXgvoYnS94NIu2CBnAGMbXFAX8PY8c92KwUItPmowal68jnVLBCzdrWLeEKA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Composition.TypedParts",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "aRZlojCCGEHDKqh43jaDgaVpYETsgd7Nx4g1zwLKMtv4iTo0627715ajEFNpEEBTgLmvZuv8K0EVxc3sM4NWJA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Configuration.ConfigurationManager",
+      "version": "7.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "WvRUdlL1lB0dTRZSs5XcQOd5q9MYNk90GkbmRmiCvRHThWiojkpGqWdmEDJdXyHbxG/BhE5hmVbMfRLXW9FJVA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Diagnostics.DiagnosticSource",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "ddppcFpnbohLWdYKr/ZeLZHmmI+DXFgZ3Snq+/E7SwcdW4UnvxmaugkwGywvGVWkHPGCSZjCP+MLzu23AL5SDw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Diagnostics.EventLog",
+      "version": "7.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "eUDP47obqQm3SFJfP6z+Fx2nJ4KKTQbXB4Q9Uesnzw9SbYdhjyoGXuvDn/gEmFY6N5Z3bFFbpAQGA7m6hrYJCw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Diagnostics.PerformanceCounter",
+      "version": "7.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "L+zIMEaXp1vA4wZk1KLMpk6tvU0xy94R0IfmhkmTWeC4KwShsmAfbg5I19LgjsCTYp6GVdXZ2aHluVWL0QqBdA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Diagnostics.Tracing",
+      "version": "4.3.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "rswfv0f/Cqkh78rA5S8eN8Neocz234+emGCtTF3lxPY96F+mmmUen6tbn0glN6PMvlKQb9bPAY5e9u7fgPTkKw==",
+      "license": {
+        "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Drawing.Common",
+      "version": "8.0.8",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "4ZM1wvLjz9nVVExsfPAaSl/qOvU+QNedJL5rQ+2Wbow+iGeyO0e7XN07707rMBgaffEeeLrCZBwC0oHUuvRdPw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.IO.FileSystem.AccessControl",
+      "version": "5.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "SxHB3nuNrpptVk+vZ/F+7OHEpoHUIKKMl02bUmYHQr1r+glbZQxs7pRtsf4ENO29TVm2TH3AEeep2fJcy92oYw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.IO.Pipelines",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "eA3cinogwaNB4jdjQHOP3Z3EuyiDII7MT35jgtnsA4vkn0LUrrSHsU0nzHTzFzmaFYeKV7MYyMxOocFzsBHpTw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Management",
+      "version": "5.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "MF1CHaRcC+MLFdnDthv4/bKWBZnlnSpkGqa87pKukQefgEdwtb9zFW6zs0GjPp73qtpYYg4q6PEKbzJbxCpKfw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Memory",
+      "version": "4.6.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "OEkbBQoklHngJ8UD8ez2AERSk2g+/qpAaSWWCBFbpH727HxDq5ydVkuncBaKcKfwRqXGWx64dS6G1SUScMsitg==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Numerics.Vectors",
+      "version": "4.6.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "t+SoieZsRuEyiw/J+qXUbolyO219tKQQI0+2/YI+Qv7YdGValA6WiuokrNKqjrTNsy5ABWU11bdKOzUdheteXg==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Reflection.Metadata",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "ANiqLu3DxW9kol/hMmTWbt3414t9ftdIuiIU7j80okq2YzAueo120M442xk1kDJWtmZTqWQn7wHDvMRipVOEOQ==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Runtime",
+      "version": "4.3.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "JufQi0vPQ0xGnAczR13AUFglDyVYt4Kqnz1AZaiKZ5+GICq0/1MH/mO/eAJHt/mHW1zjKBJd7kV26SrxddAhiw==",
+      "license": {
+        "url": "http://go.microsoft.com/fwlink/?LinkId=329770"
+      },
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Runtime.CompilerServices.Unsafe",
+      "version": "6.1.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "5o/HZxx6RVqYlhKSq8/zronDkALJZUT2Vz0hx43f0gwe8mwlM0y2nYlqdBwLMzr262Bwvpikeb/yEwkAa5PADg==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Security.AccessControl",
+      "version": "6.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "AUADIc0LIEQe7MzC+I0cl0rAT8RrTAKFHl53yHjEUzNVIaUlhFY11vc2ebiVJzVBuOzun6F7FBA+8KAbGTTedQ==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
           "dependency": "transitive"
         }
       ]
@@ -412,6 +1498,150 @@
         },
         {
           "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Security.Cryptography.ProtectedData",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "CJW+x/F6fmRQ7N6K8paasTw9PDZp4t7G76UjGNlSDgoHPF0h08vTzLYbLZpOLEJSg35d5wy2jCXGo84EN05DpQ==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Security.Permissions",
+      "version": "7.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "Vmp0iRmCEno9BWiskOW5pxJ3d9n+jUqKxvX4GhLwFhnQaySZmBN2FuC0N5gjFHgyFMUjC5sfIJ8KZfoJwkcMmA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Security.Principal.Windows",
+      "version": "5.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "t0MGLukB5WAVU9bO3MGzvlGnyJPgUlcwerXn1kzBRjwLKixT96XV0Uza41W49gVd8zEMFu9vQEFlv0IOrytICA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Text.Encodings.Web",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "e2hMgAErLbKyUUwt18qSBf9T5Y+SFAL3ZedM8fLupkVj8Rj2PZ9oxQ37XX2LF8fTO1wNIxvKpihD7Of7D/NxZw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Text.Json",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "js7+qAu/9mQvnhA4EfGMZNEzXtJCDxgkgj8ohuxq/Qxv+R56G+ljefhiJHOxTNiw54q8vmABCWUwkMulNdlZ4A==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Threading.AccessControl",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "s4T+FkDeNa/r1wS8R2ejuq7KgZb4VLwnJUtcVqORvdqBc7cEYltcK2o08qECMQNHbnMyZMpOmHE9BhMe2qljdA==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Threading.Tasks.Dataflow",
+      "version": "9.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "S+y+QuBJNcqOvoFK+rFcZZuQDlD2E4lImKW9/g3E0l7YT2uo4oin9amAn398eGt/xFBYNNSt5O77Dbc38XGfBw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Threading.Tasks.Extensions",
+      "version": "4.6.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "I5G6Y8jb0xRtGUC9Lahy7FUvlYlnGMMkbuKAQBy8Jb7Y6Yn8OlBEiUOY0PqZ0hy6Ua8poVA1ui1tAIiXNxGdsg==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "id": "System.Windows.Extensions",
+      "version": "7.0.0",
+      "source": "https://api.nuget.org/v3/index.json",
+      "contentHash": "bR4qdCmssMMbo9Fatci49An5B1UaVJZHKNq70PRgzoLYIlitb8Tj7ns/Xt5Pz1CkERiTjcVBDU2y1AVrPBYkaw==",
+      "license": "MIT",
+      "uses": [
+        "experiment"
+      ],
+      "projects": [
+        {
+          "path": "experiments/visual-studio/WeaveSharp.VisualStudio.Spike",
           "dependency": "transitive"
         }
       ]
