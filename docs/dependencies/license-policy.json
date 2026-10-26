@@ -1,0 +1,14 @@
+{
+  "about": "Licenses WeaveSharp accepts for its dependencies without a separate decision. A package under any other license needs an exception below, with its use, its reason and the decision that allows it; a license for code that ships in an extension is the operator's decision. See docs/dependencies/README.md.",
+  "allowed": [
+    "0BSD",
+    "Apache-2.0",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "MIT",
+    "MIT-0",
+    "Zlib"
+  ],
+  "exceptions": []
+}
