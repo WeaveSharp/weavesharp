@@ -98,3 +98,18 @@ test("a label names invisible characters in its badge", () => {
   const badge = created.children[1] as FakeElement;
   assert.equal(badge.attributes.get("aria-label"), "Contains 1 invisible character");
 });
+
+test("every announced ARIA attribute gets markers; reference lists hold identifiers only", () => {
+  const document = new FakeDocument();
+  for (const attribute of ["aria-rowindextext", "aria-colindextext", "aria-keyshortcuts", "aria-valuetext", "aria-placeholder"]) {
+    const created = element(document, "div", { [attribute]: "row‮1" }) as FakeElement;
+    assert.equal(created.attributes.get(attribute), "row⟦U+202E⟧1", attribute);
+  }
+  const states = element(document, "li", { "aria-expanded": "true", "aria-level": "2", "aria-live": "polite" }) as FakeElement;
+  assert.equal(states.attributes.get("aria-expanded"), "true");
+  const references = element(document, "div", { "aria-labelledby": "graph-label-1 graph-label-2" }) as FakeElement;
+  assert.equal(references.attributes.get("aria-labelledby"), "graph-label-1 graph-label-2");
+  for (const value of ["label‮", "a  b", "javascript:x()", "a<b"]) {
+    assert.throws(() => element(document, "div", { "aria-describedby": value }), IsolationError, value);
+  }
+});

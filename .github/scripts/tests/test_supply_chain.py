@@ -220,6 +220,59 @@ class SupplyChainCheck(unittest.TestCase):
                 self.repo.write(".github/workflows/ci.yml", WORKFLOW + run)
                 self.assertRefused(fragment)
 
+    # The Reviewer's third session (01M5X30Y5RWNNZPAMJ6MKAY8X2) found these routes in revision 3.
+
+    def evil_project(self):
+        return """<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><NuGetLockFilePath>obj/hidden.lock.json</NuGetLockFilePath><NuGetAudit>false</NuGetAudit></PropertyGroup>
+  <ItemGroup><PackageReference Include="Example.Package" Version="*" /></ItemGroup>
+</Project>
+"""
+
+    def test_a_utf16_project_with_an_unknown_extension_is_checked(self):
+        for encoding, bom in (("utf-16", b""), ("utf-16-le", b""), ("utf-16-be", b"")):
+            with self.subTest(encoding=encoding):
+                target = self.repo.root / "src/Sample/Sample.build"
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(bom + self.evil_project().encode(encoding))
+                self.assertRefused("src/Sample/Sample.build: sets NuGetLockFilePath")
+                target.unlink()
+
+    def test_a_project_behind_a_long_preamble_is_checked(self):
+        preamble = "<?xml version=\"1.0\"?>\n" + "<!-- " + "x" * 7000 + " -->\n<?note a processing instruction?>\n"
+        self.repo.write("src/Sample/Sample.build", preamble + self.evil_project())
+        self.assertRefused("src/Sample/Sample.build: sets NuGetAudit")
+
+    def test_every_project_a_solution_lists_is_checked(self):
+        self.repo.write("Example.slnx", '<Solution>\n  <Project Path="src/Odd/Odd.thing" Type="C#" />\n</Solution>\n')
+        self.repo.write("src/Odd/Odd.thing", self.evil_project())
+        self.assertRefused("src/Odd/Odd.thing: has no packages.lock.json")
+
+    def test_audit_codes_are_found_after_character_references_are_decoded(self):
+        for value in ("$(NoWarn);NU&#49;903", "NU&#x31;901", "nu1999"):
+            with self.subTest(value=value):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace(
+                    "<ItemGroup>", f"<PropertyGroup><NoWarn>{value}</NoWarn></PropertyGroup><ItemGroup>"))
+                self.assertRefused("names a NuGet audit warning")
+
+    def test_warning_lists_name_literal_codes_only(self):
+        for body in ("<PropertyGroup><A>NU19</A><B>03</B><NoWarn>$(NoWarn);$(A)$(B)</NoWarn></PropertyGroup>",
+                     "<PropertyGroup><MSBuildWarningsAsMessages>$(Codes)</MSBuildWarningsAsMessages></PropertyGroup>",
+                     '<ItemGroup><PackageReference Update="Example.Package" NoWarn="$(Hidden)" /></ItemGroup>',
+                     "<PropertyGroup><WarningsNotAsErrors>$([System.String]::Concat('NU19','03'))</WarningsNotAsErrors></PropertyGroup>"):
+            with self.subTest(body=body):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("<ItemGroup>", body + "<ItemGroup>", 1))
+                self.assertRefused("warning lists name literal codes only")
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj",
+                        PROJECT.replace("<ItemGroup>", "<PropertyGroup><NoWarn>$(NoWarn);CA1822;IDE0005</NoWarn></PropertyGroup><ItemGroup>", 1))
+        self.assertEqual(self.repo.problems(), [])
+
+    def test_inline_comments_outside_quotes_are_not_commands(self):
+        self.repo.write(".github/workflows/ci.yml", WORKFLOW + "      - run: node build.js # moving away from npx\n")
+        self.assertEqual(self.repo.problems(), [])
+        self.repo.write(".github/workflows/ci.yml", WORKFLOW + '      - run: echo "a # b" && npx some-tool\n')
+        self.assertRefused("npx fetches and runs packages")
+
     def test_a_project_without_a_lock_file_is_refused(self):
         (self.repo.root / "tests/Example.Tests/packages.lock.json").unlink()
         self.assertRefused("has no packages.lock.json")

@@ -37,8 +37,13 @@ IGNORED_WITHOUT_GIT = {".git", "bin", "obj", "node_modules", ".vericairn", "Test
 PROJECT_SUFFIXES = {".csproj", ".fsproj", ".vbproj", ".proj"}
 IMPORTED_SUFFIXES = {".props", ".targets", ".projitems"}
 MSBUILD_SUFFIXES = PROJECT_SUFFIXES | IMPORTED_SUFFIXES
-# MSBuild reads any XML file whose root is <Project>, whatever its extension (.msbuildproj, .vcxproj, ...).
-MSBUILD_CONTENT = re.compile(r"^\ufeff?\s*(<\?xml[^>]*\?>\s*)?(<!--.*?-->\s*)*<Project[\s>/]", re.DOTALL)
+# Properties and metadata that change how warnings are reported. They may list only literal codes,
+# so no property indirection can assemble an audit code the text rule wouldn't see.
+WARNING_LISTS = {"NoWarn", "WarningsNotAsErrors", "WarningsAsErrors", "MSBuildWarningsAsMessages",
+                 "MSBuildWarningsNotAsErrors", "MSBuildWarningsAsErrors"}
+WARNING_CODE = re.compile(r"^[A-Za-z]{2,}[0-9]{1,5}$")
+AUDIT_CODE = re.compile(r"NU19\d\d", re.IGNORECASE)
+MAX_XML_BYTES = 16 * 1024 * 1024
 # The audit and the warnings that make it fail a build: set only in the root Directory.Build.props.
 AUDIT_SETTINGS = {"NuGetAudit": "true", "NuGetAuditMode": "all", "NuGetAuditLevel": "low", "TreatWarningsAsErrors": "true"}
 # npm runs these around the scripts CI calls by name, and on install.
@@ -82,19 +87,59 @@ def tracked_files(root):
     return {p for p in out.stdout.decode("utf-8").split("\0") if p}
 
 
-def msbuild_files(files):
-    """Every file MSBuild could read as a project or import: known extensions, any *proj, or a <Project> root."""
-    found = []
-    for path in files:
-        if path.suffix in MSBUILD_SUFFIXES or path.suffix.endswith("proj"):
-            found.append(path)
-            continue
+def xml_root(path):
+    """The local name of a file's root element when it is well-formed XML in any encoding, else None."""
+    try:
+        with open(path, "rb") as handle:
+            head = handle.read(4)
+        if path.stat().st_size > MAX_XML_BYTES:
+            return None
+    except OSError:
+        return None
+    looks_like_xml = (head.lstrip(b" \t\r\n").startswith(b"<") or head.startswith((b"\xef\xbb\xbf", b"\xff\xfe", b"\xfe\xff"))
+                      or head[:2] in (b"<\x00", b"\x00<"))
+    if not looks_like_xml:
+        return None
+    try:
+        for _, element in ET.iterparse(path, events=("start",)):
+            return local(element.tag)
+    except ET.ParseError:
+        # UTF-16 without a byte-order mark: MSBuild reads it, so decode it and try again.
+        for encoding in ("utf-16-le", "utf-16-be"):
+            try:
+                return local(ET.fromstring(path.read_bytes().decode(encoding)).tag)
+            except (UnicodeDecodeError, ET.ParseError):
+                continue
+    return None
+
+
+def solution_projects(root, files):
+    """Every project path a solution file lists, whatever its extension or content."""
+    listed = set()
+    for solution in (p for p in files if p.suffix in (".slnx", ".sln")):
         try:
-            with open(path, "rb") as handle:
-                head = handle.read(4096).decode("utf-8", errors="ignore")
+            text = solution.read_text(encoding="utf-8-sig", errors="replace")
         except OSError:
             continue
-        if MSBUILD_CONTENT.match(head):
+        if solution.suffix == ".slnx":
+            paths = re.findall(r"<Project\b[^>]*\bPath\s*=\s*[\"']([^\"']+)[\"']", text)
+        else:
+            paths = re.findall(r'^Project\("\{[^}]+\}"\)\s*=\s*"[^"]*",\s*"([^"]+)"', text, re.MULTILINE)
+        for path in paths:
+            candidate = (solution.parent / path.replace("\\", "/")).resolve()
+            if candidate.is_file():
+                listed.add(candidate)
+    return listed
+
+
+def msbuild_files(files, root=None):
+    """Every file MSBuild could read as a project or import: known extensions, any *proj,
+    any file whose XML root is <Project>, and every project a solution lists."""
+    listed = solution_projects(root, files) if root is not None else set()
+    found = []
+    for path in files:
+        if (path.suffix in MSBUILD_SUFFIXES or path.suffix.endswith("proj") or path.resolve() in listed
+                or xml_root(path) == "Project"):
             found.append(path)
     return found
 
@@ -169,7 +214,7 @@ def check_build_props(root, problems):
 
 
 def check_projects(root, files, tracked, problems):
-    projects = [p for p in msbuild_files(files) if is_project(p)]
+    projects = [p for p in msbuild_files(files, root) if is_project(p)]
     folders = {}
     for project in projects:
         folders.setdefault(project.parent, []).append(project)
@@ -204,15 +249,26 @@ def check_msbuild_files(root, files, problems):
     """Package sources come only from NuGet.Config, and every MSBuild file stays inside the rules."""
     for path in (p for p in files if p.suffix == ".rsp"):
         problems.append(f"{path.relative_to(root).as_posix()}: response files can change every restore; none may exist")
-    for path in msbuild_files(files):
+    for path in msbuild_files(files, root):
         relative = path.relative_to(root).as_posix()
         is_root = path.parent == root and path.name in ROOT_SETTINGS
         xml = parse_xml(path, problems)
         if xml is None:
             continue
-        if re.search(r"NU190\d", path.read_text(encoding="utf-8", errors="ignore"), re.IGNORECASE):
-            problems.append(f"{relative}: names a NuGet audit warning (NU1900-NU1909); advisories are never silenced, "
+        # Parsed values: character references and encodings are already decoded here.
+        values = [v for e in xml.iter() for v in (e.text, e.tail, *e.attrib.values()) if v]
+        if any(AUDIT_CODE.search(v) for v in values):
+            problems.append(f"{relative}: names a NuGet audit warning (NU1900-NU1999); advisories are never silenced, "
                             "only suppressed by advisory with a reason in the root Directory.Build.props")
+        for element in xml.iter():
+            lists = [(local(element.tag), element.text or "")] + [(a, v) for a, v in element.attrib.items() if a in WARNING_LISTS]
+            for name, value in lists:
+                if name not in WARNING_LISTS:
+                    continue
+                for token in (t for t in re.split(r"[;,\s]+", value) if t):
+                    if token != f"$({name})" and not WARNING_CODE.match(token):
+                        problems.append(f"{relative}: {name} holds {token!r}; warning lists name literal codes only, "
+                                        f"besides $({name}) itself")
         sdk = xml.get("Sdk")
         if sdk is not None and (sdk not in ALLOWED_SDKS or "/" in sdk):
             problems.append(f"{relative}: names SDK {sdk!r}; only versionless Microsoft.NET SDKs are allowed")
@@ -352,11 +408,26 @@ def command_lines(text):
         if stripped.endswith("\\") or stripped.endswith("`"):
             pending += (stripped.lstrip() if pending else stripped)[:-1]
             continue
-        lines.append((start, (pending + piece).replace('"', "").replace("'", "")))
+        lines.append((start, unquote(pending + piece)))
         pending = ""
     if pending:
-        lines.append((start, pending.replace('"', "").replace("'", "")))
+        lines.append((start, unquote(pending)))
     return lines
+
+
+def unquote(text):
+    """Drops an inline comment (a # after whitespace, outside quotes), then every quote character."""
+    quote = None
+    for index, character in enumerate(text):
+        if quote:
+            if character == quote:
+                quote = None
+        elif character in "'\"":
+            quote = character
+        elif character == "#" and (index == 0 or text[index - 1] in " \t"):
+            text = text[:index]
+            break
+    return text.replace('"', "").replace("'", "")
 
 
 def check_commands(where_prefix, text, problems):
