@@ -11,6 +11,30 @@ const NONCE_PATTERN = /^[A-Za-z0-9+/]{22,}={0,2}$/;
  */
 const RESOURCE_ORIGIN_PATTERN = /^https:\/\/(\*\.)?[a-z0-9-]+(\.[a-z0-9-]+)+(:[0-9]{1,5})?$/;
 
+/**
+ * Whether a declared resource origin covers an exact origin, as the browser
+ * matches a CSP host source: "*." covers subdomains only, never the bare domain.
+ */
+export function resourceOriginAllows(declared: string, origin: string): boolean {
+  if (!RESOURCE_ORIGIN_PATTERN.test(declared)) {
+    return false;
+  }
+  const wildcard = declared.startsWith("https://*.");
+  const suffix = wildcard ? declared.slice("https://*".length) : "";
+  if (!wildcard) {
+    return origin === declared;
+  }
+  // The declared port, if any, must match exactly; without one, only the default port.
+  // Subdomain labels are not restricted further: VS Code's resource hosts carry a "+".
+  const [declaredHost = "", declaredPort] = suffix.split(":");
+  const match = /^https:\/\/([^/:@\s]+)(?::([0-9]{1,5}))?$/.exec(origin);
+  if (match === null) {
+    return false;
+  }
+  const [, host = "", port] = match;
+  return host.length > declaredHost.length && host.endsWith(declaredHost) && port === declaredPort;
+}
+
 /** A source of cryptographically random bytes; the platform's by default. */
 export type RandomSource = (bytes: Uint8Array<ArrayBuffer>) => Uint8Array<ArrayBuffer>;
 

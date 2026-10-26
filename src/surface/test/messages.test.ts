@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readInbound, writeOutbound, nestingDepth, unsupportedKeywords, INBOUND, OUTBOUND, IsolationError } from "../src/isolation/index.ts";
+import { readInbound, writeOutbound, readFromSurface, writeToSurface, nestingDepth, unsupportedKeywords, INBOUND, OUTBOUND, IsolationError } from "../src/isolation/index.ts";
 import { loadProtocolSchemas, protocolExamples } from "./support.ts";
 
 const schemas = loadProtocolSchemas();
@@ -116,4 +116,57 @@ test("allowed commands are written; anything else is refused", () => {
   assert.throws(() => writeOutbound({ ...firstValid("request-graph"), kind: "mutation" }, schemas), IsolationError);
   assert.throws(() => writeOutbound({ ...firstValid("request-graph"), extra: true }, schemas), IsolationError);
   assert.throws(() => writeOutbound({ family: "run-shell", kind: "mutation" }, schemas), IsolationError);
+});
+
+test("a host reads exactly the surface's commands, with the same checks", () => {
+  let read = 0;
+  for (const example of examples.filter((e) => e.name.startsWith("valid"))) {
+    const message = JSON.parse(example.text) as Record<string, unknown>;
+    const command = (OUTBOUND[example.family] ?? []).includes(message["kind"] as string);
+    const result = readFromSurface(example.text, schemas);
+    assert.equal(result.accepted, command, `${example.family}/${example.name}`);
+    if (result.accepted) {
+      assert.ok(Object.isFrozen(result.message));
+      read++;
+    }
+  }
+  assert.ok(read >= 3);
+  for (const example of examples.filter((e) => e.name.startsWith("invalid"))) {
+    assert.equal(readFromSurface(example.text, schemas).accepted, false, `${example.family}/${example.name}`);
+  }
+});
+
+test("a host refuses what the surface may not send, before or without parsing it", () => {
+  const publication = JSON.stringify(firstValid("publish-graph"));
+  assert.deepEqual(readFromSurface(publication, schemas), { accepted: false, reason: "The host does not accept that family and kind from the surface." });
+  assert.deepEqual(readFromSurface(firstValid("request-graph"), schemas), { accepted: false, reason: "Messages arrive as JSON text." });
+  const command = JSON.stringify(firstValid("request-graph"));
+  assert.deepEqual(readFromSurface(command, schemas, { maxCharacters: 10, maxDepth: 32 }), { accepted: false, reason: "The message is longer than the limit." });
+  assert.deepEqual(readFromSurface("[".repeat(100) + "]".repeat(100), schemas), { accepted: false, reason: "The message nests deeper than the limit." });
+  const poisoned = command.replace("{", '{"__proto__":{"polluted":true},');
+  assert.deepEqual(readFromSurface(poisoned, schemas), { accepted: false, reason: "The message carries a forbidden key." });
+  assert.equal(({} as Record<string, unknown>)["polluted"], undefined);
+  const escaped = command.replace("{", '{"\\u005f_proto__":{"polluted":true},');
+  assert.equal(readFromSurface(escaped, schemas).accepted, false);
+  const broken = readFromSurface(JSON.stringify({ ...firstValid("request-graph"), extra: "<script>" }), schemas);
+  assert.equal(broken.accepted, false);
+  if (!broken.accepted) {
+    assert.doesNotMatch(broken.reason, /script/);
+  }
+});
+
+test("a host writes only what the surface accepts, schema-valid", () => {
+  for (const [family, kinds] of Object.entries(INBOUND)) {
+    for (const kind of kinds) {
+      const message = firstValid(family, kind);
+      if (message !== undefined) {
+        const text = writeToSurface(message, schemas);
+        assert.equal(readInbound(text, schemas).accepted, true, `${family} ${kind}`);
+      }
+    }
+  }
+  assert.throws(() => writeToSurface(firstValid("request-graph"), schemas), IsolationError);
+  assert.throws(() => writeToSurface({ ...firstValid("publish-graph"), extra: true }, schemas), IsolationError);
+  assert.throws(() => writeToSurface(JSON.parse('{"family":"publish-graph","kind":"notification","__proto__":{}}'), schemas), IsolationError);
+  assert.throws(() => writeToSurface(firstValid("publish-graph"), schemas, { maxCharacters: 10, maxDepth: 32 }), IsolationError);
 });
