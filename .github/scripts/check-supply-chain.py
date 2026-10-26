@@ -61,16 +61,19 @@ IMPORT_PROPERTIES = ("CustomBeforeMicrosoftCommonProps", "CustomAfterMicrosoftCo
                      "CodeAnalysisTargets", "VSTestTargets", "BeforeTargetFrameworkInferenceTargets", "RestoreTaskAssemblyFile")
 # The audit and the warnings that make it fail a build: set only in the root Directory.Build.props.
 AUDIT_SETTINGS = {"NuGetAudit": "true", "NuGetAuditMode": "all", "NuGetAuditLevel": "low", "TreatWarningsAsErrors": "true"}
+# The SDK adds local folders as package sources on some machines unless these are true (root only).
+IMPLICIT_SOURCES_OFF = ("DisableImplicitLibraryPacksFolder", "DisableImplicitNuGetFallbackFolder")
 # npm runs these around the scripts CI calls by name, and on install.
 SCRIPT_HOOKS = re.compile(r"^(pre|post)|^(install|prepare|prepublish|prepublishOnly|prepack|postpack|dependencies)$")
 SOURCE_PROPERTIES = ("RestoreSources", "RestoreAdditionalProjectSources", "RestoreFallbackFolders",
                      "RestoreAdditionalProjectFallbackFolders", "RestoreConfigFile", "NuGetLockFilePath",
                      "RestorePackagesPath", "RestoreLockedMode", "RestorePackagesWithLockFile",
                      "ManagePackageVersionsCentrally", "CentralPackageTransitivePinningEnabled",
-                     "CentralPackageVersionOverrideEnabled", "DisableImplicitNuGetFallbackFolder", "RestoreRootConfigDirectory")
+                     "CentralPackageVersionOverrideEnabled", "DisableImplicitNuGetFallbackFolder", "DisableImplicitLibraryPacksFolder",
+                     "RestoreRootConfigDirectory")
 # Where the lock and central-version settings may be set, and which ones.
 ROOT_SETTINGS = {
-    "Directory.Build.props": {"RestorePackagesWithLockFile", "RestoreLockedMode", *AUDIT_SETTINGS},
+    "Directory.Build.props": {"RestorePackagesWithLockFile", "RestoreLockedMode", *AUDIT_SETTINGS, *IMPLICIT_SOURCES_OFF},
     "Directory.Packages.props": {"ManagePackageVersionsCentrally", "CentralPackageTransitivePinningEnabled"},
 }
 ALLOWED_SDKS = {"Microsoft.NET.Sdk", "Microsoft.NET.Sdk.Web", "Microsoft.NET.Sdk.Razor", "Microsoft.NET.Sdk.WindowsDesktop"}
@@ -279,7 +282,10 @@ def check_build_props(root, problems):
     for name, value in AUDIT_SETTINGS.items():
         if (property_value(xml, name) or "").lower() != value:
             problems.append(f"Directory.Build.props must set {name} to {value}")
-    check_root_shape("Directory.Build.props", xml, {"RestorePackagesWithLockFile", "RestoreLockedMode", *AUDIT_SETTINGS}, problems)
+    for name in IMPLICIT_SOURCES_OFF:
+        if (property_value(xml, name) or "").lower() != "true":
+            problems.append(f"Directory.Build.props must set {name} to true")
+    check_root_shape("Directory.Build.props", xml, {"RestorePackagesWithLockFile", "RestoreLockedMode", *AUDIT_SETTINGS, *IMPLICIT_SOURCES_OFF}, problems)
     # The settings that keep restores locked and audited hold unconditionally; only locked mode waits for CI.
     for group in (e for e in xml.iter() if local(e.tag) == "PropertyGroup"):
         for element in group:
