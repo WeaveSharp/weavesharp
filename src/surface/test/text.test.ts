@@ -48,3 +48,28 @@ test("long text is cut by code points without splitting a surrogate pair", () =>
   assert.equal(label.text, "\u{1F600}\u{1F600}\u{1F600}…");
   assert.equal(label.truncated, true);
 });
+
+// Characters that render as nothing (the Reviewer's review 01M5WSE5K4WPYPY5V9PAHDKWK9).
+const INVISIBLE = [0x200b, 0x2060, 0x2061, 0x2062, 0x2063, 0x2064, 0x206a, 0x206f, 0xfeff, 0x00ad, 0x034f, 0x180e, 0x3164,
+  0xfff9, 0xfffa, 0xfffb, 0x2028, 0x2029, 0xe0001, 0xe0020, 0xe007f, 0x1d173, 0x1d17a];
+
+for (const codePoint of INVISIBLE) {
+  const hex = codePoint.toString(16).toUpperCase().padStart(4, "0");
+  test(`invisible U+${hex} becomes a visible marker with a warning`, () => {
+    const result = safeLabel(`total${String.fromCodePoint(codePoint)}Count`);
+    assert.equal(result.text, `total⟦U+${hex}⟧Count`);
+    assert.deepEqual(result.warnings, [{ kind: "invisible", codePoint: `U+${hex}`, index: 5 }]);
+    assert.equal(hasHiddenCharacters(String.fromCodePoint(codePoint)), true);
+  });
+}
+
+test("two names that differ by a zero-width space no longer look alike", () => {
+  assert.notEqual(safeLabel("total").text, safeLabel("to​tal").text);
+});
+
+test("joiners and variation selectors that shape scripts and emoji stay unmarked", () => {
+  for (const value of ["👩‍💻", "می‌خواهم", "❤️", "邊\u{e0100}"]) {
+    assert.deepEqual(safeLabel(value), { text: value, warnings: [], truncated: false }, value);
+    assert.equal(hasHiddenCharacters(value), false, value);
+  }
+});

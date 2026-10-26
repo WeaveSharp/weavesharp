@@ -1,5 +1,5 @@
 import { IsolationError } from "./errors.ts";
-import { validate, type SchemaSet } from "./schema.ts";
+import { validate, type SchemaIssue, type SchemaSet } from "./schema.ts";
 
 /**
  * The surface's message boundary. Everything that arrives from the host is JSON
@@ -136,7 +136,16 @@ function read(raw: unknown, table: Readonly<Record<string, readonly string[]>>, 
   if (!allowed(table, header.family, header.kind)) {
     return { accepted: false, reason: refusal };
   }
-  const issues = validate(schemas, `${header.family}.schema.json`, value);
+  let issues: readonly SchemaIssue[];
+  try {
+    issues = validate(schemas, `${header.family}.schema.json`, value);
+  } catch (error) {
+    // A reader refuses; it never throws. Isolation errors name a rule, never content.
+    if (error instanceof IsolationError) {
+      return { accepted: false, reason: error.message };
+    }
+    throw error;
+  }
   if (issues.length > 0) {
     return { accepted: false, reason: `The message breaks its schema at ${issues[0]?.path || "/"} (${issues[0]?.keyword}).` };
   }
