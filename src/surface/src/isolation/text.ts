@@ -19,13 +19,14 @@ export type LabelWarningKind = "bidi-control" | "control" | "invisible";
 /**
  * Characters that render as nothing: default-ignorable code points, format
  * characters and the line and paragraph separators. Zero-width joiners and
- * non-joiners and variation selectors stay unmarked, because scripts and emoji
+ * non-joiners and variation selectors (Mongolian's too) stay unmarked, because scripts and emoji
  * need them to shape correctly.
  */
 const INVISIBLE = /^[\p{Default_Ignorable_Code_Point}\p{Cf}\p{Zl}\p{Zp}]$/u;
 
 function shapesText(value: number): boolean {
-  return value === 0x200c || value === 0x200d || (value >= 0xfe00 && value <= 0xfe0f) || (value >= 0xe0100 && value <= 0xe01ef);
+  return value === 0x200c || value === 0x200d || (value >= 0xfe00 && value <= 0xfe0f) || (value >= 0xe0100 && value <= 0xe01ef) ||
+    (value >= 0x180b && value <= 0x180d) || value === 0x180f; // Mongolian free variation selectors
 }
 
 export interface LabelWarning {
