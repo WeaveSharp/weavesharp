@@ -2,10 +2,12 @@
   <Folder Name="/src/">
     <File Path="src/README.md" />
     <Project Path="src/WeaveSharp.Layout/WeaveSharp.Layout.csproj" />
+    <Project Path="src/WeaveSharp.Protocol/WeaveSharp.Protocol.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/WeaveSharp.Coverage.Tests/WeaveSharp.Coverage.Tests.csproj" />
     <Project Path="tests/WeaveSharp.Layout.Tests/WeaveSharp.Layout.Tests.csproj" />
+    <Project Path="tests/WeaveSharp.Protocol.Tests/WeaveSharp.Protocol.Tests.csproj" />
     <Project Path="tests/WeaveSharp.Requirements.Tests/WeaveSharp.Requirements.Tests.csproj" />
     <Project Path="tests/WeaveSharp.Tests/WeaveSharp.Tests.csproj" />
     <Project Path="tests/WeaveSharp.Transformations.Tests/WeaveSharp.Transformations.Tests.csproj" />

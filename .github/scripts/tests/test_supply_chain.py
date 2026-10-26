@@ -160,6 +160,29 @@ class SupplyChainCheck(unittest.TestCase):
         self.repo.write("NuGet.Config", NUGET_CONFIG.replace('pattern="*"', 'pattern="Example.*"'))
         self.assertRefused("packageSourceMapping")
 
+    def test_a_restore_source_property_is_refused(self):
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace(
+            "<ItemGroup>", "<PropertyGroup><RestoreSources>https://example.invalid/v3/index.json</RestoreSources></PropertyGroup>\n  <ItemGroup>"))
+        self.assertRefused("sets RestoreSources")
+
+    def test_an_additional_source_in_a_props_file_is_refused(self):
+        self.repo.write("Directory.Build.props", BUILD_PROPS.replace(
+            "</PropertyGroup>", "<RestoreAdditionalProjectSources>https://example.invalid/v3/index.json</RestoreAdditionalProjectSources></PropertyGroup>"))
+        self.assertRefused("sets RestoreAdditionalProjectSources")
+
+    def test_a_package_reference_in_a_targets_file_is_refused(self):
+        self.repo.write("Directory.Build.targets",
+                        '<Project><ItemGroup><PackageReference Include="Example.Package" Version="9.9.9" /></ItemGroup></Project>')
+        self.assertRefused("declares PackageReference Example.Package")
+
+    def test_a_source_on_the_command_line_in_a_workflow_is_refused(self):
+        self.repo.write(".github/workflows/ci.yml", WORKFLOW + "      - run: dotnet restore --locked-mode --source https://example.invalid/v3/index.json\n")
+        self.assertRefused("never from the command line")
+
+    def test_adding_a_source_in_a_workflow_is_refused(self):
+        self.repo.write(".github/workflows/ci.yml", WORKFLOW + "      - run: dotnet nuget add source https://example.invalid/v3/index.json\n")
+        self.assertRefused("workflows never add package sources")
+
     def test_a_nested_nuget_config_is_refused(self):
         self.repo.write("src/nuget.config", NUGET_CONFIG)
         self.assertRefused("only the root NuGet.Config")
@@ -246,6 +269,33 @@ class DependencyRegister(unittest.TestCase):
         self.repo.write("docs/dependencies/license-policy.json", json.dumps({"allowed": ["MIT", "Apache-2.0"], "exceptions": [
             {"id": "Example.Dependency", "version": "4.5.6", "use": "test", "reason": "test only", "decision": "D0"}]}))
         self.assertEqual(self.run_script("write")[0], 0)
+
+    def test_an_experiment_only_license_is_recorded_not_restricted(self):
+        self.add_package("Example.Package", "1.2.3", "MIT")
+        self.add_package("Example.Dependency", "4.5.6", "LicenseRef-Proprietary")
+        self.repo.write("docs/dependencies/license-policy.json", json.dumps(
+            {"allowed": ["MIT"], "unrestrictedUses": ["experiment"], "exceptions": []}))
+        experiment = json.loads(json.dumps(LOCK))
+        del experiment["dependencies"]["net10.0"]["Example.Package"]
+        experiment["dependencies"]["net10.0"]["Example.Dependency"]["type"] = "Direct"
+        self.repo.write("experiments/Spike/Spike.csproj", PROJECT)
+        self.repo.write("experiments/Spike/packages.lock.json", json.dumps(experiment))
+        self.repo.write("tests/Example.Tests/packages.lock.json", json.dumps(
+            {"version": 1, "dependencies": {"net10.0": {"Example.Package": LOCK["dependencies"]["net10.0"]["Example.Package"]}}}))
+        code, output = self.run_script("write")
+        self.assertEqual(code, 0, output)
+        written = json.loads((self.repo.root / "docs/dependencies/register.json").read_text())
+        dependency = next(p for p in written["packages"] if p["id"] == "Example.Dependency")
+        self.assertEqual(dependency["license"], "LicenseRef-Proprietary")
+        self.assertEqual(dependency["uses"], ["experiment"])
+
+    def test_an_unrestricted_use_does_not_excuse_a_test_use(self):
+        self.add_package("Example.Dependency", "4.5.6", "LicenseRef-Proprietary")
+        self.repo.write("docs/dependencies/license-policy.json", json.dumps(
+            {"allowed": ["MIT", "Apache-2.0"], "unrestrictedUses": ["experiment"], "exceptions": []}))
+        code, output = self.run_script("write")
+        self.assertEqual(code, 1)
+        self.assertIn("is not allowed for test use", output)
 
     def test_an_or_expression_needs_one_allowed_alternative(self):
         self.assertTrue(register.license_allowed("GPL-2.0-only OR MIT", {"MIT"}))
