@@ -166,16 +166,18 @@ public static partial class LayoutReader
                         var element = new Element(reader.NamespaceURI, reader.LocalName, position.LineNumber, position.LinePosition);
                         if (reader.MoveToFirstAttribute())
                         {
+                            var attributes = 0;
                             do
                             {
+                                // Namespace declarations count toward the bound but are not kept.
+                                if (++attributes > limits.MaxAttributesPerElement)
+                                {
+                                    return (null, Refused(LayoutProblemKind.TooManyAttributes, $"An element has more than {limits.MaxAttributesPerElement} attributes.", element));
+                                }
+
                                 if (reader.NamespaceURI == XmlnsNamespace)
                                 {
                                     continue;
-                                }
-
-                                if (element.Attributes.Count == limits.MaxAttributesPerElement)
-                                {
-                                    return (null, Refused(LayoutProblemKind.TooManyAttributes, $"An element has more than {limits.MaxAttributesPerElement} attributes.", element));
                                 }
 
                                 if (reader.Value.Length > limits.MaxAttributeLength)
@@ -248,19 +250,19 @@ public static partial class LayoutReader
     private static LayoutReadResult Refused(LayoutProblemKind kind, string message, Element element) =>
         Refused(kind, message, element.Line, element.Column);
 
-    [GeneratedRegex("^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$", RegexOptions.CultureInvariant)]
+    [GeneratedRegex("^[A-Za-z0-9][A-Za-z0-9._-]{0,63}\\z", RegexOptions.CultureInvariant)]
     private static partial Regex IdentifierPattern();
 
-    [GeneratedRegex("^[A-Za-z][A-Za-z0-9]{0,127}$", RegexOptions.CultureInvariant)]
+    [GeneratedRegex("^[A-Za-z][A-Za-z0-9]{0,127}\\z", RegexOptions.CultureInvariant)]
     private static partial Regex SyntaxKindPattern();
 
-    [GeneratedRegex("^[A-Za-z][A-Za-z0-9-]{0,63}$", RegexOptions.CultureInvariant)]
+    [GeneratedRegex("^[A-Za-z][A-Za-z0-9-]{0,63}\\z", RegexOptions.CultureInvariant)]
     private static partial Regex PortRolePattern();
 
-    [GeneratedRegex("^-?[0-9]{1,9}$", RegexOptions.CultureInvariant)]
+    [GeneratedRegex("^-?[0-9]{1,9}\\z", RegexOptions.CultureInvariant)]
     private static partial Regex CoordinatePattern();
 
-    [GeneratedRegex("^[0-9]{1,9}$", RegexOptions.CultureInvariant)]
+    [GeneratedRegex("^[0-9]{1,9}\\z", RegexOptions.CultureInvariant)]
     private static partial Regex ExtentPattern();
 
     /// <summary>A parsed element, bounded by the reader's limits, before any interpretation.</summary>
@@ -391,7 +393,7 @@ public static partial class LayoutReader
 
         private LayoutView? MapView(Element view, HashSet<string> viewIds)
         {
-            if (!Identifier(view, "id", out var id) || !Unique(view, id, viewIds))
+            if (!Identifier(view, "id", out var id))
             {
                 return null;
             }
@@ -416,6 +418,11 @@ public static partial class LayoutReader
             if (view.HasText)
             {
                 return Invalid<LayoutView>(view, $"View {id} holds text outside its records.");
+            }
+
+            if (!Unique(view, id, viewIds))
+            {
+                return null;
             }
 
             var recordIds = new HashSet<string>(StringComparer.Ordinal);
@@ -668,9 +675,9 @@ public static partial class LayoutReader
                 return Invalid<LayoutExtent?>(extent, $"Record {recordId} has an extent without whole-number along and across values.");
             }
 
-            var a = int.Parse(along, NumberStyles.None, CultureInfo.InvariantCulture);
-            var c = int.Parse(across, NumberStyles.None, CultureInfo.InvariantCulture);
-            if (a < 1 || c < 1 || a > limits.MaxExtent || c > limits.MaxExtent)
+            if (!int.TryParse(along, NumberStyles.None, CultureInfo.InvariantCulture, out var a) ||
+                !int.TryParse(across, NumberStyles.None, CultureInfo.InvariantCulture, out var c) ||
+                a < 1 || c < 1 || a > limits.MaxExtent || c > limits.MaxExtent)
             {
                 return Invalid<LayoutExtent?>(extent, $"Record {recordId} has an extent outside 1 to {limits.MaxExtent}.");
             }
@@ -693,9 +700,9 @@ public static partial class LayoutReader
                 return false;
             }
 
-            var px = int.Parse(x, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
-            var py = int.Parse(y, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture);
-            if (Math.Abs(px) > limits.MaxCoordinate || Math.Abs(py) > limits.MaxCoordinate)
+            if (!int.TryParse(x, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var px) ||
+                !int.TryParse(y, NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out var py) ||
+                Math.Abs(px) > limits.MaxCoordinate || Math.Abs(py) > limits.MaxCoordinate)
             {
                 return false;
             }
@@ -759,13 +766,49 @@ public static partial class LayoutReader
     private static bool IsPreserveSpace(UnknownAttribute attribute) =>
         attribute.Namespace == XmlNamespace && attribute.LocalName == "space" && attribute.Value == "preserve";
 
+    // Windows device names, which open a device rather than a file whatever their extension.
+    private static readonly HashSet<string> DeviceNames = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "CON", "PRN", "AUX", "NUL", "CONIN$", "CONOUT$",
+        "COM0", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM\u00b9", "COM\u00b2", "COM\u00b3",
+        "LPT0", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9", "LPT\u00b9", "LPT\u00b2", "LPT\u00b3",
+    };
+
+    /// <summary>
+    /// A relative path that can only name a file inside the workspace on every platform: no root, drive,
+    /// scheme, backslash or dot segment; no character Windows reserves; no control, format, separator,
+    /// private-use or unassigned character, which can hide or reorder what the path shows; no segment
+    /// ending in a dot or a space, which Windows trims; and no Windows device name. Hosts still resolve
+    /// the path and confirm it stays under the workspace before opening anything.
+    /// </summary>
     private static bool IsSafeRelativePath(string path)
     {
-        if (path.Length is 0 or > 1024 || path[0] == '/' || path.Contains('\\') || path.Contains(':') || path.Any(char.IsControl))
+        if (path.Length is 0 or > 1024 || path[0] == '/')
         {
             return false;
         }
 
-        return path.Split('/').All(segment => segment.Length > 0 && segment != "." && segment != "..");
+        foreach (var character in path)
+        {
+            if (character is '\\' or ':' or '<' or '>' or '"' or '|' or '?' or '*')
+            {
+                return false;
+            }
+
+            var category = char.GetUnicodeCategory(character);
+            if (category is System.Globalization.UnicodeCategory.Control or System.Globalization.UnicodeCategory.Format
+                or System.Globalization.UnicodeCategory.Surrogate or System.Globalization.UnicodeCategory.PrivateUse
+                or System.Globalization.UnicodeCategory.OtherNotAssigned or System.Globalization.UnicodeCategory.LineSeparator
+                or System.Globalization.UnicodeCategory.ParagraphSeparator
+                || (category == System.Globalization.UnicodeCategory.SpaceSeparator && character != ' '))
+            {
+                return false;
+            }
+        }
+
+        return path.Split('/').All(segment =>
+            segment.Length > 0 && segment != "." && segment != ".." &&
+            !segment.EndsWith('.') && !segment.EndsWith(' ') && !segment.StartsWith(' ') &&
+            !DeviceNames.Contains(segment.Split('.')[0].TrimEnd(' ')));
     }
 }

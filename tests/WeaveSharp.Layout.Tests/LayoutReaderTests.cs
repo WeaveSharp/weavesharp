@@ -262,9 +262,40 @@ public sealed class LayoutReaderTests
     [InlineData("./A.cs")]
     [InlineData("src//A.cs")]
     [InlineData("")]
+    [InlineData("CON")]
+    [InlineData("con.cs")]
+    [InlineData("src/NUL/A.cs")]
+    [InlineData("src/COM1.cs")]
+    [InlineData("src/LPT\u00b9.cs")]
+    [InlineData("src/A.cs.")]
+    [InlineData("src/.. /A.cs")]
+    [InlineData("src/A.cs ")]
+    [InlineData(" src/A.cs")]
+    [InlineData("src/A\u202e.cs")]
+    [InlineData("src/A\u200b.cs")]
+    [InlineData("src/A\u00a0.cs")]
+    [InlineData("src/A\u2028.cs")]
+    [InlineData("src/A\ue000.cs")]
+    [InlineData("src/A?.cs")]
+    [InlineData("src/A*.cs")]
+    [InlineData("src/A|B.cs")]
+    [InlineData("src/A&lt;B&gt;.cs")]
+    [InlineData("src/A&quot;.cs")]
+    [InlineData("src/A&#10;.cs")]
     public void AnUnsafeSourcePathIsRefused(string source)
     {
         AssertRefused(Read($"<visualDocument xmlns=\"urn:weavesharp:visual:1\" schemaVersion=\"1\" source=\"{source}\" />"), LayoutProblemKind.InvalidRecord);
+    }
+
+    [Theory]
+    [InlineData("Console.cs")]
+    [InlineData("src/Connection.cs")]
+    [InlineData("src/Null.Handling/Auxiliary.cs")]
+    [InlineData("src/\u0645\u0631\u062d\u0628\u0627.cs")]
+    [InlineData("src/My File.cs")]
+    public void NamesThatOnlyResembleDevicesOrHoldOrdinaryTextAreAccepted(string source)
+    {
+        Assert.Equal(source, Read($"<visualDocument xmlns=\"urn:weavesharp:visual:1\" schemaVersion=\"1\" source=\"{source}\" />").Document?.Source);
     }
 
     [Fact]
@@ -338,6 +369,51 @@ public sealed class LayoutReaderTests
         var result = Read(Document("<note id=\"m\"><text xml:space=\"preserve\">  </text></note>"));
         Assert.Equal(LayoutReadStatus.Valid, result.Status);
         Assert.Equal("  ", result.Document!.Views[0].Notes[0].Text);
+    }
+
+    [Theory]
+    [InlineData("<node id=\"n\" syntaxKind=\"Block\" x=\"1&#10;\" y=\"0\"><anchor syntaxRole=\"r\" /></node>")]
+    [InlineData("<node id=\"n\" syntaxKind=\"Block\" x=\"1\" y=\"0&#xA;\"><anchor syntaxRole=\"r\" /></node>")]
+    [InlineData("<node id=\"n\" syntaxKind=\"Block\"><anchor syntaxRole=\"r\" /><extent along=\"5&#10;\" across=\"5\" /></node>")]
+    [InlineData("<node id=\"n&#10;\" syntaxKind=\"Block\"><anchor syntaxRole=\"r\" /></node>")]
+    [InlineData("<node id=\"n\" syntaxKind=\"Block&#10;\"><anchor syntaxRole=\"r\" /></node>")]
+    [InlineData("<group id=\"g\" title=\"T\"><member node=\"n&#10;\" /></group>")]
+    [InlineData("<edgeRoute id=\"e\" from=\"a\" fromPort=\"out&#10;\" to=\"b\" toPort=\"in\"><point x=\"0\" y=\"0\" /></edgeRoute>")]
+    [InlineData("<edgeRoute id=\"e\" from=\"a\" fromPort=\"out\" to=\"b\" toPort=\"in\"><point x=\"0\" y=\"5&#xA;\" /></edgeRoute>")]
+    public void ATrailingLineFeedFromACharacterReferenceIsRefusedNotThrown(string record)
+    {
+        var result = Read(Document(record + "<note id=\"kept\"><text>still read</text></note>"));
+
+        AssertDamaged(result, LayoutProblemKind.InvalidRecord);
+        var view = Assert.Single(result.Document!.Views);
+        Assert.Equal("kept", Assert.Single(view.Notes).Id);
+        Assert.Empty(view.Nodes);
+        Assert.Empty(view.Groups);
+        Assert.Empty(view.EdgeRoutes);
+    }
+
+    [Fact]
+    public void AViewIdentifierWithATrailingLineFeedIsRefused()
+    {
+        var result = Read("<visualDocument xmlns=\"urn:weavesharp:visual:1\" schemaVersion=\"1\" source=\"A.cs\"><view id=\"v&#10;\" /></visualDocument>");
+        AssertDamaged(result, LayoutProblemKind.InvalidRecord);
+        Assert.Empty(result.Document!.Views);
+    }
+
+    [Fact]
+    public void ARefusedViewDoesNotReserveItsIdentifier()
+    {
+        var result = Read("<visualDocument xmlns=\"urn:weavesharp:visual:1\" schemaVersion=\"1\" source=\"A.cs\"><view id=\"v\" flow=\"diagonal\" /><view id=\"v\" /></visualDocument>");
+        AssertDamaged(result, LayoutProblemKind.InvalidRecord);
+        Assert.Single(result.Document!.Views);
+        Assert.DoesNotContain(result.Problems, p => p.Kind == LayoutProblemKind.DuplicateId);
+    }
+
+    [Fact]
+    public void NamespaceDeclarationsCountTowardTheAttributeBound()
+    {
+        var declarations = string.Concat(Enumerable.Range(0, 40).Select(i => $" xmlns:p{i}=\"urn:example:{i}\""));
+        AssertRefused(Read($"<visualDocument xmlns=\"urn:weavesharp:visual:1\"{declarations} schemaVersion=\"1\" source=\"A.cs\" />"), LayoutProblemKind.TooManyAttributes);
     }
 
     [Fact]
