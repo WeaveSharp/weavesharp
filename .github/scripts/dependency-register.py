@@ -5,10 +5,12 @@
     python3 .github/scripts/dependency-register.py check [repository root]
 
 The register, docs/dependencies/register.json, lists every NuGet package any
-project restores: its id, exact version, the source it was restored from, the
-content hash its lock file pins, its license, and how WeaveSharp uses it. It is
-generated from the committed packages.lock.json files and the restored
-packages' own metadata, so run a locked restore first.
+project restores and every npm package any package-lock.json pins: its
+ecosystem, id, exact version, the source it comes from, the content hash or
+integrity its lock file pins, its license, and how WeaveSharp uses it. NuGet
+entries come from the committed packages.lock.json files and the restored
+packages' own metadata, so run a locked restore first; npm entries come from
+the lock file alone.
 
 `check` fails when the committed register differs from what the lock files
 say, when a package came from anywhere but nuget.org, or when a license is
@@ -24,19 +26,30 @@ import re
 import subprocess
 import sys
 
-SKIP = {".git", "bin", "obj", "node_modules", ".vericairn", "TestResults", "artifacts"}
+# Used only outside a git work tree; inside one, .gitignore decides.
+IGNORED_WITHOUT_GIT = {".git", "bin", "obj", "node_modules", ".vericairn", "TestResults"}
 NUGET_ORG = "https://api.nuget.org/v3/index.json"
+NPM_REGISTRY = "https://registry.npmjs.org/"
 REGISTER = pathlib.PurePosixPath("docs/dependencies/register.json")
 POLICY = pathlib.PurePosixPath("docs/dependencies/license-policy.json")
 ABOUT = ("Every NuGet package WeaveSharp's projects restore, generated from the committed lock files "
          "by .github/scripts/dependency-register.py. Do not edit it by hand; see docs/dependencies/README.md.")
 
 
-def lock_files(root):
+def lock_files(root, name="packages.lock.json"):
+    """Every lock file git does not ignore, tracked or not; outside git, every one not in a build folder."""
+    try:
+        out = subprocess.run(["git", "-C", str(root), "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+                             capture_output=True, check=True)
+        paths = sorted(root / p for p in out.stdout.decode("utf-8").split("\0") if p and p.split("/")[-1] == name)
+        yield from (p for p in paths if p.is_file())
+        return
+    except (OSError, subprocess.CalledProcessError):
+        pass
     for directory, subdirectories, names in os.walk(root):
-        subdirectories[:] = sorted(d for d in subdirectories if d not in SKIP)
-        if "packages.lock.json" in names:
-            yield pathlib.Path(directory) / "packages.lock.json"
+        subdirectories[:] = sorted(d for d in subdirectories if d not in IGNORED_WITHOUT_GIT)
+        if name in names:
+            yield pathlib.Path(directory) / name
 
 
 def use_of(project_path):
@@ -107,26 +120,113 @@ def build(root):
                 dependency = "direct" if info.get("type") == "Direct" else "transitive"
                 previous = entry["projects"].get(project.as_posix())
                 entry["projects"][project.as_posix()] = "direct" if "direct" in (previous, dependency) else "transitive"
+    npm_entries = npm_packages(root, problems)
     register = {"about": ABOUT, "packages": []}
     for (name, version) in sorted(entries, key=lambda k: (k[0].lower(), k[1])):
         entry = entries[(name, version)]
         register["packages"].append({
-            "id": name, "version": version, "source": entry["source"], "contentHash": entry["contentHash"],
+            "ecosystem": "nuget", "id": name, "version": version, "source": entry["source"], "contentHash": entry["contentHash"],
+            "license": entry["license"], "uses": sorted(entry["uses"]),
+            "projects": [{"path": p, "dependency": d} for p, d in sorted(entry["projects"].items())]})
+    for (name, version) in sorted(npm_entries, key=lambda k: (k[0].lower(), k[1])):
+        entry = npm_entries[(name, version)]
+        register["packages"].append({
+            "ecosystem": "npm", "id": name, "version": version, "source": entry["source"], "contentHash": entry["contentHash"],
             "license": entry["license"], "uses": sorted(entry["uses"]),
             "projects": [{"path": p, "dependency": d} for p, d in sorted(entry["projects"].items())]})
     return register, problems
 
 
+def npm_packages(root, problems):
+    """Every package each package-lock.json pins, from the lock alone."""
+    entries = {}
+    for lock in lock_files(root, "package-lock.json"):
+        project = lock.parent.relative_to(root).as_posix() or "."
+        data = json.loads(lock.read_text(encoding="utf-8"))
+        if data.get("lockfileVersion", 0) < 2:
+            problems.append(f"{project}/package-lock.json: lockfileVersion 2 or later is required")
+            continue
+        packages = data.get("packages", {})
+        top = packages.get("", {})
+        direct = set(top.get("dependencies", {})) | set(top.get("devDependencies", {})) | set(top.get("optionalDependencies", {}))
+        for key, info in packages.items():
+            if not key or info.get("link"):
+                continue
+            name = key.rsplit("node_modules/", 1)[-1]
+            version = info.get("version")
+            resolved = info.get("resolved") or ""
+            source = NPM_REGISTRY if resolved.startswith(NPM_REGISTRY) else (resolved or None)
+            if not str(info.get("integrity", "")).startswith("sha512-"):
+                problems.append(f"{name} {version}: package-lock.json pins no sha512 integrity")
+            use = "development" if info.get("dev") or info.get("devOptional") else "product"
+            entry = entries.setdefault((name, version), {"source": source, "contentHash": info.get("integrity"),
+                                                         "license": info.get("license") or {"unknown": True},
+                                                         "uses": set(), "projects": {}})
+            entry["uses"].add(use)
+            dependency = "direct" if key == f"node_modules/{name}" and name in direct else "transitive"
+            entry["projects"][project] = dependency
+    return entries
+
+
 def license_allowed(expression, allowed):
-    """True when some alternative of an SPDX expression uses only allowed licenses."""
+    """True when an SPDX expression can be satisfied by allowed licenses, with AND binding tighter than OR.
+
+    A license with an exception (X WITH Y) is allowed only when "X WITH Y" itself is in the list. Anything
+    that does not parse is refused."""
     if not isinstance(expression, str):
         return False
-    flat = expression.replace("(", " ").replace(")", " ")
-    for alternative in re.split(r"\s+OR\s+", flat.strip()):
-        terms = [t.strip() for t in re.split(r"\s+AND\s+", alternative) if t.strip()]
-        if terms and all(t in allowed for t in terms):
-            return True
-    return False
+    tokens = re.findall(r"\(|\)|[^\s()]+", expression)
+    position = 0
+
+    def peek():
+        return tokens[position] if position < len(tokens) else None
+
+    def take():
+        nonlocal position
+        position += 1
+        return tokens[position - 1]
+
+    def parse_or():
+        result = parse_and()
+        while peek() == "OR":
+            take()
+            right = parse_and()
+            result = result or right
+        return result
+
+    def parse_and():
+        result = parse_atom()
+        while peek() == "AND":
+            take()
+            right = parse_atom()
+            result = result and right
+        return result
+
+    def parse_atom():
+        token = peek()
+        if token is None or token in ("AND", "OR", "WITH", ")"):
+            raise ValueError("expected a license")
+        take()
+        if token == "(":
+            value = parse_or()
+            if peek() != ")":
+                raise ValueError("unbalanced parenthesis")
+            take()
+            return value
+        if peek() == "WITH":
+            take()
+            exception = peek()
+            if exception is None or exception in ("AND", "OR", "WITH", "(", ")"):
+                raise ValueError("expected an exception")
+            take()
+            return f"{token} WITH {exception}" in allowed
+        return token in allowed
+
+    try:
+        result = parse_or()
+    except ValueError:
+        return False
+    return result and position == len(tokens)
 
 
 def policy_problems(register, policy):
@@ -135,8 +235,9 @@ def policy_problems(register, policy):
     exceptions = {(e.get("id"), e.get("version"), e.get("use")) for e in policy.get("exceptions", [])}
     problems = []
     for package in register["packages"]:
-        if package["source"] != NUGET_ORG:
-            problems.append(f"{package['id']} {package['version']}: restored from {package['source']}, not nuget.org")
+        expected = NPM_REGISTRY if package.get("ecosystem") == "npm" else NUGET_ORG
+        if package["source"] != expected:
+            problems.append(f"{package['id']} {package['version']}: comes from {package['source']}, not {expected}")
         if license_allowed(package["license"], allowed):
             continue
         for use in package["uses"]:
@@ -155,6 +256,7 @@ def render(register):
 def differences(old, new):
     def index(register):
         return {(p["id"], p["version"]): p for p in register.get("packages", [])}
+
     before, after = index(old), index(new)
     lines = []
     for key in sorted(set(before) | set(after), key=lambda k: (k[0].lower(), k[1])):
