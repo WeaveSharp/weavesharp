@@ -84,8 +84,8 @@ groups and routes. It retains unknown child elements on those containers except
 anchors. The writer emits those retained values, including unresolved records,
 without resolving their references or interpreting their contents.
 
-The XSD permits foreign-namespace children at those container extension points
-and unknown attributes. It enforces required fields, child counts, identifier
+The XSD permits foreign-namespace and unqualified children at those container
+extension points, plus unknown attributes. It enforces fields, counts, identifier
 scopes and numeric bounds. Child order is flexible in the schema even though the
 writer chooses a fixed order. Foreign content uses `processContents="skip"`, so
 schema validation does not require another schema. Load it with a null resolver,
@@ -96,8 +96,8 @@ the paired optional coordinates or the requirement for at least one anchor hint.
 Source-path rules and reader resource limits also require the reader. Numeric
 schema types normalize whitespace; the reader's number syntax is stricter.
 
-The reader accepts additional unknown elements in the visual namespace and in no
-namespace. The writer preserves them, but they fall outside this XSD's extension
+The reader accepts additional unknown elements in the visual namespace.
+The writer preserves them, but they fall outside this XSD's extension
 policy. XSD 1.0's wildcard rules cannot combine arbitrary unknown names in the
 target namespace with distinct typed declarations for the known children. Thus
 not every reader-valid extension document will validate against this schema.

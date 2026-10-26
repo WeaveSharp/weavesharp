@@ -15,6 +15,7 @@
     </group>
     <state ordinal="2" xmlns="urn:tiles:extra" />
     <state ordinal="1" xmlns="urn:tiles:extra" />
+    <node hint="extension" xmlns="" />
   </view>
   <catalog revision="4" xmlns="urn:tiles:extra"><entry key="amber" /></catalog>
 </visualDocument>

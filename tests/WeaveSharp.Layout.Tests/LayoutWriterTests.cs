@@ -544,6 +544,22 @@ public sealed class LayoutWriterTests
     }
 
     [Fact]
+    public void UnqualifiedExtensionsKeepTheirNamesWithoutBecomingLayoutRecords()
+    {
+        var original = Read("""
+            <visualDocument xmlns="urn:weavesharp:visual:1" schemaVersion="1" source="Tiles.cs">
+              <view id="tiles">
+                <node id="chip" syntaxKind="Block"><anchor syntaxRole="Value" /><anchor xmlns="" hint="extra" /></node>
+                <node xmlns="" hint="extension" />
+              </view>
+              <view xmlns="" hint="extension" />
+            </visualDocument>
+            """);
+        var bytes = CheckedWrite(original);
+        Assert.Equal(JsonSerializer.Serialize(original), JsonSerializer.Serialize(Read(bytes)));
+    }
+
+    [Fact]
     public void ReaderLeafExtensionLossIsVisibleAsAnUpstreamModelLimitation()
     {
         var original = Read("""
