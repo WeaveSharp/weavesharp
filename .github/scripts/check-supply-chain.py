@@ -52,7 +52,13 @@ IMPORT_PROPERTIES = ("CustomBeforeMicrosoftCommonProps", "CustomAfterMicrosoftCo
                      "ImportDirectoryBuildProps", "ImportDirectoryBuildTargets", "ImportDirectoryPackagesProps",
                      "ImportProjectExtensionProps", "ImportProjectExtensionTargets", "MSBuildProjectExtensionsPath",
                      "MSBuildExtensionsPath", "MSBuildExtensionsPath32", "MSBuildExtensionsPath64", "MSBuildUserExtensionsPath",
-                     "ForceImportBeforeCppTargets", "ForceImportAfterCppTargets", "AlternateCommonProps")
+                     "ForceImportBeforeCppTargets", "ForceImportAfterCppTargets", "AlternateCommonProps",
+                     "AfterMicrosoftNETSdkTargets", "BeforeMicrosoftNETSdkTargets", "AfterMicrosoftNetSdkProps",
+                     "CustomBeforeDirectoryBuildProps", "CustomAfterDirectoryBuildProps", "CustomAfterDirectoryBuildTargets",
+                     "CustomBeforeMicrosoftCommonCrossTargetingTargets", "CustomAfterMicrosoftCommonCrossTargetingTargets",
+                     "CustomBeforeMicrosoftVisualBasicTargets", "CustomAfterMicrosoftVisualBasicTargets",
+                     "LanguageTargets", "NuGetRestoreTargets", "CSharpTargetsPath", "CommonTargetsPath",
+                     "CodeAnalysisTargets", "VSTestTargets", "BeforeTargetFrameworkInferenceTargets", "RestoreTaskAssemblyFile")
 # The audit and the warnings that make it fail a build: set only in the root Directory.Build.props.
 AUDIT_SETTINGS = {"NuGetAudit": "true", "NuGetAuditMode": "all", "NuGetAuditLevel": "low", "TreatWarningsAsErrors": "true"}
 # npm runs these around the scripts CI calls by name, and on install.
@@ -61,7 +67,7 @@ SOURCE_PROPERTIES = ("RestoreSources", "RestoreAdditionalProjectSources", "Resto
                      "RestoreAdditionalProjectFallbackFolders", "RestoreConfigFile", "NuGetLockFilePath",
                      "RestorePackagesPath", "RestoreLockedMode", "RestorePackagesWithLockFile",
                      "ManagePackageVersionsCentrally", "CentralPackageTransitivePinningEnabled",
-                     "CentralPackageVersionOverrideEnabled", "DisableImplicitNuGetFallbackFolder")
+                     "CentralPackageVersionOverrideEnabled", "DisableImplicitNuGetFallbackFolder", "RestoreRootConfigDirectory")
 # Where the lock and central-version settings may be set, and which ones.
 ROOT_SETTINGS = {
     "Directory.Build.props": {"RestorePackagesWithLockFile", "RestoreLockedMode", *AUDIT_SETTINGS},
@@ -127,12 +133,14 @@ def xml_text(path):
 def xml_root(path):
     """The local name of a file's root element when it is well-formed XML in any encoding, else None."""
     text = xml_text(path)
-    if text is None:
-        return None
     try:
-        return local(ET.fromstring(text).tag)
-    except ET.ParseError:
-        return None
+        if text is not None:
+            return local(ET.fromstring(text).tag)
+        if path.stat().st_size <= MAX_XML_BYTES:
+            return local(ET.parse(path).getroot().tag)  # an encoding the declaration names, such as ISO-8859-1
+    except (ET.ParseError, OSError, ValueError):
+        pass
+    return None
 
 
 def solution_projects(root, files):
@@ -144,7 +152,13 @@ def solution_projects(root, files):
         except OSError:
             continue
         if solution.suffix.lower() == ".slnx":
-            paths = re.findall(r"<Project\b[^>]*\bPath\s*=\s*[\"']([^\"']+)[\"']", text, re.IGNORECASE)
+            decoded = xml_text(solution)
+            try:
+                tree = ET.fromstring(decoded) if decoded is not None else ET.parse(solution).getroot()
+            except (ET.ParseError, ValueError):
+                tree = None
+            paths = [] if tree is None else [value for element in tree.iter() if local(element.tag).lower() == "project"
+                                             for key, value in element.attrib.items() if key.lower() == "path"]
         else:
             paths = re.findall(r'^\s*Project\("\{[^}]+\}"\)\s*=\s*"[^"]*",\s*"([^"]+)"', text, re.MULTILINE | re.IGNORECASE)
         for path in paths:
@@ -228,6 +242,7 @@ def check_central_versions(root, files, problems):
         return
     if (property_value(xml, "ManagePackageVersionsCentrally") or "").lower() != "true":
         problems.append("Directory.Packages.props must set ManagePackageVersionsCentrally to true")
+    check_root_shape("Directory.Packages.props", xml, ROOT_SETTINGS["Directory.Packages.props"], problems)
     for element in xml.iter():
         if local(element.tag) != "PackageVersion":
             continue
@@ -235,6 +250,20 @@ def check_central_versions(root, files, problems):
         version = element.get("Version")
         if version is None or not EXACT_VERSION.match(version):
             problems.append(f"Directory.Packages.props: {name} must have an exact version, not {version!r}")
+        if any(local(child.tag) in ("Version", "VersionOverride") for child in element):
+            problems.append(f"Directory.Packages.props: {name} sets its version in a child element; versions are attributes")
+
+
+def check_root_shape(file_name, xml, settings, problems):
+    """Each required setting appears once, as a direct child of a top-level PropertyGroup; no Choose or Target."""
+    for name in sorted(settings):
+        places = [e for e in xml.iter() if local(e.tag) == name]
+        direct = [e for group in xml if local(group.tag) == "PropertyGroup" for e in group if local(e.tag) == name]
+        if len(places) > 1 or places != direct:
+            problems.append(f"{file_name}: {name} must be set exactly once, directly in a top-level PropertyGroup")
+    for element in xml.iter():
+        if local(element.tag) in ("Choose", "When", "Otherwise", "Target", "ImportGroup"):
+            problems.append(f"{file_name}: has a {local(element.tag)} element; the root settings hold unconditionally")
 
 
 def check_build_props(root, problems):
@@ -250,6 +279,7 @@ def check_build_props(root, problems):
     for name, value in AUDIT_SETTINGS.items():
         if (property_value(xml, name) or "").lower() != value:
             problems.append(f"Directory.Build.props must set {name} to {value}")
+    check_root_shape("Directory.Build.props", xml, {"RestorePackagesWithLockFile", "RestoreLockedMode", *AUDIT_SETTINGS}, problems)
     # The settings that keep restores locked and audited hold unconditionally; only locked mode waits for CI.
     for group in (e for e in xml.iter() if local(e.tag) == "PropertyGroup"):
         for element in group:
@@ -296,8 +326,22 @@ def check_projects(root, files, tracked, problems):
 
 def check_msbuild_files(root, files, problems):
     """Package sources come only from NuGet.Config, and every MSBuild file stays inside the rules."""
-    for path in (p for p in files if p.suffix == ".rsp"):
-        problems.append(f"{path.relative_to(root).as_posix()}: response files can change every restore; none may exist")
+    for path in files:
+        relative = path.relative_to(root).as_posix()
+        lower = path.name.lower()
+        if path.suffix.lower() == ".rsp":
+            problems.append(f"{relative}: response files can change every restore; none may exist")
+        if path.suffix.lower() == ".user":
+            problems.append(f"{relative}: MSBuild imports .user files beside projects; none may be committed")
+        if re.match(r"^directory\.(build|packages|solution)\.(props|targets)$", lower) and not (
+                path.parent == root and path.name in ("Directory.Build.props", "Directory.Packages.props")):
+            problems.append(f"{relative}: MSBuild imports this by name; only the root Directory.Build.props and "
+                            "Directory.Packages.props may exist")
+        try:
+            if path.stat().st_size > MAX_XML_BYTES:
+                problems.append(f"{relative}: over 16 MB; the checks read every file MSBuild could, so none may be larger")
+        except OSError:
+            pass
     for path in msbuild_files(files, root):
         relative = path.relative_to(root).as_posix()
         is_root = path.parent == root and path.name in ROOT_SETTINGS
@@ -338,7 +382,10 @@ def check_msbuild_files(root, files, problems):
                     problems.append(f"{relative}: suppresses {element.get('Include') or '?'} without a Reason")
             if name in ("Import", "Sdk"):
                 problems.append(f"{relative}: has an {name} element; MSBuild files import nothing beyond their SDK")
-            if name in ("PackageVersion", "GlobalPackageReference", "PackageDownload") and path.name != "Directory.Packages.props":
+            if name in ("GlobalPackageReference", "PackageDownload"):
+                item = element.get("Include") or element.get("Update") or "?"
+                problems.append(f"{relative}: declares {name} {item}; every package is a locked PackageReference")
+            elif name == "PackageVersion" and path.name != "Directory.Packages.props":
                 item = element.get("Include") or element.get("Update") or "?"
                 problems.append(f"{relative}: declares {name} {item}; versions belong in Directory.Packages.props")
             elif name == "PackageReference" and not is_project(path):

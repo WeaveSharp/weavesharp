@@ -59,6 +59,15 @@ jobs:
         with:
           global-json-file: global.json
 
+      - name: Check NuGet's restore graph
+        # What restore will actually do, from MSBuild's own evaluation, on every platform:
+        # a condition can make a platform's restore differ from what the files appear to say.
+        if: hashFiles('global.json') != ''
+        run: |
+          python="$(command -v python3 || command -v python)"
+          "$python" .github/scripts/tests/test_restore_graph.py
+          "$python" .github/scripts/check-restore-graph.py
+
       - name: Set up Node.js
         if: hashFiles('package-lock.json') != ''
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
