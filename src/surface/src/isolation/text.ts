@@ -1,8 +1,10 @@
 /**
  * Text from source code, names, comments and metadata is data. Before it reaches
- * a label it is bounded, its invisible bidirectional and control characters are
+ * a label it is bounded, its bidirectional, control and invisible characters are
  * made visible, and the label isolates its own direction (design/layout-and-
- * direction.md, section 4; the Trojan Source attack, CVE-2021-42574).
+ * direction.md, section 4; the Trojan Source attack, CVE-2021-42574). C# accepts
+ * format characters in identifiers, so two names that differ only by an invisible
+ * character must not look alike.
  */
 
 /** Embeddings, overrides, isolates and marks that reorder text without being seen. */
@@ -12,7 +14,19 @@ const BIDI_CONTROLS: ReadonlySet<number> = new Set([
   0x200e, 0x200f, 0x061c, // left-to-right, right-to-left and Arabic letter marks
 ]);
 
-export type LabelWarningKind = "bidi-control" | "control";
+export type LabelWarningKind = "bidi-control" | "control" | "invisible";
+
+/**
+ * Characters that render as nothing: default-ignorable code points, format
+ * characters and the line and paragraph separators. Zero-width joiners and
+ * non-joiners and variation selectors stay unmarked, because scripts and emoji
+ * need them to shape correctly.
+ */
+const INVISIBLE = /^[\p{Default_Ignorable_Code_Point}\p{Cf}\p{Zl}\p{Zp}]$/u;
+
+function shapesText(value: number): boolean {
+  return value === 0x200c || value === 0x200d || (value >= 0xfe00 && value <= 0xfe0f) || (value >= 0xe0100 && value <= 0xe01ef);
+}
 
 export interface LabelWarning {
   readonly kind: LabelWarningKind;
@@ -43,6 +57,9 @@ function kindOf(value: number): LabelWarningKind | undefined {
   // C0 and C1 controls, delete, and lone surrogates (possible in JavaScript strings).
   if (value < 0x20 || (value >= 0x7f && value <= 0x9f) || (value >= 0xd800 && value <= 0xdfff)) {
     return "control";
+  }
+  if (!shapesText(value) && INVISIBLE.test(String.fromCodePoint(value))) {
+    return "invisible";
   }
   return undefined;
 }

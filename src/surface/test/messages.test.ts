@@ -170,3 +170,34 @@ test("a host writes only what the surface accepts, schema-valid", () => {
   assert.throws(() => writeToSurface(JSON.parse('{"family":"publish-graph","kind":"notification","__proto__":{}}'), schemas), IsolationError);
   assert.throws(() => writeToSurface(firstValid("publish-graph"), schemas, { maxCharacters: 10, maxDepth: 32 }), IsolationError);
 });
+
+// The Reviewer's review 01M5WSE5K4WPYPY5V9PAHDKWK9: uniqueness was checked pair by pair.
+test("a region at its 16,384-identifier maximum is read quickly; a duplicate is refused", () => {
+  const message = structuredClone(firstValid("publish-graph")) as { payload: { regions: { nodeIds: string[] }[] } };
+  message.payload.regions[0]!.nodeIds = Array.from({ length: 16384 }, (_, i) => `n${i}`);
+  const started = performance.now();
+  const result = readInbound(JSON.stringify(message), schemas);
+  assert.equal(result.accepted, true, result.accepted ? "" : result.reason);
+  assert.ok(performance.now() - started < 2000, "uniqueness must not be quadratic");
+  message.payload.regions[0]!.nodeIds[16383] = "n0";
+  const duplicate = readInbound(JSON.stringify(message), schemas);
+  // The payload is a oneOf of complete and incremental forms, so the refusal names the oneOf.
+  assert.equal(duplicate.accepted, false);
+});
+
+test("an incremental graph removing 32,768 edges is read", () => {
+  const message = structuredClone(examples.filter((e) => e.family === "publish-graph" && e.name.startsWith("valid-incremental"))
+    .map((e) => JSON.parse(e.text))[0]) as { payload: { removedEdgeIds: string[] } };
+  message.payload.removedEdgeIds = Array.from({ length: 32768 }, (_, i) => `e${i}`);
+  const result = readInbound(JSON.stringify(message), schemas);
+  assert.equal(result.accepted, true, result.accepted ? "" : result.reason);
+});
+
+test("a reader refuses, and never throws, when validation itself fails", () => {
+  const broken = new Map(schemas);
+  broken.set("publish-graph.schema.json", { type: "object", notAKeyword: true });
+  const result = readInbound(JSON.stringify(firstValid("publish-graph")), broken);
+  assert.deepEqual(result, { accepted: false, reason: "A schema uses a keyword this validator does not implement." });
+  const fromSurface = readFromSurface(JSON.stringify(firstValid("request-graph")), new Map(schemas).set("request-graph.schema.json", { notAKeyword: 1 }));
+  assert.equal(fromSurface.accepted, false);
+});

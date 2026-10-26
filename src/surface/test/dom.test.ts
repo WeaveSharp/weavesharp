@@ -80,3 +80,21 @@ test("allowed elements and attributes are created in their namespaces", () => {
   const div = element(document, "div", { dir: "rtl", tabindex: "0" }) as FakeElement;
   assert.equal(div.namespace, "http://www.w3.org/1999/xhtml");
 });
+
+test("tooltips and accessible names get a label's markers, so assistive technology announces hidden characters too", () => {
+  const document = new FakeDocument();
+  for (const attribute of ["title", "aria-label", "aria-description", "aria-roledescription", "aria-valuetext"]) {
+    const created = element(document, "div", { [attribute]: "admin‮​" }) as FakeElement;
+    assert.equal(created.attributes.get(attribute), "admin⟦U+202E⟧⟦U+200B⟧", attribute);
+  }
+  const long = element(document, "div", { "aria-label": "x".repeat(600) }) as FakeElement;
+  assert.equal([...(long.attributes.get("aria-label") ?? "")].length, 513);
+  const reference = element(document, "div", { "aria-labelledby": "graph-label-1" }) as FakeElement;
+  assert.equal(reference.attributes.get("aria-labelledby"), "graph-label-1");
+});
+
+test("a label names invisible characters in its badge", () => {
+  const created = label(new FakeDocument(), "to​tal") as FakeElement;
+  const badge = created.children[1] as FakeElement;
+  assert.equal(badge.attributes.get("aria-label"), "Contains 1 invisible character");
+});
