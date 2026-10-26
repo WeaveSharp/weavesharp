@@ -40,7 +40,9 @@ proposal and compares the supplied context, document snapshots and changes
 with the current model and that proposal. It then creates one `WorkspaceEdit`
 and calls `workspace.applyEdit` once. A text-only edit has atomic application
 semantics [API]. A false result or exception produces a refusal without a
-retry. Native source-change events publish the graph afresh.
+retry. A refused commit discards its preview; trying again starts with a new
+preparation. Native source-change events publish the graph afresh. The client
+does not treat a graph refresh as the acknowledgement of a pending commit.
 
 The public API exposes a monotonically increasing document version, including
 across undo/redo, but `WorkspaceEdit` has no expected-version parameter [API].
@@ -55,7 +57,7 @@ The TypeScript projection is explicitly a stand-in. It recognizes a tiny
 statement grammar, uses UTF-16 source spans and emits sample palette nodes
 in source order. It does not resolve types, references, linked-file ownership
 or target frameworks. WS-05's .NET implementation is the projection intended
-for later service integration. This spike starts no such service.
+for a later adapter to host out of process. This spike starts no such service.
 
 ## Capabilities by environment
 
@@ -81,6 +83,7 @@ The remote placement basis is [REMOTE, HOST]; browser restrictions come from
 | Expected-version transaction guarantee (HOST-01) [API] | limited | limited | limited | limited | limited | limited |
 | Run this Node-only spike as supplied [HOST, WEB] | needs hands-on verification | needs hands-on verification | needs hands-on verification | needs hands-on verification | needs hands-on verification | not available |
 | Place extension logic beside workspace files (HOST-10) [REMOTE, HOST] | documented | documented | documented | documented | documented | not available |
+| Delegate configured workspace tasks/builds (HOST-10) [API, TRUST, WEB] | limited | limited | limited | limited | limited | limited |
 | Host the future .NET analysis service (ARC-03) [HOST, WEB] | limited | limited | limited | limited | limited | not available |
 | Full active C# project/compiler context (HOST-02) [COMMANDS, CSHARP] | limited | limited | limited | limited | limited | limited |
 | Symbols, navigation and provider code actions (HOST-02–03) [COMMANDS] | limited | limited | limited | limited | limited | limited |
@@ -101,7 +104,10 @@ The remote placement basis is [REMOTE, HOST]; browser restrictions come from
 
 The provider-command row is limited because commands dispatch to installed
 providers. They do not guarantee a C# provider is present or expose its full
-compilation. The standalone browser debug rows depend on a suitable web
+compilation. Task execution likewise depends on task definitions and their
+providers. `tasks.executeTask` supplies the host route; a web host requires
+`CustomExecution` and cannot start a native C# build tool itself [API]. This
+experiment runs no tasks. The standalone browser debug rows depend on a suitable web
 adapter; the native C# runtime/debugger route described in the supplied notes
 does not run there. A connected Codespace can supply that remote execution
 environment, but its provider, runtime and source mappings still need tests.
@@ -140,6 +146,13 @@ clone and warn that successful `postMessage` means posting, not receipt
 API notes. The experiment relies on a fresh page request after restoration,
 not hidden-message delivery. Lost mutation replies are not retried. Full
 session reconciliation and reconnect behavior remain unfinished adapter work.
+
+`getState` and `setState` retain JSON for a webview's lifetime [WG, API]. The
+page uses that storage for its load counter. VS Code also offers
+`registerWebviewPanelSerializer` for ordinary panels after an editor restart;
+this custom text editor instead supplies its page when the provider resolves
+the document. This spike registers no panel serializer. Restart and recovery
+still require a live host test.
 
 Protocol 0.0 is fixed for this pair of entries. The current SEC-04 surface
 allow-list omits an `initialize` query. A page therefore requests its first
@@ -218,7 +231,8 @@ editor inherits Microsoft's C# debugger rights from this experiment.
 The private manifest is version `0.0.0`, targets `^1.140.0`, and adds no
 dependency. The engine lower bound matches the supplied declaration version.
 The notes identify vsce 4.0.0 and its much larger package graph; neither a
-packager nor a test-harness dependency is added. Packaging, artifact review,+Marketplace/Open VSX access and publication wait for later work. The Builder
+packager nor a test-harness dependency is added. Packaging, artifact review,
+Marketplace/Open VSX access and publication wait for later work. The Builder
 regenerates the dependency register; this change does not edit it.
 
 ## Builder qualification checklist

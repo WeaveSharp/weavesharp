@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { readFromSurface, writeToSurface } from "../../../src/surface/src/isolation/index.ts";
+import { readFromSurface, readInbound, writeToSurface } from "../../../src/surface/src/isolation/index.ts";
 import { GraphEditor } from "../src/editor.ts";
 import { SurfaceClient } from "../src/surface-client.ts";
 import { schemas } from "../src/schemas.generated.ts";
 import { envelope } from "../src/wire.ts";
 import { MemoryDocument, payload, sample } from "./support.ts";
 import type { Graph } from "../../canvas/src/graph.ts";
+import type { Edit } from "../src/wire.ts";
 
 function connected() {
   const outgoing: string[] = [];
@@ -92,4 +93,44 @@ test("page restoration uses a new request prefix while the editor stays alive", 
   restored.start();
   const result = await editor.handle(outgoing[0]);
   assert.equal(result.accepted, true);
+});
+test("a delayed preview cannot announce an applied edit or enable confirmation", async () => {
+  const { client, editor, outgoing, flush } = connected();
+  client.start(); await flush();
+  client.prepare();
+  const request = readFromSurface(outgoing.shift(), schemas);
+  if (!request.accepted) throw new Error(request.reason);
+  const graph = payload<Graph>(editor.lastPublication);
+  const outdated = { ...graph.context, snapshot: { ...graph.context.snapshot, hostVersion: "0", snapshotId: "earlier" } };
+  assert.equal(client.read(writeToSurface(envelope("edit-result", "response", request.message["requestId"] as string, {
+    context: outdated, description: "An earlier source preview.", changes: [], documents: [outdated.snapshot],
+    mappings: [], diagnostics: [], stage: "proposal", outcome: "proposed",
+  }), schemas)), true);
+  assert.equal(client.proposal, undefined);
+  assert.equal(client.busy, false);
+  assert.match(client.notice, /out of date/);
+  client.confirm();
+  assert.equal(outgoing.length, 0);
+});
+test("a document refresh cannot settle a missing commit reply or resend the mutation", async () => {
+  const outgoing: string[] = [];
+  const document = new MemoryDocument();
+  const client = new SurfaceClient("page", (json) => outgoing.push(json));
+  const editor = new GraphEditor(document, "view", async (json) => {
+    const reply = readInbound(json, schemas);
+    if (!reply.accepted) throw new Error(reply.reason);
+    if (reply.family === "edit-result" && (reply.message["payload"] as unknown as Edit).stage === "commit") return false;
+    return client.read(json);
+  });
+  document.onChange = () => editor.changed();
+  client.start(); await editor.handle(outgoing.shift());
+  client.prepare(); await editor.handle(outgoing.shift());
+  client.confirm(); await editor.handle(outgoing.shift());
+  assert.equal(document.applied.length, 1);
+  assert.equal(client.session?.graph.context.snapshot.hostVersion, "2");
+  assert.equal(client.busy, true);
+  assert.match(client.notice, /reply is still pending/);
+  client.confirm(); client.prepare(); client.cancel();
+  assert.equal(outgoing.length, 0);
+  assert.equal(client.busy, true);
 });

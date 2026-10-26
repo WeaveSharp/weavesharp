@@ -36,8 +36,10 @@ export class SurfaceClient {
       }
       if (this.#session === undefined) this.#session = new KeyboardSession(next.graph, schemas);
       else this.#session.synchronize(next.graph);
-      this.#notice = next.graph.coverage === "complete" ? "Sample graph refreshed from the document." :
-        "Only the small sample grammar is available; source editing is disabled here.";
+      this.#notice = this.#committing !== undefined ? "Document refreshed. The edit reply is still pending; inspect the source before continuing." :
+        this.#preparing !== undefined ? "Waiting for the source preview." :
+        next.graph.coverage === "complete" ? "Sample graph refreshed from the document." :
+          "Only the small sample grammar is available; source editing is disabled here.";
       return true;
     }
     if (result.family !== "edit-result") return result.family === "initialize";
@@ -46,9 +48,14 @@ export class SurfaceClient {
     if (edit.stage === "proposal") {
       if (requestId !== this.#preparing) return false;
       this.#preparing = undefined;
-      if (edit.outcome === "proposed" && this.#session !== undefined && sameSnapshot(edit.context.snapshot, this.#session.graph.context.snapshot)) {
-        this.#proposal = edit;
-        this.#notice = "Review the source insertion, then choose Apply or Cancel.";
+      if (edit.outcome === "proposed") {
+        if (this.#session !== undefined && sameSnapshot(edit.context.snapshot, this.#session.graph.context.snapshot)) {
+          this.#proposal = edit;
+          this.#notice = "Review the source insertion, then choose Apply or Cancel.";
+        } else {
+          this.#proposal = undefined;
+          this.#notice = "The preview is out of date. Request another preview.";
+        }
         return true;
       }
     } else {

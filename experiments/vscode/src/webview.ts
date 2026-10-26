@@ -18,8 +18,8 @@ if (root === null) throw new Error("The surface root is missing.");
 const mount = root;
 let focusView = ".ws-outline";
 
-function button(caption: string, action: () => void, disabled = false): HTMLButtonElement {
-  const node = element(document, "button", { type: "button", ...(disabled ? { disabled: "disabled" } : {}) },
+function button(control: string, caption: string, action: () => void, disabled = false): HTMLButtonElement {
+  const node = element(document, "button", { type: "button", "data-ws-control": control, ...(disabled ? { disabled: "disabled" } : {}) },
     [label(document, caption)]) as HTMLButtonElement;
   node.addEventListener("click", () => { action(); redraw(true); });
   return node;
@@ -32,16 +32,18 @@ function focusGraph(): void {
   target?.focus();
 }
 function redraw(moveFocus = false): void {
+  const active = document.activeElement;
+  const control = mount.contains(active) ? active?.closest("[data-ws-control]")?.getAttribute("data-ws-control") : undefined;
   const session = client.session;
   const children: Node[] = [element(document, "p", {}, [label(document,
     "C# stand-in: arrows browse statements and pins. I previews an empty statement; Escape cancels.")]) as HTMLElement];
-  children.push(button("Insert empty statement", () => client.prepare(), client.busy || session?.graph.coverage !== "complete"));
+  children.push(button("insert", "Insert empty statement", () => client.prepare(), client.busy || session?.graph.coverage !== "complete"));
   if (client.proposal !== undefined) {
     const preview = client.proposal;
     children.push(element(document, "div", { role: "group", "aria-label": "Source preview" }, [
       label(document, preview.description), ...preview.changes.map((change) => element(document, "p", {}, [
         label(document, `At UTF-16 offset ${change.span.start}, replace ${change.span.length} units with: `), label(document, change.text),
-      ])), button("Apply", () => client.confirm()), button("Cancel", () => client.cancel()),
+      ])), button("apply", "Apply", () => client.confirm()), button("cancel", "Cancel", () => client.cancel()),
     ]) as HTMLElement);
   }
   children.push(element(document, "p", { role: "status", "aria-live": "polite" }, [label(document, client.notice)]) as HTMLElement);
@@ -52,6 +54,12 @@ function redraw(moveFocus = false): void {
   }
   mount.replaceChildren(...children);
   if (moveFocus) focusGraph();
+  else if (control !== undefined && control !== null) {
+    const replacement = [...mount.querySelectorAll<HTMLButtonElement>("[data-ws-control]")]
+      .find((node) => node.getAttribute("data-ws-control") === control && !node.disabled);
+    if (replacement === undefined) focusGraph();
+    else replacement.focus();
+  }
 }
 mount.addEventListener("focusin", (event) => {
   const target = event.target instanceof Element ? event.target.closest("[data-ws-key]") : null;
@@ -62,17 +70,23 @@ mount.addEventListener("focusin", (event) => {
   }
 });
 mount.addEventListener("keydown", (event) => {
-  if (event.altKey || event.ctrlKey || event.metaKey || event.target instanceof HTMLButtonElement) return;
+  if (event.altKey || event.ctrlKey || event.metaKey) return;
+  if (event.key === "Escape") {
+    client.cancel();
+    event.preventDefault();
+    redraw(true);
+    return;
+  }
+  if (event.target instanceof HTMLButtonElement) return;
   const command = arrowCommand(event.key, "left-to-right");
   if (command !== undefined) client.session?.move(command);
   else if (event.key.toLowerCase() === "i") client.prepare();
-  else if (event.key === "Escape") client.cancel();
   else return;
   event.preventDefault();
   redraw(true);
 });
 window.addEventListener("message", (event: MessageEvent<unknown>) => {
-  const hadGraphFocus = document.activeElement?.closest("[data-ws-key]") !== null && mount.contains(document.activeElement);
+  const hadGraphFocus = document.activeElement?.closest("[data-ws-key], [role=tree]") != null && mount.contains(document.activeElement);
   client.read(event.data);
   redraw(hadGraphFocus);
 });

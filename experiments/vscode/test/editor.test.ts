@@ -79,6 +79,17 @@ test("a commit must preserve the host's prepared text and source range", async (
     assert.equal(document.applied.length, 0);
   }
 });
+test("a refused commit retires the preview even if the original document is still current", async () => {
+  const { editor, document } = rig();
+  const plan = await prepare(editor);
+  const foreign = { ...plan, documents: [{ ...plan.context.snapshot, documentUri: "file:///another.cs" }] };
+  assert.match((await editor.handle(writeOutbound(commitRequest("wrong-destination", foreign), schemas))).reason!, /Wrong document/);
+  assert.match((await editor.handle(writeOutbound(commitRequest("reuse-preview", plan), schemas))).reason!, /Prepare/);
+  assert.equal(document.applied.length, 0);
+  const refreshed = await prepare(editor, "prepare-again");
+  assert.equal((await editor.handle(writeOutbound(commitRequest("fresh-preview", refreshed), schemas))).outcome, "applied");
+  assert.equal(document.applied.length, 1);
+});
 test("SEC-04 refuses malformed, nontext, forged-family and extra-field input", async () => {
   const { editor, document, posted } = rig();
   const valid = graphRequest("opening");

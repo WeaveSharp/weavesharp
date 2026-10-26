@@ -116,11 +116,11 @@ export class GraphEditor {
     }
     if (received.family === "edit-result") {
       const commit = message["payload"] as unknown as Edit;
+      const proposal = this.#proposal;
+      this.#proposal = undefined;
       const problem = editProblem(commit, this.context);
       if (problem !== undefined) return this.#reject(requestId, "commit", problem);
       if (this.#applying) return this.#reject(requestId, "commit", "An edit is still being applied.");
-      const proposal = this.#proposal;
-      this.#proposal = undefined;
       if (proposal === undefined || !matchesProposal(commit, proposal)) {
         return this.#reject(requestId, "commit", "Prepare this exact change again before applying it.");
       }

@@ -41,9 +41,10 @@ export async function run(): Promise<void> {
   const uri = vscode.Uri.joinPath(extension.extensionUri, "test", "fixtures", "Sample.cs");
   const document = await vscode.workspace.openTextDocument(uri);
   const original = document.getText();
-  await vscode.commands.executeCommand("vscode.openWith", uri, "weavesharp.graph");
+  await vscode.commands.executeCommand("vscode.openWith", uri, "weavesharp.graph", { preview: false });
   await until(() => api.views.has(uri.toString()), "The custom editor did not resolve.");
   const view = api.views.get(uri.toString())!;
+  await until(() => view.panel.visible, "The custom editor is not visible.");
   const changes: { version: number; reason: vscode.TextDocumentChangeReason | undefined }[] = [];
   const listener = vscode.workspace.onDidChangeTextDocument((event) => {
     if (event.document === document && event.contentChanges.length > 0) changes.push({ version: document.version, reason: event.reason });
@@ -54,6 +55,16 @@ export async function run(): Promise<void> {
     view.reload();
     pageChecks(view, extension.extensionUri);
     assert.notEqual(view.page.options.nonce, nonce);
+
+    const reloadNonce = view.page.options.nonce;
+    const notes = await vscode.workspace.openTextDocument(vscode.Uri.joinPath(extension.extensionUri, "README.md"));
+    await vscode.window.showTextDocument(notes, { viewColumn: view.panel.viewColumn, preview: true });
+    await until(() => !view.panel.visible && view.page.options.nonce !== reloadNonce,
+      "Hiding the graph did not prepare a fresh page.");
+    view.panel.reveal();
+    await until(() => view.panel.visible, "The graph did not return after reveal.");
+    pageChecks(view, extension.extensionUri);
+    assert.notEqual(view.page.options.nonce, reloadNonce);
 
     assert.equal((await view.controller.handle(writeOutbound(graphRequest("integration-opening"), schemas))).accepted, true);
     const graph = payload<Graph>(view.controller.lastPublication);
@@ -72,6 +83,7 @@ export async function run(): Promise<void> {
     assert.ok(document.version > before);
     assert.equal(changes.length, 1, "One text transaction should be observed.");
     assert.equal(changes[0]?.reason, undefined);
+    assert.equal(document.isDirty, true, "Applying the preview must leave a dirty document.");
     await until(() => payload<Graph>(view.controller.lastPublication).context.snapshot.hostVersion === String(document.version), "The edit graph is stale.");
     assert.equal(payload<Graph>(view.controller.lastPublication).nodes.length, 4);
 
@@ -96,7 +108,35 @@ export async function run(): Promise<void> {
     assert.equal(changes.at(-1)?.reason, vscode.TextDocumentChangeReason.Redo);
     await until(() => payload<Graph>(view.controller.lastPublication).context.snapshot.hostVersion === String(document.version), "Redo was not republished.");
     assert.equal(payload<Graph>(view.controller.lastPublication).nodes.length, 4);
-    console.log("VS Code integration: page, nonce, options, edit, stale refusal, undo, redo and graph checks passed.");
+
+    const current = payload<Graph>(view.controller.lastPublication);
+    const pending = insertionRequest("integration-prepare-before-change", current.context, current.mappings[0]!.source);
+    assert.equal((await view.controller.handle(writeOutbound(pending, schemas))).outcome, "proposed");
+    const superseded = payload<Edit>(view.controller.lastReply);
+    const external = new vscode.WorkspaceEdit();
+    external.insert(uri, document.positionAt(document.getText().length), "\n");
+    const beforeExternal = document.version;
+    assert.equal(await vscode.workspace.applyEdit(external), true);
+    await until(() => document.getText() === edited + "\n" && document.version > beforeExternal,
+      "The independent text edit did not arrive.");
+    await until(() => payload<Graph>(view.controller.lastPublication).context.snapshot.hostVersion === String(document.version),
+      "The independent edit was not republished.");
+    const changedVersion = document.version;
+    const observedChanges = changes.length;
+    const refused = await view.controller.handle(writeOutbound(commitRequest("integration-superseded", superseded), schemas));
+    assert.equal(refused.outcome, "rejected");
+    assert.match(refused.reason!, /Stale/);
+    assert.equal(document.version, changedVersion);
+    assert.equal(document.getText(), edited + "\n");
+    assert.equal(changes.length, observedChanges);
+    await vscode.commands.executeCommand("undo");
+    await until(() => document.getText() === edited, "Undo did not remove only the independent edit.");
+    assert.ok(document.version > changedVersion);
+    assert.equal(changes.at(-1)?.reason, vscode.TextDocumentChangeReason.Undo);
+    await until(() => payload<Graph>(view.controller.lastPublication).context.snapshot.hostVersion === String(document.version),
+      "The final undo graph is stale.");
+    assert.equal(payload<Graph>(view.controller.lastPublication).nodes.length, 4);
+    console.log("VS Code integration passed: page lifecycle, edit, stale previews, dirty state, undo/redo and graph versions.");
   } finally {
     listener.dispose();
     if (document.getText() !== original) {

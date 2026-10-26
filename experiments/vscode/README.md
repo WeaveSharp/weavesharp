@@ -110,7 +110,7 @@ passive debug observations and SEC-04's sink scan. The integration entry is
 compiled with the host program and excluded from the Node test glob.
 
 The root `typecheck` script includes both programs with `--noEmit`. The root
-`test` script compiles the host and runs these Node tests after the existing
+`test` script emits both programs and runs these Node tests after the existing
 surface and canvas tests. The nested manifest adds no dependency and its lock
 contains only the package itself. Dependency-register regeneration belongs to
 the Builder.
@@ -128,10 +128,12 @@ code --extensionDevelopmentPath="$PWD/experiments/vscode" --extensionTestsPath="
 This command needs no downloaded test harness. The entry exports `run()` and
 uses Node assertions and VS Code's API. It opens the known fixture through
 `vscode.openWith`, compares the served HTML with `surfacePage`, reloads and
-checks nonce freshness, checks options and resource URLs, then drives the
-real message handler through preview and commit. It asserts one text-change
-event, current text/version, stale refusal, native undo/redo reasons and the
-republished graph at each step. Cleanup restores and saves the fixture.
+checks nonce freshness across reload and hide/reveal, checks the options and
+resource URLs, then drives the real handler through preview and commit. It
+asserts one text-change event, dirty state, current text/version, stale refusal,
+native undo/redo reasons and the republished graph at each step. It also
+changes the document while a preview is pending and verifies that the preview
+cannot commit. Cleanup restores and saves the fixture.
 
 The tests inspect the extension's served page and document model. They do
 not inspect the embedded browser DOM. The separate manual checklist in the
@@ -144,10 +146,18 @@ OS/CPU and provider combination.
 
 This run used Node 26.6.0 on macOS arm64 with the supplied TypeScript 7.0.2
 and VS Code declarations 1.140.0. Both programs compile, including the
-integration entry, without compiler diagnostics. The new Node suite passes
-31 tests; the existing surface and canvas suites remain separate evidence.
+integration entry, without compiler diagnostics. The spike's Node suite passes
+34 tests; another 156 pass in the shared surface and canvas suites.
 The source sink scan reports no findings. The Vericairn result records the
 final commit, file hashes and the final check results.
+
+The resumed run reviewed all 27 changed files against `3d67ede`, including
+the inherited work at `8d83a08`. Three regression cases failed before the
+fixes: preview reuse after refusal, an inaccurate delayed-preview notice,
+and loss of the pending-commit notice on a graph refresh. The final suite
+covers those cases. Source review also corrected focus restoration for
+preview controls and Escape handling on buttons; actual browser focus still
+requires the Builder's run.
 
 No VS Code instance or debugger was started here. Native undo/redo, browser
 policy behavior, keyboard focus, assistive technology and remote placement
