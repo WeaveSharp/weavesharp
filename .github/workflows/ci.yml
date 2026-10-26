@@ -14,6 +14,12 @@ on:
 permissions:
   contents: read
 
+# No usage data leaves CI from the .NET command line or the test platform.
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_NOLOGO: "1"
+  TESTINGPLATFORM_TELEMETRY_OPTOUT: "1"
+
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -39,6 +45,12 @@ jobs:
         if: runner.os == 'Linux'
         run: python3 .github/scripts/check-actions.py
 
+      - name: Check supply-chain rules
+        if: runner.os == 'Linux'
+        run: |
+          python3 .github/scripts/tests/test_supply_chain.py
+          python3 .github/scripts/check-supply-chain.py
+
       - name: Set up .NET from global.json
         if: hashFiles('global.json') != ''
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
@@ -49,6 +61,11 @@ jobs:
         run: |
           if compgen -G "*.slnx" >/dev/null || compgen -G "*.sln" >/dev/null; then
             dotnet restore --locked-mode
+            # Locked mode still writes a lock file a project lacks, so none may change or appear.
+            git diff --exit-code -- '*packages.lock.json'
+            created="$(git ls-files --others --exclude-standard -- '*packages.lock.json')"
+            if [ -n "$created" ]; then echo "::error::restore created uncommitted lock files: $created"; exit 1; fi
+            if [ "$RUNNER_OS" = "Linux" ]; then python3 .github/scripts/dependency-register.py check; fi
             dotnet build --no-restore --configuration Release
             dotnet test --no-build --configuration Release
           else

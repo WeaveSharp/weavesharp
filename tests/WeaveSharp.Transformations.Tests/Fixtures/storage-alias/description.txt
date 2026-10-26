@@ -1,0 +1,1 @@
+Extracting an array element as a ref local must preserve the cell identity, target checks and the read before a mutating right operand.

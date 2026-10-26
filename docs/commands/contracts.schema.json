@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WeaveSharp command definitions",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "commands"],
+  "properties": {
+    "$schema": { "const": "./contracts.schema.json" },
+    "version": { "const": 1 },
+    "commands": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": { "$ref": "#/$defs/command" },
+      "allOf": [
+        { "contains": { "properties": { "id": { "const": "insert-operation" } } } },
+        { "contains": { "properties": { "id": { "const": "connect-value" } } } },
+        { "contains": { "properties": { "id": { "const": "connect-execution" } } } },
+        { "contains": { "properties": { "id": { "const": "disconnect-value" } } } },
+        { "contains": { "properties": { "id": { "const": "delete-operation" } } } },
+        { "contains": { "properties": { "id": { "const": "duplicate-source" } } } },
+        { "contains": { "properties": { "id": { "const": "move-execution-order" } } } },
+        { "contains": { "properties": { "id": { "const": "extract-reusable-code" } } } },
+        { "contains": { "properties": { "id": { "const": "change-declaration" } } } },
+        { "contains": { "properties": { "id": { "const": "change-presentation" } } } }
+      ]
+    }
+  },
+  "$defs": {
+    "text": { "type": "string", "pattern": "\\S" },
+    "textList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/text" }
+    },
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "requirement", "sourceMeaning", "preconditions", "requiredChecks", "behaviorChange"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z]+(?:-[a-z]+)*$" },
+        "name": { "$ref": "#/$defs/text" },
+        "requirement": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "contains": { "const": "GRF-18" },
+          "items": { "type": "string", "pattern": "^[A-Z]+-[0-9]{2}$" }
+        },
+        "sourceMeaning": { "$ref": "#/$defs/text" },
+        "preconditions": { "$ref": "#/$defs/textList" },
+        "requiredChecks": { "$ref": "#/$defs/textList" },
+        "behaviorChange": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["mayChange", "previewRequirement"],
+          "properties": {
+            "mayChange": { "type": "boolean" },
+            "previewRequirement": { "$ref": "#/$defs/text" }
+          }
+        }
+      }
+    }
+  }
+}
