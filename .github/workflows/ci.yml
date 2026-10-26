@@ -57,6 +57,22 @@ jobs:
         with:
           global-json-file: global.json
 
+      - name: Set up Node.js
+        if: hashFiles('package-lock.json') != ''
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          # No shared cache: a cache another pull request could fill is a way in.
+          package-manager-cache: false
+
+      - name: Check the graph surface
+        if: hashFiles('package-lock.json') != ''
+        run: |
+          npm ci --ignore-scripts --no-fund
+          npm audit --audit-level=low
+          npm run typecheck
+          npm test
+
       - name: Build and test
         run: |
           if compgen -G "*.slnx" >/dev/null || compgen -G "*.sln" >/dev/null; then

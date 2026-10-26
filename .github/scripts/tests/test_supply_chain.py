@@ -244,6 +244,7 @@ class DependencyRegister(unittest.TestCase):
         self.assertEqual(code, 0, output)
         written = json.loads((self.repo.root / "docs/dependencies/register.json").read_text())
         self.assertEqual([p["id"] for p in written["packages"]], ["Example.Dependency", "Example.Package"])
+        self.assertEqual({p["ecosystem"] for p in written["packages"]}, {"nuget"})
         self.assertEqual(written["packages"][1]["projects"], [{"path": "tests/Example.Tests", "dependency": "direct"}])
         self.assertEqual(written["packages"][1]["uses"], ["test"])
 
@@ -297,6 +298,41 @@ class DependencyRegister(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn("is not allowed for test use", output)
 
+    def npm_lock(self, **overrides):
+        entry = {"version": "5.0.0", "resolved": "https://registry.npmjs.org/example-tool/-/example-tool-5.0.0.tgz",
+                 "integrity": "sha512-abc", "dev": True, "license": "MIT"}
+        entry.update(overrides)
+        return {"lockfileVersion": 3, "packages": {
+            "": {"name": "example", "devDependencies": {"example-tool": "5.0.0"}},
+            "node_modules/example-tool": entry}}
+
+    def test_npm_packages_are_registered_from_the_lock(self):
+        self.repo.write("package-lock.json", json.dumps(self.npm_lock()))
+        self.assertEqual(self.run_script("write")[0], 0)
+        written = json.loads((self.repo.root / "docs/dependencies/register.json").read_text())
+        npm = [p for p in written["packages"] if p["ecosystem"] == "npm"]
+        self.assertEqual(npm, [{"ecosystem": "npm", "id": "example-tool", "version": "5.0.0", "source": "https://registry.npmjs.org/",
+                                "contentHash": "sha512-abc", "license": "MIT", "uses": ["development"],
+                                "projects": [{"path": ".", "dependency": "direct"}]}])
+
+    def test_an_npm_package_from_another_source_is_refused(self):
+        self.repo.write("package-lock.json", json.dumps(self.npm_lock(resolved="https://example.invalid/example-tool-5.0.0.tgz")))
+        code, output = self.run_script("write")
+        self.assertEqual(code, 1)
+        self.assertIn("not https://registry.npmjs.org/", output)
+
+    def test_an_npm_package_without_integrity_is_refused(self):
+        self.repo.write("package-lock.json", json.dumps(self.npm_lock(integrity="sha1-abc")))
+        code, output = self.run_script("write")
+        self.assertEqual(code, 1)
+        self.assertIn("no sha512 integrity", output)
+
+    def test_an_npm_package_with_a_disallowed_license_is_refused(self):
+        self.repo.write("package-lock.json", json.dumps(self.npm_lock(license="GPL-3.0-only")))
+        code, output = self.run_script("write")
+        self.assertEqual(code, 1)
+        self.assertIn("is not allowed for development use", output)
+
     def test_an_or_expression_needs_one_allowed_alternative(self):
         self.assertTrue(register.license_allowed("GPL-2.0-only OR MIT", {"MIT"}))
         self.assertFalse(register.license_allowed("MIT AND GPL-2.0-only", {"MIT"}))
@@ -306,7 +342,7 @@ class DependencyRegister(unittest.TestCase):
         self.add_package("Example.Dependency", "4.5.6", "Apache-2.0", source="https://example.invalid/v3/index.json")
         code, output = self.run_script("write")
         self.assertEqual(code, 1)
-        self.assertIn("not nuget.org", output)
+        self.assertIn("not https://api.nuget.org/v3/index.json", output)
 
     def test_a_package_that_was_not_restored_is_refused(self):
         (self.packages / "example.dependency" / "4.5.6" / "example.dependency.nuspec").unlink()

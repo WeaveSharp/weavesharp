@@ -2,6 +2,7 @@
   "about": "Every NuGet package WeaveSharp's projects restore, generated from the committed lock files by .github/scripts/dependency-register.py. Do not edit it by hand; see docs/dependencies/README.md.",
   "packages": [
     {
+      "ecosystem": "nuget",
       "id": "MessagePack",
       "version": "2.5.307",
       "source": "https://api.nuget.org/v3/index.json",
@@ -18,6 +19,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "MessagePack.Annotations",
       "version": "2.5.307",
       "source": "https://api.nuget.org/v3/index.json",
@@ -34,6 +36,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.ApplicationInsights",
       "version": "2.23.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -75,6 +78,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.Bcl.AsyncInterfaces",
       "version": "6.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -116,6 +120,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.Bcl.AsyncInterfaces",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -132,6 +137,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.CodeAnalysis.Analyzers",
       "version": "5.9.0-1.26328.17",
       "source": "https://api.nuget.org/v3/index.json",
@@ -161,6 +167,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.CodeAnalysis.Common",
       "version": "5.9.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -190,6 +197,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.CodeAnalysis.CSharp",
       "version": "5.9.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -219,6 +227,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.CSharp",
       "version": "4.7.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -235,6 +244,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.Extensions.DependencyInjection",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -251,6 +261,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.Extensions.DependencyInjection.Abstractions",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -267,6 +278,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.NET.StringTools",
       "version": "17.14.23",
       "source": "https://api.nuget.org/v3/index.json",
@@ -283,6 +295,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.NETCore.Platforms",
       "version": "5.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -299,6 +312,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.NETCore.Targets",
       "version": "1.1.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -317,6 +331,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.ServiceHub.Analyzers",
       "version": "4.8.55",
       "source": "https://api.nuget.org/v3/index.json",
@@ -333,6 +348,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.ServiceHub.Framework",
       "version": "4.8.55",
       "source": "https://api.nuget.org/v3/index.json",
@@ -349,6 +365,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.ServiceHub.Resources",
       "version": "4.6.2052",
       "source": "https://api.nuget.org/v3/index.json",
@@ -367,6 +384,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.Testing.Extensions.Telemetry",
       "version": "2.5.1",
       "source": "https://api.nuget.org/v3/index.json",
@@ -408,6 +426,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.Testing.Extensions.TrxReport.Abstractions",
       "version": "2.5.1",
       "source": "https://api.nuget.org/v3/index.json",
@@ -449,6 +468,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.Testing.Platform",
       "version": "2.5.1",
       "source": "https://api.nuget.org/v3/index.json",
@@ -490,6 +510,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.Testing.Platform.MSBuild",
       "version": "2.5.1",
       "source": "https://api.nuget.org/v3/index.json",
@@ -531,6 +552,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Composition",
       "version": "17.13.41",
       "source": "https://api.nuget.org/v3/index.json",
@@ -547,6 +569,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Composition.Analyzers",
       "version": "17.13.41",
       "source": "https://api.nuget.org/v3/index.json",
@@ -563,6 +586,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.CoreUtility",
       "version": "17.14.275",
       "source": "https://api.nuget.org/v3/index.json",
@@ -581,6 +605,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Extensibility",
       "version": "17.14.2098",
       "source": "https://api.nuget.org/v3/index.json",
@@ -599,6 +624,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Extensibility.Build",
       "version": "17.14.40608",
       "source": "https://api.nuget.org/v3/index.json",
@@ -617,6 +643,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Extensibility.Contracts",
       "version": "17.14.2098",
       "source": "https://api.nuget.org/v3/index.json",
@@ -635,6 +662,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Extensibility.Editor.Contracts",
       "version": "17.14.275",
       "source": "https://api.nuget.org/v3/index.json",
@@ -653,6 +681,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Extensibility.Framework",
       "version": "17.14.2098",
       "source": "https://api.nuget.org/v3/index.json",
@@ -671,6 +700,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Extensibility.JsonGenerators.Sdk",
       "version": "17.14.2098",
       "source": "https://api.nuget.org/v3/index.json",
@@ -689,6 +719,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Extensibility.Sdk",
       "version": "17.14.40608",
       "source": "https://api.nuget.org/v3/index.json",
@@ -707,6 +738,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime",
       "version": "17.14.39777",
       "source": "https://api.nuget.org/v3/index.json",
@@ -725,6 +757,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.ProjectSystem.Query",
       "version": "17.14.145",
       "source": "https://api.nuget.org/v3/index.json",
@@ -743,6 +776,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.RemoteControl",
       "version": "16.3.52",
       "source": "https://api.nuget.org/v3/index.json",
@@ -761,6 +795,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.RpcContracts",
       "version": "17.14.20",
       "source": "https://api.nuget.org/v3/index.json",
@@ -779,6 +814,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.SDK.Analyzers",
       "version": "17.7.79",
       "source": "https://api.nuget.org/v3/index.json",
@@ -795,6 +831,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Telemetry",
       "version": "17.14.18",
       "source": "https://api.nuget.org/v3/index.json",
@@ -813,6 +850,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Threading",
       "version": "17.14.15",
       "source": "https://api.nuget.org/v3/index.json",
@@ -829,6 +867,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Threading.Analyzers",
       "version": "17.14.15",
       "source": "https://api.nuget.org/v3/index.json",
@@ -845,6 +884,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Threading.Only",
       "version": "17.14.15",
       "source": "https://api.nuget.org/v3/index.json",
@@ -861,6 +901,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Utilities",
       "version": "17.13.39620",
       "source": "https://api.nuget.org/v3/index.json",
@@ -879,6 +920,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Utilities.Internal",
       "version": "16.3.90",
       "source": "https://api.nuget.org/v3/index.json",
@@ -897,6 +939,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VisualStudio.Validation",
       "version": "17.8.8",
       "source": "https://api.nuget.org/v3/index.json",
@@ -913,6 +956,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VSSDK.BuildTools",
       "version": "17.14.2120",
       "source": "https://api.nuget.org/v3/index.json",
@@ -931,6 +975,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.VsSDK.CompatibilityAnalyzer",
       "version": "17.14.2120",
       "source": "https://api.nuget.org/v3/index.json",
@@ -949,6 +994,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.Win32.Registry",
       "version": "5.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -994,6 +1040,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Microsoft.Win32.SystemEvents",
       "version": "8.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1010,6 +1057,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Nerdbank.Streams",
       "version": "2.12.87",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1026,6 +1074,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "Newtonsoft.Json",
       "version": "13.0.3",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1042,6 +1091,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "StreamJsonRpc",
       "version": "2.22.23",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1058,6 +1108,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Buffers",
       "version": "4.6.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1074,6 +1125,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.CodeDom",
       "version": "5.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1090,6 +1142,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Collections.Immutable",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1106,6 +1159,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.ComponentModel.Composition",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1122,6 +1176,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Composition",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1138,6 +1193,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Composition.AttributedModel",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1154,6 +1210,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Composition.Convention",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1170,6 +1227,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Composition.Hosting",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1186,6 +1244,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Composition.Runtime",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1202,6 +1261,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Composition.TypedParts",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1218,6 +1278,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Configuration.ConfigurationManager",
       "version": "7.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1234,6 +1295,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Diagnostics.DiagnosticSource",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1250,6 +1312,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Diagnostics.EventLog",
       "version": "7.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1266,6 +1329,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Diagnostics.PerformanceCounter",
       "version": "7.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1282,6 +1346,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Diagnostics.Tracing",
       "version": "4.3.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1300,6 +1365,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Drawing.Common",
       "version": "8.0.8",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1316,6 +1382,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.IO.FileSystem.AccessControl",
       "version": "5.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1332,6 +1399,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.IO.Pipelines",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1348,6 +1416,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Management",
       "version": "5.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1364,6 +1433,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Memory",
       "version": "4.6.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1380,6 +1450,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Numerics.Vectors",
       "version": "4.6.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1396,6 +1467,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Reflection.Metadata",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1412,6 +1484,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Runtime",
       "version": "4.3.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1430,6 +1503,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Runtime.CompilerServices.Unsafe",
       "version": "6.1.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1446,6 +1520,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Security.AccessControl",
       "version": "6.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1462,6 +1537,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Security.AccessControl",
       "version": "6.0.1",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1503,6 +1579,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Security.Cryptography.ProtectedData",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1519,6 +1596,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Security.Permissions",
       "version": "7.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1535,6 +1613,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Security.Principal.Windows",
       "version": "5.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1551,6 +1630,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Text.Encodings.Web",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1567,6 +1647,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Text.Json",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1583,6 +1664,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Threading.AccessControl",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1599,6 +1681,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Threading.Tasks.Dataflow",
       "version": "9.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1615,6 +1698,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Threading.Tasks.Extensions",
       "version": "4.6.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1631,6 +1715,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "System.Windows.Extensions",
       "version": "7.0.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1647,6 +1732,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "xunit.analyzers",
       "version": "2.2.0",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1688,6 +1774,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "xunit.v3",
       "version": "4.0.2",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1729,6 +1816,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "xunit.v3.assert",
       "version": "4.0.2",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1770,6 +1858,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "xunit.v3.common",
       "version": "4.0.2",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1811,6 +1900,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "xunit.v3.core.mtp-v2",
       "version": "4.0.2",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1852,6 +1942,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "xunit.v3.extensibility.core",
       "version": "4.0.2",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1893,6 +1984,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "xunit.v3.mtp-v2",
       "version": "4.0.2",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1934,6 +2026,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "xunit.v3.runner.common",
       "version": "4.0.2",
       "source": "https://api.nuget.org/v3/index.json",
@@ -1975,6 +2068,7 @@
       ]
     },
     {
+      "ecosystem": "nuget",
       "id": "xunit.v3.runner.inproc.console",
       "version": "4.0.2",
       "source": "https://api.nuget.org/v3/index.json",
@@ -2011,6 +2105,397 @@
         },
         {
           "path": "tests/WeaveSharp.Transformations.Tests",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@types/node",
+      "version": "24.19.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-93d49wCWJkCyN87MxLpNN6KXPCwFw7bVUg79mGUV1OS40JGWwVCr8n61DXCSqz7CV6/VfPkb7xec7uP2M+QHWQ==",
+      "license": "MIT",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "direct"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-aix-ppc64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-MTKKkWB7p/0E9xi1d1tHtZ5PiLkGEMIq88pK2CubZjOsLtYTLqhgIgi6zepFa+9GHZ6h05NMCkQxGKiPXMxXtQ==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-darwin-arm64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-gowzar9MwS/aRWp6f3a4KUqzRjAZjOsmGNCM6LcTgXum+dBfgsBVMN+AgvOCCbguXyick6LJhpBszxMebJ8syA==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-darwin-x64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-SZ9xZInqApNlNGc9s0W1VSsktYSOe9cFqNOIqmN1Gs8SmkjKZYFt017G4VwPxASInODuAdbTW7sXiFUf893RgA==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-freebsd-arm64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-W5NH4y/J0plIIS5b2xvTEkU7JFxyqdMAOgf+Ilhl0vHQXKO5dZoxd+C/jEtq56c4F3wk71RB4BMRQ2XdI+bwYQ==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-freebsd-x64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-UMGDx5sTpzNw3WiPebH7l90IWfJggEd+egHt/q6p7/Cm3zqoV7VxkGXt+3DxPIw8CcmvAB0j3sVVfbhX+M4Tpw==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-linux-arm",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-gffT3xPz9sR7j/YJExkyPntrI0P2EP9XbOyWzth2/Gs0RstK+90RBcO0ncXoXy/beYll1SXw846Nf2zdnEz0QQ==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-linux-arm64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-Qh4eU4/y3yDjnfjjyPYihMj5/ODIlmt+Bzu17OI+fiSRDW57QmU5SiN63exPRNJPKUzcc1INa1NXdrJ+MqHjUQ==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-linux-loong64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-uEHck9i8hoAzXPiYRib1O7miOnz23SxIeVl6F4LXox+qov1K35jHcEW6VHKvZI+pyvl7fZEP4MCU5LYvIq1GuQ==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-linux-mips64el",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-R4KvAMnE43W5Qeqb0Ly56O3mWMWIAgsMyz36DCaycd5nbg/9kzm0liw3JocfRqyJY0KPmzFjbswozXyW0DnIYA==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-linux-ppc64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-DORx5b3sd/4S7eayxm4FQv+A7CrkUIGRaHiwI8oiHTAI1fAPWhF4J0vAlkC8biAlHSVVwxMQ3tjZ2/DVbnQiiA==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-linux-riscv64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-wf0jqEDOjrPRnKwYRyyJDRo11KMbvMFrU+q4zqKyChODBzvlkbhNQfKvLxQCcwTpdDaXSHZTVuh0JoCrKCUMHQ==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-linux-s390x",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-IkwJc3L7yhytWd/ewjyxNDfOmswCm9GWMJT/ue/dU4aZNbwZeYAetq42VyLmsmSjvoX7z74X6ZaYCtzAr0EuGw==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-linux-x64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-EYdf2cNg7rgCWJnxCdJ+F3V39O8ihb37eHAu1LK8oAFizgTQbPOK7zHHXbPt8rX24COqODXeI3sIf0fCXG7H/A==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-netbsd-arm64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-+polYF4MF04aPpO5FTkHran9yUQDSXqy5GiSDKpsll5jy3l3+g9QLhpf39T+ePtefhXLOGrLl0QIjkQP6VnelA==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-netbsd-x64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-8YIT0EHM/3dq10ZOVF/A7pc/YSMtbcecct4rWtexrnSCHOPcpC2KTLXfTCR6vDpnSiY12heNb1GiN/wu+T/FyA==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-openbsd-arm64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-APT8+ClYnuYm1u9+kgGXoMj2VzWzcymwh2gNSQVySHfkRDGOTVkoWLjCmOQSaO+PoqQ57B0flRp9SA+7GnnkzQ==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-openbsd-x64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-yX7s+Q0Dln0Dt9tEzZsAjXXR/+ytBM7AlglaqyeMPxQszJ1JhlJdZ6jLA+IzldHtflX81em7lDao1xXu+aRRkg==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-sunos-x64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-dLJDGaLZ1D4HPQn62u1n8mBDkJREwMsAkCdkwd4Ieqw+x3TUyTsqY0YiBCtE6H6OzzgGk3iuZ3vFWRS+E8/d1g==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-win32-arm64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-Gyl1Vy6OsWesLzmq+EP0Fb7b4Nid5232AvcA2SFcdYreldpNtYFFofPjnt62y9hQy7VTaZp65ICJjuAQRaVcIQ==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "@typescript/typescript-win32-x64",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-0BQ3HkAHHlKLSp1qRvf3SUhGpGsDuhB/jgFw75guyqbxJqEaS0Cw/VFO8i2nHglJUzQCRtMMR/IBAKE3ETMC4g==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "transitive"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "typescript",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-8FYau96o3NKOhbjKi/qNvG/W5jhzxkbdm5sj9AbZ/5T5sWqn3hJgLfGx27sRKZWTvyzCP8dLRBTf5tBTSRVUNA==",
+      "license": "Apache-2.0",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
+          "dependency": "direct"
+        }
+      ]
+    },
+    {
+      "ecosystem": "npm",
+      "id": "undici-types",
+      "version": "7.24.6",
+      "source": "https://registry.npmjs.org/",
+      "contentHash": "sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==",
+      "license": "MIT",
+      "uses": [
+        "development"
+      ],
+      "projects": [
+        {
+          "path": ".",
           "dependency": "transitive"
         }
       ]

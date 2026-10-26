@@ -13,16 +13,16 @@ WeaveSharp takes as few dependencies as it can, and every one it takes is locked
 
 ## The register
 
-`register.json` lists every NuGet package any project restores, direct or transitive. For each one it gives:
+`register.json` lists every NuGet package any project restores and every npm package `package-lock.json` pins, direct or transitive. For each one it gives:
 
-- its id and exact version;
+- its ecosystem (`nuget` or `npm`), id and exact version;
 - the source it came from;
-- the content hash its lock file pins;
+- the content hash or integrity its lock file pins;
 - its license;
 - each project that uses it, directly or transitively;
-- how WeaveSharp uses it: `test` for `tests/`, `experiment` for `experiments/`, and `product` for everything else.
+- how WeaveSharp uses it: `test` for `tests/`, `experiment` for `experiments/`, `development` for npm development dependencies, and `product` for everything else.
 
-`.github/scripts/dependency-register.py` generates the register from the committed lock files and the restored packages' own metadata, and CI checks that it matches. Never edit it by hand.
+`.github/scripts/dependency-register.py` generates the register from the committed lock files: NuGet packages with the restored packages' own metadata, npm packages from `package-lock.json` alone, which must pin a sha512 integrity and an npmjs.org source for each. CI checks that it matches, and runs `npm audit` on every platform. Never edit it by hand.
 
 ## Adding or changing a dependency
 
