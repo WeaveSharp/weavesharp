@@ -3,6 +3,7 @@
     <File Path="src/README.md" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/WeaveSharp.Requirements.Tests/WeaveSharp.Requirements.Tests.csproj" />
     <Project Path="tests/WeaveSharp.Tests/WeaveSharp.Tests.csproj" />
   </Folder>
   <Folder Name="/experiments/">
