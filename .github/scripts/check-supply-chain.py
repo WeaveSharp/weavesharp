@@ -7,6 +7,8 @@ Exits 0 when every rule holds and 1 otherwise. The rules:
 
 - NuGet versions are exact and set only in Directory.Packages.props.
 - Every project restores with a lock file, and its packages.lock.json is committed.
+- No MSBuild file adds package sources or fallback folders, or references or
+  versions a package outside the central file.
 - NuGet.Config clears inherited sources, uses nuget.org alone and maps every package to it.
 - No other NuGet configuration file exists in the repository.
 - npm never runs install scripts, and every package.json has a committed package-lock.json.
@@ -23,6 +25,9 @@ import xml.etree.ElementTree as ET
 
 SKIP = {".git", "bin", "obj", "node_modules", ".vericairn", "TestResults", "artifacts"}
 PROJECT_SUFFIXES = {".csproj", ".fsproj", ".vbproj"}
+MSBUILD_SUFFIXES = PROJECT_SUFFIXES | {".props", ".targets"}
+SOURCE_PROPERTIES = ("RestoreSources", "RestoreAdditionalProjectSources", "RestoreFallbackFolders",
+                     "RestoreAdditionalProjectFallbackFolders", "RestoreConfigFile")
 NUGET_ORG = "https://api.nuget.org/v3/index.json"
 EXACT_VERSION = re.compile(r"^\d+\.\d+\.\d+(\.\d+)?(-[0-9A-Za-z.-]+)?$")
 
@@ -116,6 +121,23 @@ def check_projects(root, files, tracked, problems):
             problems.append(f"{lock_relative}: exists but is not committed")
 
 
+def check_msbuild_files(root, files, problems):
+    """Package sources come only from NuGet.Config, and package items only from projects without versions."""
+    for path in (p for p in files if p.suffix in MSBUILD_SUFFIXES):
+        relative = path.relative_to(root).as_posix()
+        xml = parse_xml(path, problems)
+        if xml is None:
+            continue
+        for element in xml.iter():
+            name = local(element.tag)
+            if name in SOURCE_PROPERTIES:
+                problems.append(f"{relative}: sets {name}; package sources and folders come only from NuGet.Config")
+            if path.suffix in (".props", ".targets") and path.name != "Directory.Packages.props" and name in (
+                    "PackageReference", "PackageVersion", "GlobalPackageReference", "PackageDownload"):
+                item = element.get("Include") or element.get("Update") or "?"
+                problems.append(f"{relative}: declares {name} {item}; packages belong in projects and versions in Directory.Packages.props")
+
+
 def check_nuget_config(root, files, problems):
     configs = [p for p in files if p.name.lower() == "nuget.config"]
     expected = root / "NuGet.Config"
@@ -181,6 +203,10 @@ def check_workflows(root, problems):
             where = f"{workflow.relative_to(root).as_posix()}:{number}"
             if re.search(r"\bdotnet\s+restore\b", code) and "--locked-mode" not in code:
                 problems.append(f"{where}: dotnet restore must use --locked-mode")
+            if re.search(r"\bdotnet\s+(restore|build|test|run|pack|publish)\b", code) and re.search(r"(\s--source\b|\s-s\s|--configfile\b|RestoreSources|RestoreConfigFile)", code):
+                problems.append(f"{where}: package sources come only from NuGet.Config, never from the command line")
+            if re.search(r"\bdotnet\s+nuget\s+(add|update|enable)\s+source\b", code):
+                problems.append(f"{where}: workflows never add package sources")
             if re.search(r"\bnpm\s+(install|i|add|update)\b", code):
                 problems.append(f"{where}: use npm ci --ignore-scripts, never npm install")
             if re.search(r"\bnpm\s+ci\b", code) and "--ignore-scripts" not in code:
@@ -197,6 +223,7 @@ def check(root):
     check_central_versions(root, problems)
     check_build_props(root, problems)
     check_projects(root, files, tracked, problems)
+    check_msbuild_files(root, files, problems)
     check_nuget_config(root, files, problems)
     check_npm(root, files, tracked, problems)
     check_workflows(root, problems)
