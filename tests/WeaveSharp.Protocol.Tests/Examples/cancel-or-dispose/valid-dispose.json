@@ -1,0 +1,15 @@
+{
+  "version": {
+    "major": 0,
+    "minor": 0
+  },
+  "family": "cancel-or-dispose",
+  "requestId": "req-1",
+  "kind": "notification",
+  "payload": {
+    "operation": "dispose",
+    "targetKind": "workspace",
+    "targetId": "workspace-a"
+  },
+  "extensions": {}
+}

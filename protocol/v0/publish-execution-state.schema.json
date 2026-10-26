@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://weavesharp.example/protocol/v0/publish-execution-state.schema.json",
+  "type": "object",
+  "properties": {
+    "version": {
+      "$ref": "envelope.schema.json#/$defs/version"
+    },
+    "family": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 23,
+      "const": "publish-execution-state"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "kind": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 12,
+      "enum": [
+        "notification"
+      ]
+    },
+    "payload": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "sessionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "context": {
+              "$ref": "envelope.schema.json#/$defs/context"
+            },
+            "sourceGeneration": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "evidenceKind": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8,
+              "enum": [
+                "debugger",
+                "trace",
+                "analysis"
+              ]
+            },
+            "capabilities": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "minItems": 0,
+              "maxItems": 128,
+              "uniqueItems": true
+            },
+            "state": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 7,
+              "const": "running"
+            }
+          },
+          "required": [
+            "sessionId",
+            "context",
+            "sourceGeneration",
+            "evidenceKind",
+            "capabilities",
+            "state"
+          ],
+          "additionalProperties": false,
+          "maxProperties": 6
+        },
+        {
+          "type": "object",
+          "properties": {
+            "sessionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "context": {
+              "$ref": "envelope.schema.json#/$defs/context"
+            },
+            "sourceGeneration": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "evidenceKind": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 8,
+              "enum": [
+                "debugger",
+                "trace",
+                "analysis"
+              ]
+            },
+            "capabilities": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "minItems": 0,
+              "maxItems": 128,
+              "uniqueItems": true
+            },
+            "state": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 7,
+              "const": "stopped"
+            },
+            "pauseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "selectedFrameId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "sessionId",
+            "context",
+            "sourceGeneration",
+            "evidenceKind",
+            "capabilities",
+            "state",
+            "pauseId",
+            "selectedFrameId"
+          ],
+          "additionalProperties": false,
+          "maxProperties": 8
+        }
+      ]
+    },
+    "extensions": {
+      "$ref": "envelope.schema.json#/$defs/extensions"
+    }
+  },
+  "required": [
+    "version",
+    "family",
+    "requestId",
+    "kind",
+    "payload",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "maxProperties": 6
+}

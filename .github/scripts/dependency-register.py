@@ -12,7 +12,8 @@ packages' own metadata, so run a locked restore first.
 
 `check` fails when the committed register differs from what the lock files
 say, when a package came from anywhere but nuget.org, or when a license is
-outside docs/dependencies/license-policy.json and has no recorded exception.
+outside docs/dependencies/license-policy.json, has no recorded exception, and is used
+somewhere other than the policy's unrestricted uses (experiments, which ship nothing).
 `write` regenerates the register and reports the same license problems.
 """
 
@@ -130,6 +131,7 @@ def license_allowed(expression, allowed):
 
 def policy_problems(register, policy):
     allowed = set(policy.get("allowed", []))
+    unrestricted = set(policy.get("unrestrictedUses", []))
     exceptions = {(e.get("id"), e.get("version"), e.get("use")) for e in policy.get("exceptions", [])}
     problems = []
     for package in register["packages"]:
@@ -138,6 +140,8 @@ def policy_problems(register, policy):
         if license_allowed(package["license"], allowed):
             continue
         for use in package["uses"]:
+            if use in unrestricted:
+                continue
             if (package["id"], package["version"], use) not in exceptions:
                 problems.append(f"{package['id']} {package['version']}: license {json.dumps(package['license'])} "
                                 f"is not allowed for {use} use and has no recorded exception")

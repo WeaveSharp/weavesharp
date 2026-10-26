@@ -311,6 +311,26 @@ public sealed class LayoutReaderTests
         Assert.Empty(view.EdgeRoutes);
     }
 
+    [Theory]
+    [InlineData("<node id=\"n\" syntaxKind=\"Block\"><anchor syntaxRole=\"r\" /><extent along=\"5\" across=\"5\" ext:leaf=\"x\" /></node>")]
+    [InlineData("<node id=\"n\" syntaxKind=\"Block\"><anchor syntaxRole=\"r\" /><extent along=\"5\" across=\"5\" depth=\"2\" /></node>")]
+    [InlineData("<note id=\"m\"><text ext:leaf=\"x\">t</text></note>")]
+    [InlineData("<note id=\"m\"><text xml:space=\"preserve\">t</text></note>")]
+    [InlineData("<group id=\"g\" title=\"T\"><member node=\"n\" ext:leaf=\"x\" /></group>")]
+    [InlineData("<edgeRoute id=\"e\" from=\"a\" fromPort=\"out\" to=\"b\" toPort=\"in\"><point x=\"0\" y=\"0\" ext:leaf=\"x\" /></edgeRoute>")]
+    public void AnAttributeTheModelCannotKeepRefusesItsRecordRatherThanBeingDropped(string record)
+    {
+        var xml = $"""<visualDocument xmlns="urn:weavesharp:visual:1" xmlns:ext="urn:example:extension" schemaVersion="1" source="A.cs"><view id="v">{record}<note id="kept"><text>still read</text></note></view></visualDocument>""";
+        var result = Read(xml);
+
+        AssertDamaged(result, LayoutProblemKind.InvalidRecord);
+        var view = Assert.Single(result.Document!.Views);
+        Assert.Equal("kept", Assert.Single(view.Notes).Id);
+        Assert.Empty(view.Nodes);
+        Assert.Empty(view.Groups);
+        Assert.Empty(view.EdgeRoutes);
+    }
+
     [Fact]
     public void AnUnknownFlowDirectionRefusesTheView()
     {

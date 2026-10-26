@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://weavesharp.example/protocol/v0/request-graph.schema.json",
+  "type": "object",
+  "properties": {
+    "version": {
+      "$ref": "envelope.schema.json#/$defs/version"
+    },
+    "family": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 13,
+      "const": "request-graph"
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "kind": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 5,
+      "enum": [
+        "query"
+      ]
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "context": {
+          "$ref": "envelope.schema.json#/$defs/context"
+        },
+        "body": {
+          "$ref": "envelope.schema.json#/$defs/span"
+        },
+        "detail": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 7,
+          "enum": [
+            "outline",
+            "full"
+          ]
+        },
+        "requireComplete": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "context",
+        "body",
+        "detail",
+        "requireComplete"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 4
+    },
+    "extensions": {
+      "$ref": "envelope.schema.json#/$defs/extensions"
+    }
+  },
+  "required": [
+    "version",
+    "family",
+    "requestId",
+    "kind",
+    "payload",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "maxProperties": 6
+}

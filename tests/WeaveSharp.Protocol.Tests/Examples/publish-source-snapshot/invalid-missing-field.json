@@ -1,0 +1,16 @@
+{
+  "version": {
+    "major": 0,
+    "minor": 0
+  },
+  "family": "publish-source-snapshot",
+  "requestId": "req-1",
+  "kind": "notification",
+  "payload": {
+    "mode": "complete",
+    "provenance": "host-buffer",
+    "encoding": "utf-8",
+    "text": "int Count() => 12;"
+  },
+  "extensions": {}
+}

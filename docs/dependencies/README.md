@@ -4,11 +4,11 @@ WeaveSharp takes as few dependencies as it can, and every one it takes is locked
 
 ## The rules
 
-- **One source.** `NuGet.Config` clears every inherited source, uses nuget.org alone, and maps every package id to it, so a source configured on a developer's machine or a CI runner can never supply a package. No other NuGet configuration file may exist in the repository.
-- **Exact, central versions.** Versions live only in `Directory.Packages.props`, each one exact. A project's `PackageReference` names the package without a version, and `VersionOverride` and `PackageDownload` are not used.
+- **One source.** `NuGet.Config` clears every inherited source, uses nuget.org alone, and maps every package id to it, so a source configured on a developer's machine or a CI runner can never supply a package. No other NuGet configuration file may exist in the repository, no MSBuild file may add package sources or fallback folders (`RestoreSources`, `RestoreAdditionalProjectSources` and their kin), and no workflow may name a source on the command line or add one.
+- **Exact, central versions.** Versions live only in `Directory.Packages.props`, each one exact. A project's `PackageReference` names the package without a version, `VersionOverride` and `PackageDownload` are not used, and no shared `.props` or `.targets` file declares packages.
 - **Lock files.** Every project restores with a lock file, and its `packages.lock.json` is committed. CI restores in locked mode, refuses a restore that changes a lock file or creates one that isn't committed, and every restore in CI is locked, whatever command triggers it.
 - **Advisories.** NuGet audits direct and transitive packages on every restore. Because warnings are errors, a known advisory stops the build until the package is updated, or the advisory is suppressed with `NuGetAuditSuppress` and a recorded reason.
-- **Licenses.** Every package's license must be in `license-policy.json`'s allowed list, or have an exception there naming the package, its version, its use, the reason and the decision that allows it. A license for code that ships in an extension is the operator's decision.
+- **Licenses.** Every package's license must be in `license-policy.json`'s allowed list, or have an exception there naming the package, its version, its use, the reason and the decision that allows it. A license for code that ships in an extension is the operator's decision. Packages used only under `experiments/`, which ships nothing, have their licenses recorded but not restricted (`unrestrictedUses`); code moves from `experiments/` into the product only through SEC-05's license review.
 - **npm, when it arrives.** `.npmrc` turns install scripts off and saves exact versions. Every `package.json` has a committed `package-lock.json`, workflows install with `npm ci --ignore-scripts` only, and npm is the only JavaScript package manager.
 
 ## The register

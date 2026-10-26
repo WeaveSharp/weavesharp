@@ -1,0 +1,40 @@
+{
+  "version": {
+    "major": 0,
+    "minor": 0
+  },
+  "family": "prepare-edit",
+  "requestId": "req-1",
+  "kind": "query",
+  "payload": {
+    "command": "replace-value",
+    "anchors": [
+      {
+        "snapshot": {
+          "hostId": "host-a",
+          "documentUri": "workspace://sample/Counter.cs",
+          "hostVersion": "v8",
+          "snapshotId": "s8"
+        },
+        "coordinates": "utf16-offset",
+        "start": 0,
+        "length": 17
+      }
+    ],
+    "choices": [
+      {
+        "name": "value",
+        "value": "12"
+      }
+    ],
+    "destinations": [
+      {
+        "hostId": "host-a",
+        "documentUri": "workspace://sample/Counter.cs",
+        "hostVersion": "v8",
+        "snapshotId": "s8"
+      }
+    ]
+  },
+  "extensions": {}
+}

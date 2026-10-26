@@ -1,0 +1,64 @@
+{
+  "version": {
+    "major": 0,
+    "minor": 0
+  },
+  "family": "publish-graph",
+  "requestId": "req-1",
+  "kind": "response",
+  "payload": {
+    "context": {
+      "workspaceId": "workspace-a",
+      "projectId": "app",
+      "compilationContextId": "ctx-3",
+      "snapshot": {
+        "hostId": "host-a",
+        "documentUri": "workspace://sample/Counter.cs",
+        "hostVersion": "v8",
+        "snapshotId": "s8"
+      }
+    },
+    "graphId": "counter-body",
+    "revision": 5,
+    "mode": "incremental",
+    "nodes": [
+      {
+        "id": "n1",
+        "kind": "return",
+        "typeName": "System.Int32"
+      }
+    ],
+    "edges": [],
+    "regions": [
+      {
+        "id": "r1",
+        "kind": "body",
+        "nodeIds": [
+          "n1"
+        ]
+      }
+    ],
+    "mappings": [
+      {
+        "nodeId": "n1",
+        "source": {
+          "snapshot": {
+            "hostId": "host-a",
+            "documentUri": "workspace://sample/Counter.cs",
+            "hostVersion": "v8",
+            "snapshotId": "s8"
+          },
+          "coordinates": "utf16-offset",
+          "start": 0,
+          "length": 17
+        }
+      }
+    ],
+    "diagnostics": [],
+    "coverage": "complete",
+    "removedNodeIds": [],
+    "removedEdgeIds": [],
+    "removedRegionIds": []
+  },
+  "extensions": {}
+}
