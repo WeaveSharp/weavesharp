@@ -26,7 +26,8 @@ import re
 import subprocess
 import sys
 
-SKIP = {".git", "bin", "obj", "node_modules", ".vericairn", "TestResults", "artifacts"}
+# Used only outside a git work tree; inside one, .gitignore decides.
+IGNORED_WITHOUT_GIT = {".git", "bin", "obj", "node_modules", ".vericairn", "TestResults"}
 NUGET_ORG = "https://api.nuget.org/v3/index.json"
 NPM_REGISTRY = "https://registry.npmjs.org/"
 REGISTER = pathlib.PurePosixPath("docs/dependencies/register.json")
@@ -36,8 +37,17 @@ ABOUT = ("Every NuGet package WeaveSharp's projects restore, generated from the 
 
 
 def lock_files(root, name="packages.lock.json"):
+    """Every lock file git does not ignore, tracked or not; outside git, every one not in a build folder."""
+    try:
+        out = subprocess.run(["git", "-C", str(root), "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+                             capture_output=True, check=True)
+        paths = sorted(root / p for p in out.stdout.decode("utf-8").split("\0") if p and p.split("/")[-1] == name)
+        yield from (p for p in paths if p.is_file())
+        return
+    except (OSError, subprocess.CalledProcessError):
+        pass
     for directory, subdirectories, names in os.walk(root):
-        subdirectories[:] = sorted(d for d in subdirectories if d not in SKIP)
+        subdirectories[:] = sorted(d for d in subdirectories if d not in IGNORED_WITHOUT_GIT)
         if name in names:
             yield pathlib.Path(directory) / name
 
@@ -159,15 +169,64 @@ def npm_packages(root, problems):
 
 
 def license_allowed(expression, allowed):
-    """True when some alternative of an SPDX expression uses only allowed licenses."""
+    """True when an SPDX expression can be satisfied by allowed licenses, with AND binding tighter than OR.
+
+    A license with an exception (X WITH Y) is allowed only when "X WITH Y" itself is in the list. Anything
+    that does not parse is refused."""
     if not isinstance(expression, str):
         return False
-    flat = expression.replace("(", " ").replace(")", " ")
-    for alternative in re.split(r"\s+OR\s+", flat.strip()):
-        terms = [t.strip() for t in re.split(r"\s+AND\s+", alternative) if t.strip()]
-        if terms and all(t in allowed for t in terms):
-            return True
-    return False
+    tokens = re.findall(r"\(|\)|[^\s()]+", expression)
+    position = 0
+
+    def peek():
+        return tokens[position] if position < len(tokens) else None
+
+    def take():
+        nonlocal position
+        position += 1
+        return tokens[position - 1]
+
+    def parse_or():
+        result = parse_and()
+        while peek() == "OR":
+            take()
+            right = parse_and()
+            result = result or right
+        return result
+
+    def parse_and():
+        result = parse_atom()
+        while peek() == "AND":
+            take()
+            right = parse_atom()
+            result = result and right
+        return result
+
+    def parse_atom():
+        token = peek()
+        if token is None or token in ("AND", "OR", "WITH", ")"):
+            raise ValueError("expected a license")
+        take()
+        if token == "(":
+            value = parse_or()
+            if peek() != ")":
+                raise ValueError("unbalanced parenthesis")
+            take()
+            return value
+        if peek() == "WITH":
+            take()
+            exception = peek()
+            if exception is None or exception in ("AND", "OR", "WITH", "(", ")"):
+                raise ValueError("expected an exception")
+            take()
+            return f"{token} WITH {exception}" in allowed
+        return token in allowed
+
+    try:
+        result = parse_or()
+    except ValueError:
+        return False
+    return result and position == len(tokens)
 
 
 def policy_problems(register, policy):
