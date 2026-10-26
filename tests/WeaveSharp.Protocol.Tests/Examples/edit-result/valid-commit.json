@@ -1,0 +1,52 @@
+{
+  "version": {
+    "major": 0,
+    "minor": 0
+  },
+  "family": "edit-result",
+  "requestId": "req-1",
+  "kind": "mutation",
+  "payload": {
+    "context": {
+      "workspaceId": "workspace-a",
+      "projectId": "app",
+      "compilationContextId": "ctx-3",
+      "snapshot": {
+        "hostId": "host-a",
+        "documentUri": "workspace://sample/Counter.cs",
+        "hostVersion": "v8",
+        "snapshotId": "s8"
+      }
+    },
+    "stage": "commit",
+    "outcome": "requested",
+    "description": "Replace the selected value with a constant.",
+    "changes": [
+      {
+        "span": {
+          "snapshot": {
+            "hostId": "host-a",
+            "documentUri": "workspace://sample/Counter.cs",
+            "hostVersion": "v8",
+            "snapshotId": "s8"
+          },
+          "coordinates": "utf16-offset",
+          "start": 0,
+          "length": 17
+        },
+        "text": "return 12;"
+      }
+    ],
+    "documents": [
+      {
+        "hostId": "host-a",
+        "documentUri": "workspace://sample/Counter.cs",
+        "hostVersion": "v8",
+        "snapshotId": "s8"
+      }
+    ],
+    "mappings": [],
+    "diagnostics": []
+  },
+  "extensions": {}
+}

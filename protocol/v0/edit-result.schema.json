@@ -1,0 +1,375 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://weavesharp.example/protocol/v0/edit-result.schema.json",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "$ref": "envelope.schema.json#/$defs/version"
+        },
+        "family": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 11,
+          "const": "edit-result"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8,
+          "enum": [
+            "response"
+          ]
+        },
+        "payload": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "context": {
+                  "$ref": "envelope.schema.json#/$defs/context"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "changes": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/change"
+                  },
+                  "minItems": 0,
+                  "maxItems": 4096
+                },
+                "documents": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/snapshot"
+                  },
+                  "minItems": 1,
+                  "maxItems": 256
+                },
+                "mappings": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/mapping"
+                  },
+                  "minItems": 0,
+                  "maxItems": 32768
+                },
+                "diagnostics": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/diagnostic"
+                  },
+                  "minItems": 0,
+                  "maxItems": 4096
+                },
+                "stage": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8,
+                  "const": "proposal"
+                },
+                "outcome": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8,
+                  "const": "proposed"
+                }
+              },
+              "required": [
+                "context",
+                "description",
+                "changes",
+                "documents",
+                "mappings",
+                "diagnostics",
+                "stage",
+                "outcome"
+              ],
+              "additionalProperties": false,
+              "maxProperties": 8
+            },
+            {
+              "type": "object",
+              "properties": {
+                "context": {
+                  "$ref": "envelope.schema.json#/$defs/context"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "changes": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/change"
+                  },
+                  "minItems": 0,
+                  "maxItems": 4096
+                },
+                "documents": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/snapshot"
+                  },
+                  "minItems": 1,
+                  "maxItems": 256
+                },
+                "mappings": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/mapping"
+                  },
+                  "minItems": 0,
+                  "maxItems": 32768
+                },
+                "diagnostics": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/diagnostic"
+                  },
+                  "minItems": 0,
+                  "maxItems": 4096
+                },
+                "stage": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 6,
+                  "const": "commit"
+                },
+                "outcome": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 7,
+                  "const": "applied"
+                }
+              },
+              "required": [
+                "context",
+                "description",
+                "changes",
+                "documents",
+                "mappings",
+                "diagnostics",
+                "stage",
+                "outcome"
+              ],
+              "additionalProperties": false,
+              "maxProperties": 8
+            },
+            {
+              "type": "object",
+              "properties": {
+                "context": {
+                  "$ref": "envelope.schema.json#/$defs/context"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                },
+                "changes": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/change"
+                  },
+                  "minItems": 0,
+                  "maxItems": 4096
+                },
+                "documents": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/snapshot"
+                  },
+                  "minItems": 1,
+                  "maxItems": 256
+                },
+                "mappings": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/mapping"
+                  },
+                  "minItems": 0,
+                  "maxItems": 32768
+                },
+                "diagnostics": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "envelope.schema.json#/$defs/diagnostic"
+                  },
+                  "minItems": 0,
+                  "maxItems": 4096
+                },
+                "stage": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8,
+                  "enum": [
+                    "proposal",
+                    "commit"
+                  ]
+                },
+                "outcome": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8,
+                  "const": "rejected"
+                },
+                "rejectionReason": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 4096
+                }
+              },
+              "required": [
+                "context",
+                "description",
+                "changes",
+                "documents",
+                "mappings",
+                "diagnostics",
+                "stage",
+                "outcome",
+                "rejectionReason"
+              ],
+              "additionalProperties": false,
+              "maxProperties": 9
+            }
+          ]
+        },
+        "extensions": {
+          "$ref": "envelope.schema.json#/$defs/extensions"
+        }
+      },
+      "required": [
+        "version",
+        "family",
+        "requestId",
+        "kind",
+        "payload",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 6
+    },
+    {
+      "type": "object",
+      "properties": {
+        "version": {
+          "$ref": "envelope.schema.json#/$defs/version"
+        },
+        "family": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 11,
+          "const": "edit-result"
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8,
+          "enum": [
+            "mutation"
+          ]
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "context": {
+              "$ref": "envelope.schema.json#/$defs/context"
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            },
+            "changes": {
+              "type": "array",
+              "items": {
+                "$ref": "envelope.schema.json#/$defs/change"
+              },
+              "minItems": 0,
+              "maxItems": 4096
+            },
+            "documents": {
+              "type": "array",
+              "items": {
+                "$ref": "envelope.schema.json#/$defs/snapshot"
+              },
+              "minItems": 1,
+              "maxItems": 256
+            },
+            "mappings": {
+              "type": "array",
+              "items": {
+                "$ref": "envelope.schema.json#/$defs/mapping"
+              },
+              "minItems": 0,
+              "maxItems": 32768
+            },
+            "diagnostics": {
+              "type": "array",
+              "items": {
+                "$ref": "envelope.schema.json#/$defs/diagnostic"
+              },
+              "minItems": 0,
+              "maxItems": 4096
+            },
+            "stage": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 6,
+              "const": "commit"
+            },
+            "outcome": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 9,
+              "const": "requested"
+            }
+          },
+          "required": [
+            "context",
+            "description",
+            "changes",
+            "documents",
+            "mappings",
+            "diagnostics",
+            "stage",
+            "outcome"
+          ],
+          "additionalProperties": false,
+          "maxProperties": 8
+        },
+        "extensions": {
+          "$ref": "envelope.schema.json#/$defs/extensions"
+        }
+      },
+      "required": [
+        "version",
+        "family",
+        "requestId",
+        "kind",
+        "payload",
+        "extensions"
+      ],
+      "additionalProperties": false,
+      "maxProperties": 6
+    }
+  ]
+}
