@@ -1,5 +1,5 @@
 {
-  "about": "Licenses WeaveSharp accepts for its dependencies without a separate decision. A package under any other license needs an exception below, with its use, its reason and the decision that allows it; a license for code that ships in an extension is the operator's decision. See docs/dependencies/README.md.",
+  "about": "Licenses WeaveSharp accepts for its dependencies without a separate decision. A package under any other license needs an exception below, with its use, its reason and the decision that allows it; a license for code that ships in an extension is the operator's decision. Uses listed in unrestrictedUses ship nothing (experiments/), so their packages' licenses are recorded in the register but not restricted; code moves from experiments/ into the product only through SEC-05's license review. See docs/dependencies/README.md.",
   "allowed": [
     "0BSD",
     "Apache-2.0",
@@ -9,6 +9,9 @@
     "MIT",
     "MIT-0",
     "Zlib"
+  ],
+  "unrestrictedUses": [
+    "experiment"
   ],
   "exceptions": []
 }
