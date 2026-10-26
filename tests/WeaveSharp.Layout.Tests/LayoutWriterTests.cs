@@ -560,9 +560,10 @@ public sealed class LayoutWriterTests
     }
 
     [Fact]
-    public void ReaderLeafExtensionLossIsVisibleAsAnUpstreamModelLimitation()
+    public void LeafExtensionsTheModelCannotKeepMakeTheFileReadOnlyRatherThanLost()
     {
-        var original = Read("""
+        // The reader refuses these records, so the file is damaged and no writer replaces it.
+        var result = LayoutReader.Read(Encoding.UTF8.GetBytes("""
             <visualDocument xmlns="urn:weavesharp:visual:1" xmlns:t="urn:tiles:extra" schemaVersion="1" source="Tiles.cs">
               <view id="tiles">
                 <node id="c" syntaxKind="Block"><anchor syntaxRole="Value" /><extent along="10" across="10" t:leaf="extent" /></node>
@@ -571,7 +572,9 @@ public sealed class LayoutWriterTests
                 <edgeRoute id="r" from="c" fromPort="out" to="missing" toPort="in"><point x="0" y="0" t:leaf="point" /></edgeRoute>
               </view>
             </visualDocument>
-            """);
-        Assert.DoesNotContain("leaf", Text(original), StringComparison.Ordinal);
+            """));
+        Assert.Equal(LayoutReadStatus.Damaged, result.Status);
+        Assert.False(result.CanWrite);
+        Assert.Equal(4, result.Problems.Count(p => p.Kind == LayoutProblemKind.InvalidRecord));
     }
 }

@@ -102,13 +102,13 @@ policy. XSD 1.0's wildcard rules cannot combine arbitrary unknown names in the
 target namespace with distinct typed declarations for the known children. Thus
 not every reader-valid extension document will validate against this schema.
 
-There are also existing reader/model losses that this writer cannot repair:
-unknown attributes on `extent`, `member`, `point` and `text` are accepted but not
-represented; namespace-prefix spellings are discarded; mixed extension text is
-collected after child elements. Those details may already have changed before
-`Write` receives the model. Full preservation requires changes to the reader and
-its public model, which are outside WS-07's permitted files. The tests expose the
-leaf-attribute and schema-policy gaps rather than claiming complete preservation.
+Unknown attributes on `extent`, `member`, `point` and `text` have no place in the
+model, so the reader refuses their records and marks the file damaged: it is kept
+read-only rather than rewritten without them. The one exception is
+`xml:space="preserve"` on `text`, which the writer emits itself to keep
+whitespace-only notes. Two formatting details are not kept: namespace-prefix
+spellings, and the position of mixed text inside unknown elements, which is
+written after their child elements.
 
 The fixtures in `tests/WeaveSharp.Layout.Tests/Fixtures` are independently written
 examples. Tests check exact bytes, localized changes, model data, extension order,
