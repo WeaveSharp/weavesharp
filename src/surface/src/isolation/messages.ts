@@ -110,8 +110,7 @@ function allowed(table: Readonly<Record<string, readonly string[]>>, family: str
   return Object.hasOwn(table, family) && (table[family] ?? []).includes(kind);
 }
 
-/** Reads one message from the host, or says which rule refused it. */
-export function readInbound(raw: unknown, schemas: SchemaSet, limits: MessageLimits = DEFAULT_LIMITS): InboundResult {
+function read(raw: unknown, table: Readonly<Record<string, readonly string[]>>, refusal: string, schemas: SchemaSet, limits: MessageLimits): InboundResult {
   if (typeof raw !== "string") {
     return { accepted: false, reason: "Messages arrive as JSON text." };
   }
@@ -134,8 +133,8 @@ export function readInbound(raw: unknown, schemas: SchemaSet, limits: MessageLim
   if (header === undefined) {
     return { accepted: false, reason: "The message has no family and kind." };
   }
-  if (!allowed(INBOUND, header.family, header.kind)) {
-    return { accepted: false, reason: "The surface does not accept that family and kind." };
+  if (!allowed(table, header.family, header.kind)) {
+    return { accepted: false, reason: refusal };
   }
   const issues = validate(schemas, `${header.family}.schema.json`, value);
   if (issues.length > 0) {
@@ -144,22 +143,47 @@ export function readInbound(raw: unknown, schemas: SchemaSet, limits: MessageLim
   return { accepted: true, family: header.family, message: deepFreeze(value as Record<string, unknown>) };
 }
 
-/** Serializes a command for the host; throws unless it is an allowed, schema-valid command. */
-export function writeOutbound(message: unknown, schemas: SchemaSet, limits: MessageLimits = DEFAULT_LIMITS): string {
+function write(message: unknown, table: Readonly<Record<string, readonly string[]>>, refusal: string, schemas: SchemaSet, limits: MessageLimits): string {
   const header = familyAndKind(message);
-  if (header === undefined || !allowed(OUTBOUND, header.family, header.kind)) {
-    throw new IsolationError("The surface does not send that family and kind.");
+  if (header === undefined || !allowed(table, header.family, header.kind)) {
+    throw new IsolationError(refusal);
   }
   if (forbiddenKey(message)) {
-    throw new IsolationError("The command carries a forbidden key.");
+    throw new IsolationError("The message carries a forbidden key.");
   }
   const issues = validate(schemas, `${header.family}.schema.json`, message);
   if (issues.length > 0) {
-    throw new IsolationError(`The command breaks its schema at ${issues[0]?.path || "/"} (${issues[0]?.keyword}).`);
+    throw new IsolationError(`The message breaks its schema at ${issues[0]?.path || "/"} (${issues[0]?.keyword}).`);
   }
   const text = JSON.stringify(message);
   if (text.length > limits.maxCharacters) {
-    throw new IsolationError("The command is longer than the limit.");
+    throw new IsolationError("The message is longer than the limit.");
   }
   return text;
+}
+
+/** Reads one message from the host, or says which rule refused it. */
+export function readInbound(raw: unknown, schemas: SchemaSet, limits: MessageLimits = DEFAULT_LIMITS): InboundResult {
+  return read(raw, INBOUND, "The surface does not accept that family and kind.", schemas, limits);
+}
+
+/** Serializes a command for the host; throws unless it is an allowed, schema-valid command. */
+export function writeOutbound(message: unknown, schemas: SchemaSet, limits: MessageLimits = DEFAULT_LIMITS): string {
+  return write(message, OUTBOUND, "The surface does not send that family and kind.", schemas, limits);
+}
+
+/**
+ * The host's side of the same boundary. A host adapter reads what its webview sends
+ * with readFromSurface: the surface runs untrusted content, so its messages get the
+ * same bounds, key check and schema validation, limited to the surface's command
+ * allow-list. A host writes what it sends with writeToSurface, limited to what the
+ * surface accepts, so a host bug cannot post something the surface would refuse.
+ */
+export function readFromSurface(raw: unknown, schemas: SchemaSet, limits: MessageLimits = DEFAULT_LIMITS): InboundResult {
+  return read(raw, OUTBOUND, "The host does not accept that family and kind from the surface.", schemas, limits);
+}
+
+/** Serializes a message for the surface; throws unless the surface accepts its family and kind and it is schema-valid. */
+export function writeToSurface(message: unknown, schemas: SchemaSet, limits: MessageLimits = DEFAULT_LIMITS): string {
+  return write(message, INBOUND, "The surface does not accept that family and kind.", schemas, limits);
 }
