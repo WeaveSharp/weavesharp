@@ -6,6 +6,7 @@
   <Folder Name="/tests/">
     <Project Path="tests/WeaveSharp.Coverage.Tests/WeaveSharp.Coverage.Tests.csproj" />
     <Project Path="tests/WeaveSharp.Layout.Tests/WeaveSharp.Layout.Tests.csproj" />
+    <Project Path="tests/WeaveSharp.Requirements.Tests/WeaveSharp.Requirements.Tests.csproj" />
     <Project Path="tests/WeaveSharp.Tests/WeaveSharp.Tests.csproj" />
     <Project Path="tests/WeaveSharp.Transformations.Tests/WeaveSharp.Transformations.Tests.csproj" />
   </Folder>

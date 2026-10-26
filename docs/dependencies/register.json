@@ -20,6 +20,10 @@
           "dependency": "transitive"
         },
         {
+          "path": "tests/WeaveSharp.Requirements.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
         },
@@ -45,6 +49,10 @@
         },
         {
           "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Requirements.Tests",
           "dependency": "transitive"
         },
         {
@@ -136,6 +144,10 @@
           "dependency": "transitive"
         },
         {
+          "path": "tests/WeaveSharp.Requirements.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
         },
@@ -161,6 +173,10 @@
         },
         {
           "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Requirements.Tests",
           "dependency": "transitive"
         },
         {
@@ -192,6 +208,10 @@
           "dependency": "transitive"
         },
         {
+          "path": "tests/WeaveSharp.Requirements.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
         },
@@ -217,6 +237,10 @@
         },
         {
           "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Requirements.Tests",
           "dependency": "transitive"
         },
         {
@@ -248,6 +272,10 @@
           "dependency": "transitive"
         },
         {
+          "path": "tests/WeaveSharp.Requirements.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
         },
@@ -273,6 +301,10 @@
         },
         {
           "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Requirements.Tests",
           "dependency": "transitive"
         },
         {
@@ -304,6 +336,10 @@
           "dependency": "transitive"
         },
         {
+          "path": "tests/WeaveSharp.Requirements.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
         },
@@ -329,6 +365,10 @@
         },
         {
           "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "direct"
+        },
+        {
+          "path": "tests/WeaveSharp.Requirements.Tests",
           "dependency": "direct"
         },
         {
@@ -360,6 +400,10 @@
           "dependency": "transitive"
         },
         {
+          "path": "tests/WeaveSharp.Requirements.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
         },
@@ -385,6 +429,10 @@
         },
         {
           "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Requirements.Tests",
           "dependency": "transitive"
         },
         {
@@ -416,6 +464,10 @@
           "dependency": "transitive"
         },
         {
+          "path": "tests/WeaveSharp.Requirements.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
         },
@@ -441,6 +493,10 @@
         },
         {
           "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Requirements.Tests",
           "dependency": "transitive"
         },
         {
@@ -472,6 +528,10 @@
           "dependency": "transitive"
         },
         {
+          "path": "tests/WeaveSharp.Requirements.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
         },
@@ -500,6 +560,10 @@
           "dependency": "transitive"
         },
         {
+          "path": "tests/WeaveSharp.Requirements.Tests",
+          "dependency": "transitive"
+        },
+        {
           "path": "tests/WeaveSharp.Tests",
           "dependency": "transitive"
         },
@@ -525,6 +589,10 @@
         },
         {
           "path": "tests/WeaveSharp.Layout.Tests",
+          "dependency": "transitive"
+        },
+        {
+          "path": "tests/WeaveSharp.Requirements.Tests",
           "dependency": "transitive"
         },
         {

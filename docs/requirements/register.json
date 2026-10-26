@@ -1,0 +1,1459 @@
+{
+  "gates": [
+    {
+      "id": "G-01",
+      "name": "Semantic baseline"
+    },
+    {
+      "id": "G-02",
+      "name": "Adapter viability"
+    },
+    {
+      "id": "G-03",
+      "name": "Source edit integrity"
+    },
+    {
+      "id": "G-04",
+      "name": "Authoring validation"
+    },
+    {
+      "id": "G-05",
+      "name": "Debugger correspondence"
+    },
+    {
+      "id": "G-06",
+      "name": "Capture reliability"
+    },
+    {
+      "id": "G-07",
+      "name": "Deployment readiness"
+    },
+    {
+      "id": "G-08",
+      "name": "Release evidence"
+    }
+  ],
+  "acceptanceCases": [
+    {
+      "id": "AC-01",
+      "title": "Keep source unchanged during presentation work"
+    },
+    {
+      "id": "AC-02",
+      "title": "Create and modify declarations at selected destinations"
+    },
+    {
+      "id": "AC-03",
+      "title": "Reconcile graph edits with competing document changes"
+    },
+    {
+      "id": "AC-04",
+      "title": "Exercise language coverage and preserve surrounding syntax"
+    },
+    {
+      "id": "AC-05",
+      "title": "Preserve observable effects and evaluation counts"
+    },
+    {
+      "id": "AC-06",
+      "title": "Make repeated evaluation and result reuse explicit"
+    },
+    {
+      "id": "AC-07",
+      "title": "Preserve conditional expression evaluation"
+    },
+    {
+      "id": "AC-08",
+      "title": "Retain reference passing and lifetime constraints"
+    },
+    {
+      "id": "AC-09",
+      "title": "Preserve control transfers and cleanup ordering"
+    },
+    {
+      "id": "AC-10",
+      "title": "Retain capture scope and iterator lifetimes"
+    },
+    {
+      "id": "AC-11",
+      "title": "Handle incomplete and noneditable source faithfully"
+    },
+    {
+      "id": "AC-12",
+      "title": "Expose linked document compilation contexts"
+    },
+    {
+      "id": "AC-13",
+      "title": "Distinguish immediate await completion from suspension"
+    },
+    {
+      "id": "AC-14",
+      "title": "Track operations across observed thread changes"
+    },
+    {
+      "id": "AC-15",
+      "title": "Preserve aggregation outcomes without creating extra work"
+    },
+    {
+      "id": "AC-16",
+      "title": "Preserve cancellation and asynchronous cleanup behavior"
+    },
+    {
+      "id": "AC-17",
+      "title": "Respect debugger granularity and value lifetimes"
+    },
+    {
+      "id": "AC-18",
+      "title": "Scope execution markers to individual invocations"
+    },
+    {
+      "id": "AC-19",
+      "title": "Expose capture loss and observation boundaries"
+    },
+    {
+      "id": "AC-20",
+      "title": "Identify source mismatches in running builds"
+    },
+    {
+      "id": "AC-21",
+      "title": "Retain source generations through Hot Reload"
+    },
+    {
+      "id": "AC-22",
+      "title": "Bind imported APIs and disclose wider binding changes"
+    },
+    {
+      "id": "AC-23",
+      "title": "Recover optional layout without changing program behavior"
+    },
+    {
+      "id": "AC-24",
+      "title": "Revalidate remote identities after reconnection"
+    },
+    {
+      "id": "AC-25",
+      "title": "Complete authoring with keyboard and assistive tools"
+    },
+    {
+      "id": "AC-26",
+      "title": "Expose capability differences across editor configurations"
+    },
+    {
+      "id": "AC-27",
+      "title": "Preserve projects across language toolchain differences"
+    },
+    {
+      "id": "AC-28",
+      "title": "Exercise installation restrictions and diagnostic recovery"
+    },
+    {
+      "id": "AC-29",
+      "title": "Use projects after removing the extension"
+    },
+    {
+      "id": "AC-30",
+      "title": "Recover layout attachments and unmatched annotations"
+    },
+    {
+      "id": "AC-31",
+      "title": "Reconcile uncertain edits and incompatible protocol messages"
+    },
+    {
+      "id": "AC-32",
+      "title": "Preserve authoring focus during runtime and historical navigation"
+    },
+    {
+      "id": "AC-33",
+      "title": "Recover partial document edits and failed layout persistence"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "FND-01",
+      "family": "FND",
+      "title": "Editor buffers determine program meaning",
+      "section": "1",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-04", "AC-20", "AC-23", "AC-29"],
+      "gates": ["G-01", "G-03", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "FND-02",
+      "family": "FND",
+      "title": "Ordinary projects run without WeaveSharp",
+      "section": "1",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-04", "AC-20", "AC-23", "AC-29"],
+      "gates": ["G-01", "G-03", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "FND-03",
+      "family": "FND",
+      "title": "Share transformation semantics across editors",
+      "section": "1",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-04", "AC-20", "AC-23", "AC-29"],
+      "gates": ["G-01", "G-03", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "FND-04",
+      "family": "FND",
+      "title": "Integrate graph changes with document editing",
+      "section": "1",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-04", "AC-20", "AC-23", "AC-29"],
+      "gates": ["G-01", "G-03", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "FND-05",
+      "family": "FND",
+      "title": "Explain the evidence behind runtime displays",
+      "section": "1",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-04", "AC-20", "AC-23", "AC-29"],
+      "gates": ["G-01", "G-03", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "FND-06",
+      "family": "FND",
+      "title": "Keep presentation optional and preserve user notes",
+      "section": "1",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-04", "AC-20", "AC-23", "AC-29"],
+      "gates": ["G-01", "G-03", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "FND-07",
+      "family": "FND",
+      "title": "Report language capabilities individually",
+      "section": "1",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-04", "AC-20", "AC-23", "AC-29"],
+      "gates": ["G-01", "G-03", "G-08"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "FND-08",
+      "family": "FND",
+      "title": "Work inside editors near project data",
+      "section": "1",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-04", "AC-20", "AC-23", "AC-29"],
+      "gates": ["G-01", "G-03", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SUP-01",
+      "family": "SUP",
+      "title": "Use C# 14 as the coverage baseline",
+      "section": "3",
+      "acceptanceCases": ["AC-12", "AC-24", "AC-26", "AC-27", "AC-29"],
+      "gates": ["G-01", "G-02", "G-08"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "SUP-02",
+      "family": "SUP",
+      "title": "Respect each project toolchain configuration",
+      "section": "3",
+      "acceptanceCases": ["AC-12", "AC-24", "AC-26", "AC-27", "AC-29"],
+      "gates": ["G-01", "G-02", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SUP-03",
+      "family": "SUP",
+      "title": "Qualify individual capabilities for named editor versions",
+      "section": "3",
+      "acceptanceCases": ["AC-12", "AC-24", "AC-26", "AC-27", "AC-29"],
+      "gates": ["G-01", "G-02", "G-08"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "SUP-04",
+      "family": "SUP",
+      "title": "Review tooling availability and distribution rights",
+      "section": "3",
+      "acceptanceCases": ["AC-12", "AC-24", "AC-26", "AC-27", "AC-29"],
+      "gates": ["G-01", "G-02", "G-08"],
+      "assessment": "dependency-review"
+    },
+    {
+      "id": "SUP-05",
+      "family": "SUP",
+      "title": "Distinguish browser rendering from workspace execution",
+      "section": "3",
+      "acceptanceCases": ["AC-12", "AC-24", "AC-26", "AC-27", "AC-29"],
+      "gates": ["G-01", "G-02", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SRC-01",
+      "family": "SRC",
+      "title": "Interpret current buffers within their compilation context",
+      "section": "4",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-11", "AC-12", "AC-20", "AC-24", "AC-31", "AC-33"],
+      "gates": ["G-03", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SRC-02",
+      "family": "SRC",
+      "title": "Preserve projects outside the adopted language baseline",
+      "section": "4",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-11", "AC-12", "AC-20", "AC-24", "AC-31", "AC-33"],
+      "gates": ["G-03", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SRC-03",
+      "family": "SRC",
+      "title": "Expose context selection and validation limits",
+      "section": "4",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-11", "AC-12", "AC-20", "AC-24", "AC-31", "AC-33"],
+      "gates": ["G-03", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SRC-04",
+      "family": "SRC",
+      "title": "Keep viewing inert and edits localized",
+      "section": "4",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-11", "AC-12", "AC-20", "AC-24", "AC-31", "AC-33"],
+      "gates": ["G-03", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SRC-05",
+      "family": "SRC",
+      "title": "Validate revision specific edits before host commit",
+      "section": "4",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-11", "AC-12", "AC-20", "AC-24", "AC-31", "AC-33"],
+      "gates": ["G-03", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SRC-06",
+      "family": "SRC",
+      "title": "Reconcile concurrent edits and independent layout failures",
+      "section": "4",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-11", "AC-12", "AC-20", "AC-24", "AC-31", "AC-33"],
+      "gates": ["G-03", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SRC-07",
+      "family": "SRC",
+      "title": "Keep incomplete source usable without invented semantics",
+      "section": "4",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-11", "AC-12", "AC-20", "AC-24", "AC-31", "AC-33"],
+      "gates": ["G-03", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SRC-08",
+      "family": "SRC",
+      "title": "Track external changes and explicit source destinations",
+      "section": "4",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-11", "AC-12", "AC-20", "AC-24", "AC-31", "AC-33"],
+      "gates": ["G-03", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SRC-09",
+      "family": "SRC",
+      "title": "Identify generated source and durable editing destinations",
+      "section": "4",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-11", "AC-12", "AC-20", "AC-24", "AC-31", "AC-33"],
+      "gates": ["G-03", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "SRC-10",
+      "family": "SRC",
+      "title": "Separate editing revisions from executing source",
+      "section": "4",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-11", "AC-12", "AC-20", "AC-24", "AC-31", "AC-33"],
+      "gates": ["G-03", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-01",
+      "family": "GRF",
+      "title": "Retain syntax structure beneath the graph",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-02",
+      "family": "GRF",
+      "title": "Represent executable bodies and lexical regions",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-03",
+      "family": "GRF",
+      "title": "Bind nodes to versioned source owners",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-04",
+      "family": "GRF",
+      "title": "Validate connections using compiler semantics",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-05",
+      "family": "GRF",
+      "title": "Distinguish reevaluation from stored result reuse",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-06",
+      "family": "GRF",
+      "title": "Maintain effect ordering and conditional evaluation",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-07",
+      "family": "GRF",
+      "title": "Respect branch destinations and scope boundaries",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-08",
+      "family": "GRF",
+      "title": "Keep exception and cleanup structure intact",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-09",
+      "family": "GRF",
+      "title": "Preserve reference identity and storage lifetimes",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-10",
+      "family": "GRF",
+      "title": "Distinguish starting an awaitable from awaiting it",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-11",
+      "family": "GRF",
+      "title": "Express scheduling through explicit language and API operations",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-12",
+      "family": "GRF",
+      "title": "Attach thread observations to execution events",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-13",
+      "family": "GRF",
+      "title": "Keep visual grouping separate from reusable code",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-14",
+      "family": "GRF",
+      "title": "Track language support across independent dimensions",
+      "section": "6",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "GRF-15",
+      "family": "GRF",
+      "title": "Inventory authoring interactions for parser constructs",
+      "section": "6",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "GRF-16",
+      "family": "GRF",
+      "title": "Record feature prerequisites and validation evidence",
+      "section": "6",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "GRF-17",
+      "family": "GRF",
+      "title": "Provide defined interactions for advanced constructs",
+      "section": "6",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "GRF-18",
+      "family": "GRF",
+      "title": "Specify command preconditions and resulting source changes",
+      "section": "5",
+      "acceptanceCases": ["AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27", "AC-33"],
+      "gates": ["G-01", "G-04"],
+      "assessment": "executable"
+    },
+    {
+      "id": "LIB-01",
+      "family": "LIB",
+      "title": "Discover project APIs without invoking application code",
+      "section": "7",
+      "acceptanceCases": ["AC-05", "AC-06", "AC-08", "AC-15", "AC-22", "AC-29"],
+      "gates": ["G-04", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "LIB-02",
+      "family": "LIB",
+      "title": "Expose member binding and overload choices",
+      "section": "7",
+      "acceptanceCases": ["AC-05", "AC-06", "AC-08", "AC-15", "AC-22", "AC-29"],
+      "gates": ["G-04", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "LIB-03",
+      "family": "LIB",
+      "title": "Preserve argument modes and dynamic binding",
+      "section": "7",
+      "acceptanceCases": ["AC-05", "AC-06", "AC-08", "AC-15", "AC-22", "AC-29"],
+      "gates": ["G-04", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "LIB-04",
+      "family": "LIB",
+      "title": "Make dependency and import changes explicit",
+      "section": "7",
+      "acceptanceCases": ["AC-05", "AC-06", "AC-08", "AC-15", "AC-22", "AC-29"],
+      "gates": ["G-04", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "LIB-05",
+      "family": "LIB",
+      "title": "Represent resource borrowing and disposal responsibility",
+      "section": "7",
+      "acceptanceCases": ["AC-05", "AC-06", "AC-08", "AC-15", "AC-22", "AC-29"],
+      "gates": ["G-04", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "LIB-06",
+      "family": "LIB",
+      "title": "Expand reusable visuals into ordinary C#",
+      "section": "7",
+      "acceptanceCases": ["AC-05", "AC-06", "AC-08", "AC-15", "AC-22", "AC-29"],
+      "gates": ["G-04", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "LIB-07",
+      "family": "LIB",
+      "title": "Tie custom API presentations to actual operations",
+      "section": "7",
+      "acceptanceCases": ["AC-05", "AC-06", "AC-08", "AC-15", "AC-22", "AC-29"],
+      "gates": ["G-04", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "META-01",
+      "family": "META",
+      "title": "Store shared presentation separately from program behavior",
+      "section": "8",
+      "acceptanceCases": ["AC-01", "AC-03", "AC-23", "AC-30", "AC-33"],
+      "gates": ["G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "META-02",
+      "family": "META",
+      "title": "Define the initial versioned XML layout format",
+      "section": "8",
+      "acceptanceCases": ["AC-01", "AC-03", "AC-23", "AC-30", "AC-33"],
+      "gates": ["G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "META-03",
+      "family": "META",
+      "title": "Validate layout identities and record relationships",
+      "section": "8",
+      "acceptanceCases": ["AC-01", "AC-03", "AC-23", "AC-30", "AC-33"],
+      "gates": ["G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "META-04",
+      "family": "META",
+      "title": "Match saved presentation using multiple source clues",
+      "section": "8",
+      "acceptanceCases": ["AC-01", "AC-03", "AC-23", "AC-30", "AC-33"],
+      "gates": ["G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "META-05",
+      "family": "META",
+      "title": "Retain ambiguous attachments for manual recovery",
+      "section": "8",
+      "acceptanceCases": ["AC-01", "AC-03", "AC-23", "AC-30", "AC-33"],
+      "gates": ["G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "META-06",
+      "family": "META",
+      "title": "Persist source and layout independently",
+      "section": "8",
+      "acceptanceCases": ["AC-01", "AC-03", "AC-23", "AC-30", "AC-33"],
+      "gates": ["G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "META-07",
+      "family": "META",
+      "title": "Produce stable diffs and reconcile competing layout writes",
+      "section": "8",
+      "acceptanceCases": ["AC-01", "AC-03", "AC-23", "AC-30", "AC-33"],
+      "gates": ["G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "META-08",
+      "family": "META",
+      "title": "Preserve newer formats during migration or fallback",
+      "section": "8",
+      "acceptanceCases": ["AC-01", "AC-03", "AC-23", "AC-30", "AC-33"],
+      "gates": ["G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "META-09",
+      "family": "META",
+      "title": "Interpret shared layout consistently across editors",
+      "section": "8",
+      "acceptanceCases": ["AC-01", "AC-03", "AC-23", "AC-30", "AC-33"],
+      "gates": ["G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "META-10",
+      "family": "META",
+      "title": "Retain annotations when rebuilding presentation",
+      "section": "8",
+      "acceptanceCases": ["AC-01", "AC-03", "AC-23", "AC-30", "AC-33"],
+      "gates": ["G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "UX-01",
+      "family": "UX",
+      "title": "Create and modify declarations at chosen destinations",
+      "section": "9",
+      "acceptanceCases": ["AC-02", "AC-03", "AC-05", "AC-06", "AC-07", "AC-08", "AC-22"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "UX-02",
+      "family": "UX",
+      "title": "Navigate between source spans and graph elements",
+      "section": "9",
+      "acceptanceCases": ["AC-02", "AC-03", "AC-05", "AC-06", "AC-07", "AC-08", "AC-22"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "UX-03",
+      "family": "UX",
+      "title": "Search commands and bound symbols through palettes",
+      "section": "9",
+      "acceptanceCases": ["AC-02", "AC-03", "AC-05", "AC-06", "AC-07", "AC-08", "AC-22"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "UX-04",
+      "family": "UX",
+      "title": "Preview wider edits and refresh stale proposals",
+      "section": "9",
+      "acceptanceCases": ["AC-02", "AC-03", "AC-05", "AC-06", "AC-07", "AC-08", "AC-22"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "UX-05",
+      "family": "UX",
+      "title": "Author connections and structures using the keyboard",
+      "section": "9",
+      "acceptanceCases": ["AC-25", "AC-26"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "accessibility-study"
+    },
+    {
+      "id": "UX-06",
+      "family": "UX",
+      "title": "Provide equivalent editing through an accessible outline",
+      "section": "9",
+      "acceptanceCases": ["AC-25", "AC-26"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "accessibility-study"
+    },
+    {
+      "id": "UX-07",
+      "family": "UX",
+      "title": "Keep presentation gestures independent of source meaning",
+      "section": "9",
+      "acceptanceCases": ["AC-01", "AC-04", "AC-23"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "UX-08",
+      "family": "UX",
+      "title": "Navigate large methods through focused views",
+      "section": "9",
+      "acceptanceCases": ["AC-01", "AC-04", "AC-23"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "measurement"
+    },
+    {
+      "id": "UX-09",
+      "family": "UX",
+      "title": "Explain incomplete states and provide recovery actions",
+      "section": "9",
+      "acceptanceCases": ["AC-11", "AC-12", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-26", "AC-27"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "UX-10",
+      "family": "UX",
+      "title": "Use consistent terminology across integrations",
+      "section": "9",
+      "acceptanceCases": ["AC-11", "AC-12", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-26", "AC-27"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "UX-11",
+      "family": "UX",
+      "title": "Distinguish canvas structure and runtime evidence visually",
+      "section": "9",
+      "acceptanceCases": ["AC-25", "AC-30", "AC-32", "AC-33"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "UX-12",
+      "family": "UX",
+      "title": "Resolve provisional gestures into explicit source edits",
+      "section": "9",
+      "acceptanceCases": ["AC-25", "AC-30", "AC-32", "AC-33"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "UX-13",
+      "family": "UX",
+      "title": "Follow execution without disrupting authoring focus",
+      "section": "9",
+      "acceptanceCases": ["AC-25", "AC-30", "AC-32", "AC-33"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "UX-14",
+      "family": "UX",
+      "title": "Manage shared layouts separately from personal view state",
+      "section": "9",
+      "acceptanceCases": ["AC-25", "AC-30", "AC-32", "AC-33"],
+      "gates": ["G-04", "G-05", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-01",
+      "family": "DBG",
+      "title": "Delegate execution control to the host debugger",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-02",
+      "family": "DBG",
+      "title": "Show the precision of paused location mappings",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-03",
+      "family": "DBG",
+      "title": "Avoid inferring completion from a pause",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-04",
+      "family": "DBG",
+      "title": "Reflect verified breakpoint binding and relocation",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-05",
+      "family": "DBG",
+      "title": "Honor the debugger stepping granularity",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-06",
+      "family": "DBG",
+      "title": "Scope highlights to the selected execution context",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-07",
+      "family": "DBG",
+      "title": "Associate overlays with verified executing source",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-08",
+      "family": "DBG",
+      "title": "Track mapping changes across code generations",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-09",
+      "family": "DBG",
+      "title": "Expose unverified or mismatched source locations",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-10",
+      "family": "DBG",
+      "title": "Identify current and historical value provenance",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-11",
+      "family": "DBG",
+      "title": "Keep automatic value display free of application evaluation",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "DBG-12",
+      "family": "DBG",
+      "title": "Expire values when debugger references become invalid",
+      "section": "10",
+      "acceptanceCases": ["AC-17", "AC-18", "AC-20", "AC-21", "AC-26", "AC-32"],
+      "gates": ["G-05"],
+      "assessment": "executable"
+    },
+    {
+      "id": "CON-01",
+      "family": "CON",
+      "title": "Keep graph connections from implicitly scheduling work",
+      "section": "11",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-21", "AC-25"],
+      "gates": ["G-04", "G-05", "G-06"],
+      "assessment": "executable"
+    },
+    {
+      "id": "CON-02",
+      "family": "CON",
+      "title": "Preserve the represented concurrency operations",
+      "section": "11",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-21", "AC-25"],
+      "gates": ["G-04", "G-05", "G-06"],
+      "assessment": "executable"
+    },
+    {
+      "id": "CON-03",
+      "family": "CON",
+      "title": "Show suspension only when observed",
+      "section": "11",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-21", "AC-25"],
+      "gates": ["G-04", "G-05", "G-06"],
+      "assessment": "executable"
+    },
+    {
+      "id": "CON-04",
+      "family": "CON",
+      "title": "Distinguish completion aggregation from starting work",
+      "section": "11",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-21", "AC-25"],
+      "gates": ["G-04", "G-05", "G-06"],
+      "assessment": "executable"
+    },
+    {
+      "id": "CON-05",
+      "family": "CON",
+      "title": "Separate session and execution identity scopes",
+      "section": "11",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-21", "AC-25"],
+      "gates": ["G-04", "G-05", "G-06"],
+      "assessment": "executable"
+    },
+    {
+      "id": "CON-06",
+      "family": "CON",
+      "title": "Distinguish recursive and concurrent invocations",
+      "section": "11",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-21", "AC-25"],
+      "gates": ["G-04", "G-05", "G-06"],
+      "assessment": "executable"
+    },
+    {
+      "id": "CON-07",
+      "family": "CON",
+      "title": "Label thread and operation observations beyond color",
+      "section": "11",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-21", "AC-25"],
+      "gates": ["G-04", "G-05", "G-06"],
+      "assessment": "executable"
+    },
+    {
+      "id": "CON-08",
+      "family": "CON",
+      "title": "Distinguish causal evidence from display ordering",
+      "section": "11",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-21", "AC-25"],
+      "gates": ["G-04", "G-05", "G-06"],
+      "assessment": "executable"
+    },
+    {
+      "id": "CON-09",
+      "family": "CON",
+      "title": "Report only evidenced execution states",
+      "section": "11",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-21", "AC-25"],
+      "gates": ["G-04", "G-05", "G-06"],
+      "assessment": "executable"
+    },
+    {
+      "id": "CON-10",
+      "family": "CON",
+      "title": "Preserve cancellation and cleanup semantics",
+      "section": "11",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-21", "AC-25"],
+      "gates": ["G-04", "G-05", "G-06"],
+      "assessment": "executable"
+    },
+    {
+      "id": "TRC-01",
+      "family": "TRC",
+      "title": "Enable capture deliberately for a visible scope",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "TRC-02",
+      "family": "TRC",
+      "title": "Require observed transitions for exact edge claims",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "TRC-03",
+      "family": "TRC",
+      "title": "Disclose capture boundaries and missing coverage",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "TRC-04",
+      "family": "TRC",
+      "title": "Bound buffering and expose missing events",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "TRC-05",
+      "family": "TRC",
+      "title": "Preserve stream ordering and known causal links",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "TRC-06",
+      "family": "TRC",
+      "title": "Retain distinct identities across concurrent activity",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "TRC-07",
+      "family": "TRC",
+      "title": "Opt into value capture without implicit evaluation",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "TRC-08",
+      "family": "TRC",
+      "title": "Keep trace destination and retention under user control",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "TRC-09",
+      "family": "TRC",
+      "title": "Isolate instrumentation from authoritative project source",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "TRC-10",
+      "family": "TRC",
+      "title": "Qualify instrumentation for each supported runtime profile",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "TRC-11",
+      "family": "TRC",
+      "title": "Measure capture cost and event loss",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "measurement"
+    },
+    {
+      "id": "TRC-12",
+      "family": "TRC",
+      "title": "Present trace inspection without replay guarantees",
+      "section": "B",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-24", "AC-28", "AC-32"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "HOST-01",
+      "family": "HOST",
+      "title": "Apply edits through host document transactions",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "HOST-02",
+      "family": "HOST",
+      "title": "Resolve project ownership and compilation context",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "HOST-03",
+      "family": "HOST",
+      "title": "Adapt editor operations without redefining semantics",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "HOST-04",
+      "family": "HOST",
+      "title": "Expose only capabilities verified for the configuration",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "HOST-05",
+      "family": "HOST",
+      "title": "Respect debugger session and command ownership",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "HOST-06",
+      "family": "HOST",
+      "title": "Preserve ordinary project use after extension failures",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "HOST-07",
+      "family": "HOST",
+      "title": "Describe supported environments in a capability matrix",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "HOST-08",
+      "family": "HOST",
+      "title": "Confirm dependency distribution rights for each editor",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "dependency-review"
+    },
+    {
+      "id": "HOST-09",
+      "family": "HOST",
+      "title": "Qualify editing and runtime features separately",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "HOST-10",
+      "family": "HOST",
+      "title": "Assign operation ownership across remote components",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "HOST-11",
+      "family": "HOST",
+      "title": "Map workspace identities across execution locations",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "HOST-12",
+      "family": "HOST",
+      "title": "Reconcile service restarts and stale responses",
+      "section": "12",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "ARC-01",
+      "family": "ARC",
+      "title": "Share Roslyn semantics behind editor adapters",
+      "section": "13",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-20", "AC-24", "AC-26", "AC-29", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-06", "G-07"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "ARC-02",
+      "family": "ARC",
+      "title": "Version graph projections with their source context",
+      "section": "13",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-20", "AC-24", "AC-26", "AC-29", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "ARC-03",
+      "family": "ARC",
+      "title": "Manage analysis lifecycle within isolated workspaces",
+      "section": "13",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-20", "AC-24", "AC-26", "AC-29", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "ARC-04",
+      "family": "ARC",
+      "title": "Commit proposed source before updating authoritative projections",
+      "section": "13",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-20", "AC-24", "AC-26", "AC-29", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "ARC-05",
+      "family": "ARC",
+      "title": "Explain multi-document transaction and recovery limits",
+      "section": "13",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-20", "AC-24", "AC-26", "AC-29", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "ARC-06",
+      "family": "ARC",
+      "title": "Define a versioned contract between shared components",
+      "section": "13",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-20", "AC-24", "AC-26", "AC-29", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-06", "G-07"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "ARC-07",
+      "family": "ARC",
+      "title": "Reconcile uncertain commits before retrying requests",
+      "section": "13",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-20", "AC-24", "AC-26", "AC-29", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "ARC-08",
+      "family": "ARC",
+      "title": "Keep instrumentation in a separate diagnostic workflow",
+      "section": "13",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-20", "AC-24", "AC-26", "AC-29", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "ARC-09",
+      "family": "ARC",
+      "title": "Ground extension presentations in ordinary source operations",
+      "section": "13",
+      "acceptanceCases": ["AC-03", "AC-12", "AC-20", "AC-24", "AC-26", "AC-29", "AC-31", "AC-33"],
+      "gates": ["G-02", "G-03", "G-06", "G-07"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "OPS-01",
+      "family": "OPS",
+      "title": "Declare installation prerequisites and available capabilities",
+      "section": "14",
+      "acceptanceCases": ["AC-23", "AC-26", "AC-27", "AC-28"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "OPS-02",
+      "family": "OPS",
+      "title": "Honor editor decisions for restricted workspaces",
+      "section": "14",
+      "acceptanceCases": ["AC-19", "AC-24", "AC-28"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "OPS-03",
+      "family": "OPS",
+      "title": "Keep project data within the selected development environment",
+      "section": "14",
+      "acceptanceCases": ["AC-19", "AC-24", "AC-28"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "OPS-04",
+      "family": "OPS",
+      "title": "Make tracing scope and collection bounds explicit",
+      "section": "14",
+      "acceptanceCases": ["AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-28"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "OPS-05",
+      "family": "OPS",
+      "title": "Recover from interrupted updates and layout migrations",
+      "section": "14",
+      "acceptanceCases": ["AC-23", "AC-26", "AC-27", "AC-28"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "OPS-06",
+      "family": "OPS",
+      "title": "Expose actionable diagnostics and reviewable exports",
+      "section": "14",
+      "acceptanceCases": ["AC-19", "AC-24", "AC-28"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "OPS-07",
+      "family": "OPS",
+      "title": "Show remote ownership and revalidate reconnections",
+      "section": "14",
+      "acceptanceCases": ["AC-12", "AC-20", "AC-24", "AC-26"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "OPS-08",
+      "family": "OPS",
+      "title": "Treat rendered project content as untrusted data",
+      "section": "14",
+      "acceptanceCases": ["AC-19", "AC-24", "AC-28"],
+      "gates": ["G-06", "G-07"],
+      "assessment": "executable"
+    },
+    {
+      "id": "QUAL-01",
+      "family": "QUAL",
+      "title": "Connect capability claims to reproducible evidence",
+      "section": "15",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-22", "AC-23", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-29", "AC-30", "AC-31", "AC-32", "AC-33"],
+      "gates": ["G-01", "G-02", "G-03", "G-04", "G-05", "G-06", "G-07", "G-08"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "QUAL-02",
+      "family": "QUAL",
+      "title": "Verify source preservation independently from appearance",
+      "section": "15",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27"],
+      "gates": ["G-01", "G-02", "G-03", "G-04", "G-05", "G-06", "G-07", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "QUAL-03",
+      "family": "QUAL",
+      "title": "Inventory complete language coverage across capability dimensions",
+      "section": "15",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-22", "AC-27"],
+      "gates": ["G-01", "G-02", "G-03", "G-04", "G-05", "G-06", "G-07", "G-08"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "QUAL-04",
+      "family": "QUAL",
+      "title": "Derive performance budgets from representative measurements",
+      "section": "15",
+      "acceptanceCases": [],
+      "gates": ["G-01", "G-02", "G-03", "G-04", "G-05", "G-06", "G-07", "G-08"],
+      "assessment": "measurement"
+    },
+    {
+      "id": "QUAL-05",
+      "family": "QUAL",
+      "title": "Maintain acceptance scenarios with assigned specialists",
+      "section": "15",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-22", "AC-23", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-29", "AC-30", "AC-31", "AC-32", "AC-33"],
+      "gates": ["G-01", "G-02", "G-03", "G-04", "G-05", "G-06", "G-07", "G-08"],
+      "assessment": "design-review"
+    },
+    {
+      "id": "QUAL-06",
+      "family": "QUAL",
+      "title": "Qualify concrete editor and runtime combinations",
+      "section": "15",
+      "acceptanceCases": ["AC-12", "AC-17", "AC-20", "AC-21", "AC-24", "AC-26", "AC-27"],
+      "gates": ["G-01", "G-02", "G-03", "G-04", "G-05", "G-06", "G-07", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "QUAL-07",
+      "family": "QUAL",
+      "title": "Validate resilience and accessible operation alongside correctness",
+      "section": "15",
+      "acceptanceCases": ["AC-19", "AC-23", "AC-24", "AC-25", "AC-28"],
+      "gates": ["G-01", "G-02", "G-03", "G-04", "G-05", "G-06", "G-07", "G-08"],
+      "assessment": "executable"
+    },
+    {
+      "id": "QUAL-08",
+      "family": "QUAL",
+      "title": "Maintain release evidence and unresolved limitations",
+      "section": "15",
+      "acceptanceCases": ["AC-01", "AC-02", "AC-03", "AC-04", "AC-05", "AC-06", "AC-07", "AC-08", "AC-09", "AC-10", "AC-11", "AC-12", "AC-13", "AC-14", "AC-15", "AC-16", "AC-17", "AC-18", "AC-19", "AC-20", "AC-21", "AC-22", "AC-23", "AC-24", "AC-25", "AC-26", "AC-27", "AC-28", "AC-29", "AC-30", "AC-31", "AC-32", "AC-33"],
+      "gates": ["G-01", "G-02", "G-03", "G-04", "G-05", "G-06", "G-07", "G-08"],
+      "assessment": "design-review"
+    }
+  ]
+}
