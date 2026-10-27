@@ -122,6 +122,9 @@ jobs:
           $vsix = Get-ChildItem experiments/visual-studio -Recurse -Filter *.vsix | Select-Object -First 1
           if (-not $vsix) { throw 'The Visual Studio spike produced no VSIX.' }
           Write-Host "Built $($vsix.Name), $($vsix.Length) bytes"
+          # This restore rewrote the spike's record, so read the records again.
+          python .github/scripts/check-restore-graph.py --restored
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
   ci-passed:
     name: ci passed

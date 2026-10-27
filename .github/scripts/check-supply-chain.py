@@ -59,7 +59,8 @@ IMPORT_PROPERTIES = ("CustomBeforeMicrosoftCommonProps", "CustomAfterMicrosoftCo
                      "CustomBeforeMicrosoftVisualBasicTargets", "CustomAfterMicrosoftVisualBasicTargets",
                      "LanguageTargets", "NuGetRestoreTargets", "CSharpTargetsPath", "CommonTargetsPath",
                      "CodeAnalysisTargets", "VSTestTargets", "BeforeTargetFrameworkInferenceTargets", "RestoreTaskAssemblyFile",
-                     "BaseIntermediateOutputPath", "RestoreOutputPath", "ProjectAssetsFile")
+                     "BaseIntermediateOutputPath", "RestoreOutputPath", "ProjectAssetsFile",
+                     "UseArtifactsOutput", "ArtifactsPath", "UseArtifactsIntermediateOutput")
 # The audit and the warnings that make it fail a build: set only in the root Directory.Build.props.
 AUDIT_SETTINGS = {"NuGetAudit": "true", "NuGetAuditMode": "all", "NuGetAuditLevel": "low", "TreatWarningsAsErrors": "true"}
 # The SDK adds local folders as package sources on some machines unless these are true (root only).
@@ -207,6 +208,7 @@ CANONICAL = {name.lower(): name for name in (
     "Project", "PropertyGroup", "ItemGroup", "ImportGroup", "Import", "Sdk", "Target", "Choose", "When", "Otherwise",
     "PackageReference", "PackageDownload", "GlobalPackageReference", "PackageVersion", "NuGetAuditSuppress",
     "Include", "Update", "Remove", "Exclude", "Version", "VersionOverride", "Condition", "Reason", "Name", "Target", "UsingTask",
+    "FrameworkReference", "ItemDefinitionGroup",
 )}
 
 
@@ -338,6 +340,8 @@ def check_msbuild_files(root, files, problems):
         lower = path.name.lower()
         if path.suffix.lower() == ".rsp":
             problems.append(f"{relative}: response files can change every restore; none may exist")
+        if {"obj", "bin"} & {part.lower() for part in path.relative_to(root).parts[:-1]}:
+            problems.append(f"{relative}: build output is never committed; a committed restore record could stand in for a real one")
         if path.suffix.lower() == ".user":
             problems.append(f"{relative}: MSBuild imports .user files beside projects; none may be committed")
         if re.match(r"^directory\.(build|packages|solution)\.(props|targets)$", lower) and not (
@@ -355,7 +359,7 @@ def check_msbuild_files(root, files, problems):
         xml = parse_msbuild(path, problems)
         if xml is None:
             continue
-        item_groups = [g for g in xml.iter() if local(g.tag) == "ItemGroup"]
+        item_groups = [g for g in xml.iter() if local(g.tag) in ("ItemGroup", "ItemDefinitionGroup")]
         # Parsed values: character references and encodings are already decoded here.
         values = [v for e in xml.iter() for v in (e.text, e.tail, *e.attrib.values()) if v]
         if any(AUDIT_CODE.search(v) for v in values):
@@ -393,6 +397,11 @@ def check_msbuild_files(root, files, problems):
                                 "its record afterwards, so none may be added")
             if name.lower().startswith("known") and any(element is c for g in item_groups for c in g):
                 problems.append(f"{relative}: changes the SDK's {name} items; packs and frameworks come from the SDK as shipped")
+            if name == "FrameworkReference":
+                overrides = [k for k in element.attrib if k.lower().endswith("packversion")] + \
+                            [local(c.tag) for c in element if local(c.tag).lower().endswith("packversion")]
+                if overrides:
+                    problems.append(f"{relative}: FrameworkReference sets {', '.join(overrides)}; packs come from the SDK as shipped")
             if name in ("Import", "Sdk"):
                 problems.append(f"{relative}: has an {name} element; MSBuild files import nothing beyond their SDK")
             if name in ("GlobalPackageReference", "PackageDownload"):

@@ -406,6 +406,20 @@ class SupplyChainCheck(unittest.TestCase):
         self.repo.write("src/Odd/Odd.thing", "listed, not XML")
         self.assertRefused("Odd.thing: not well-formed XML")
 
+    # The Reviewer's seventh session (01M5XDEZ1K80P92W7GDRY2Q9EQ), info notes.
+
+    def test_the_restore_record_stays_where_the_check_reads_it(self):
+        for body, fragment in (("<PropertyGroup><UseArtifactsOutput>true</UseArtifactsOutput></PropertyGroup>", "import nothing the rules don't read"),
+                               ('<ItemGroup><FrameworkReference Update="Microsoft.NETCore.App" TargetingPackVersion="8.0.0" /></ItemGroup>', "FrameworkReference sets TargetingPackVersion"),
+                               ('<ItemDefinitionGroup><KnownFrameworkReference RuntimePackAlwaysCopyLocal="true" /></ItemDefinitionGroup>', "changes the SDK's KnownFrameworkReference")):
+            with self.subTest(body=body):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("<ItemGroup>", body + "<ItemGroup>", 1))
+                self.assertRefused(fragment)
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT)
+        self.repo.write("tests/Example.Tests/obj/project.assets.json", "{}")
+        self.repo.git("add", "-f", "tests/Example.Tests/obj/project.assets.json")
+        self.assertRefused("build output is never committed")
+
     def test_a_project_without_a_lock_file_is_refused(self):
         (self.repo.root / "tests/Example.Tests/packages.lock.json").unlink()
         self.assertRefused("has no packages.lock.json")
