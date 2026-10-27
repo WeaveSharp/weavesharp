@@ -90,3 +90,9 @@ test("ordinary code is not flagged", () => {
     assert.deepEqual(scanSource("example.ts", source), [], source);
   }
 });
+
+test("member names built from strings and computed Reflect access are found", () => {
+  assert.deepEqual(scanSource("example.ts", 'node["inner" + "HTML"] = value;').map((f) => f.sink), ["computed member from text"]);
+  assert.deepEqual(scanSource("example.ts", "node[prefix + 'HTML'] = value;").map((f) => f.sink), ["computed member from text"]);
+  assert.deepEqual(scanSource("example.ts", 'Reflect["set"](node, name, value);').map((f) => f.sink), ["reflective write"]);
+});

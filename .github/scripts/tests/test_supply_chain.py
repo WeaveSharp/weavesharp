@@ -38,6 +38,9 @@ NUGET_CONFIG = """<?xml version="1.0" encoding="utf-8"?>
     <clear />
     <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" />
   </packageSources>
+  <fallbackPackageFolders>
+    <clear />
+  </fallbackPackageFolders>
   <packageSourceMapping>
     <packageSource key="nuget.org">
       <package pattern="*" />
@@ -54,6 +57,8 @@ BUILD_PROPS = """<Project>
   <PropertyGroup>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <DisableImplicitLibraryPacksFolder>true</DisableImplicitLibraryPacksFolder>
+    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
     <RestoreLockedMode Condition="'$(CI)' == 'true'">true</RestoreLockedMode>
     <NuGetAudit>true</NuGetAudit>
     <NuGetAuditMode>all</NuGetAuditMode>
@@ -219,6 +224,201 @@ class SupplyChainCheck(unittest.TestCase):
             with self.subTest(run=run):
                 self.repo.write(".github/workflows/ci.yml", WORKFLOW + run)
                 self.assertRefused(fragment)
+
+    # The Reviewer's third session (01M5X30Y5RWNNZPAMJ6MKAY8X2) found these routes in revision 3.
+
+    def evil_project(self):
+        return """<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><NuGetLockFilePath>obj/hidden.lock.json</NuGetLockFilePath><NuGetAudit>false</NuGetAudit></PropertyGroup>
+  <ItemGroup><PackageReference Include="Example.Package" Version="*" /></ItemGroup>
+</Project>
+"""
+
+    def test_a_utf16_project_with_an_unknown_extension_is_checked(self):
+        for encoding, bom in (("utf-16", b""), ("utf-16-le", b""), ("utf-16-be", b"")):
+            with self.subTest(encoding=encoding):
+                target = self.repo.root / "src/Sample/Sample.build"
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(bom + self.evil_project().encode(encoding))
+                self.assertRefused("src/Sample/Sample.build: sets NuGetLockFilePath")
+                target.unlink()
+
+    def test_a_project_behind_a_long_preamble_is_checked(self):
+        preamble = "<?xml version=\"1.0\"?>\n" + "<!-- " + "x" * 7000 + " -->\n<?note a processing instruction?>\n"
+        self.repo.write("src/Sample/Sample.build", preamble + self.evil_project())
+        self.assertRefused("src/Sample/Sample.build: sets NuGetAudit")
+
+    def test_every_project_a_solution_lists_is_checked(self):
+        self.repo.write("Example.slnx", '<Solution>\n  <Project Path="src/Odd/Odd.thing" Type="C#" />\n</Solution>\n')
+        self.repo.write("src/Odd/Odd.thing", self.evil_project())
+        self.assertRefused("src/Odd/Odd.thing: has no packages.lock.json")
+
+    def test_audit_codes_are_found_after_character_references_are_decoded(self):
+        for value in ("$(NoWarn);NU&#49;903", "NU&#x31;901", "nu1999"):
+            with self.subTest(value=value):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace(
+                    "<ItemGroup>", f"<PropertyGroup><NoWarn>{value}</NoWarn></PropertyGroup><ItemGroup>"))
+                self.assertRefused("names a NuGet audit warning")
+
+    def test_warning_lists_name_literal_codes_only(self):
+        for body in ("<PropertyGroup><A>NU19</A><B>03</B><NoWarn>$(NoWarn);$(A)$(B)</NoWarn></PropertyGroup>",
+                     "<PropertyGroup><MSBuildWarningsAsMessages>$(Codes)</MSBuildWarningsAsMessages></PropertyGroup>",
+                     '<ItemGroup><PackageReference Update="Example.Package" NoWarn="$(Hidden)" /></ItemGroup>',
+                     "<PropertyGroup><WarningsNotAsErrors>$([System.String]::Concat('NU19','03'))</WarningsNotAsErrors></PropertyGroup>"):
+            with self.subTest(body=body):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("<ItemGroup>", body + "<ItemGroup>", 1))
+                self.assertRefused("warning lists name literal codes only")
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj",
+                        PROJECT.replace("<ItemGroup>", "<PropertyGroup><NoWarn>$(NoWarn);CA1822;IDE0005</NoWarn></PropertyGroup><ItemGroup>", 1))
+        self.assertEqual(self.repo.problems(), [])
+
+    def test_inline_comments_outside_quotes_are_not_commands(self):
+        self.repo.write(".github/workflows/ci.yml", WORKFLOW + "      - run: node build.js # moving away from npx\n")
+        self.assertEqual(self.repo.problems(), [])
+        self.repo.write(".github/workflows/ci.yml", WORKFLOW + '      - run: echo "a # b" && npx some-tool\n')
+        self.assertRefused("npx fetches and runs packages")
+
+    # The Reviewer's fourth session (01M5X5S3BQ19GF2Y1GNQ9X53SK): MSBuild names are case-insensitive.
+
+    def test_msbuild_names_are_matched_in_any_case(self):
+        cases = {
+            "<PropertyGroup><nugetaudit>false</nugetaudit></PropertyGroup>": "sets NuGetAudit",
+            "<propertygroup><NUGETLOCKFILEPATH>obj/alt.lock.json</NUGETLOCKFILEPATH></propertygroup>": "sets NuGetLockFilePath",
+            "<PropertyGroup><restoreSources>https://example.invalid/feed</restoreSources></PropertyGroup>": "sets RestoreSources",
+            "<PropertyGroup><treatwarningsaserrors>false</treatwarningsaserrors></PropertyGroup>": "sets TreatWarningsAsErrors",
+            "<PropertyGroup><managepackageversionscentrally>false</managepackageversionscentrally></PropertyGroup>": "sets ManagePackageVersionsCentrally",
+            '<ItemGroup><packagereference include="Example.Other" version="*" /></ItemGroup>': "sets Version",
+            '<ItemGroup><PackageReference Include="Example.Other"><VERSION>9.9.9</VERSION></PackageReference></ItemGroup>': "sets Version",
+            "<PropertyGroup><A>NU19</A><B>03</B><nowarn>$(NoWarn);$(A)$(B)</nowarn></PropertyGroup>": "warning lists name literal codes only",
+            '<import project="../x.targets" />': "has an Import element",
+        }
+        for body, fragment in cases.items():
+            with self.subTest(body=body):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("<ItemGroup>", body + "<ItemGroup>", 1))
+                self.assertRefused(fragment)
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace('Sdk="Microsoft.NET.Sdk"', 'Sdk="microsoft.net.sdk"'))
+        self.assertEqual(self.repo.problems(), [])
+
+    def test_properties_that_redirect_imports_are_refused(self):
+        for name in ("CustomAfterMicrosoftCommonTargets", "custombeforemicrosoftcommonprops", "DirectoryBuildPropsPath",
+                     "ImportDirectoryBuildProps", "MSBuildExtensionsPath"):
+            with self.subTest(name=name):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj",
+                                PROJECT.replace("<ItemGroup>", f"<PropertyGroup><{name}>x</{name}></PropertyGroup><ItemGroup>", 1))
+                self.assertRefused("MSBuild files import nothing the rules don't read")
+
+    def test_projects_are_found_after_leading_whitespace_and_in_utf32(self):
+        evil = self.evil_project()
+        cases = {"src/A/A.build": ("\n" * 40 + evil).encode("utf-8"),
+                 "src/B/B.build": ("  \n  " + evil).encode("utf-16-le"),
+                 "src/C/C.build": evil.encode("utf-32")}
+        for name, data in cases.items():
+            with self.subTest(name=name):
+                target = self.repo.root / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(data)
+                self.assertRefused(f"{name}: sets NuGetLockFilePath")
+                target.unlink()
+
+    def test_solution_entries_are_matched_in_any_case(self):
+        self.repo.write("Example.SLNX", '<solution>\n  <project path="src/Odd/Odd.thing" />\n</solution>\n')
+        self.repo.write("src/Odd/Odd.thing", self.evil_project())
+        self.assertRefused("src/Odd/Odd.thing: has no packages.lock.json")
+        self.repo.write("src/Odd/Odd.thing", "plain text, listed as a project anyway")
+        self.assertRefused("Odd.thing: not well-formed XML")
+
+    # The Reviewer's fifth session (01M5X7ZAMTCZRS9E2AF2VXMA5P); the restore-graph check is the backstop.
+
+    def test_files_msbuild_imports_by_name_are_refused_below_the_root(self):
+        for name, fragment in (("tests/Directory.Build.props", "imports this by name"), ("src/Directory.Build.targets", "imports this by name"),
+                               ("Directory.Solution.props", "imports this by name"), ("tests/Example.Tests/Example.Tests.csproj.user", "imports .user files"),
+                               ("Directory.Build.RSP", "response files")):
+            with self.subTest(name=name):
+                self.repo.write(name, "<Project />\n")
+                self.assertRefused(fragment)
+                (self.repo.root / name).unlink()
+
+    def test_root_settings_are_set_once_unconditionally(self):
+        for extra, fragment in (("<PropertyGroup><NuGetAudit>false</NuGetAudit></PropertyGroup>", "NuGetAudit must be set exactly once"),
+                                ("<Choose><Otherwise><PropertyGroup><TreatWarningsAsErrors>false</TreatWarningsAsErrors></PropertyGroup></Otherwise></Choose>", "has a Choose element"),
+                                ('<Target Name="Quiet" BeforeTargets="Restore"><PropertyGroup><NuGetAudit>false</NuGetAudit></PropertyGroup></Target>', "has a Target element")):
+            with self.subTest(extra=extra):
+                self.repo.write("Directory.Build.props", BUILD_PROPS.replace("</Project>", extra + "</Project>"))
+                self.assertRefused(fragment)
+        self.repo.write("Directory.Build.props", BUILD_PROPS)
+        self.repo.write("Directory.Packages.props", PACKAGES_PROPS.replace("</Project>", "<PropertyGroup><ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally></PropertyGroup></Project>"))
+        self.assertRefused("ManagePackageVersionsCentrally must be set exactly once")
+
+    def test_the_central_file_downloads_nothing_and_versions_are_attributes(self):
+        for item, fragment in (('<PackageDownload Include="Example.Downloaded" Version="[1.0.0]" />', "declares PackageDownload"),
+                               ('<GlobalPackageReference Include="Example.Global" Version="1.0.0" />', "declares GlobalPackageReference"),
+                               ('<PackageVersion Include="Example.Other" Version="4.0.2"><Version>4.*</Version></PackageVersion>', "sets its version in a child element")):
+            with self.subTest(item=item):
+                self.repo.write("Directory.Packages.props", PACKAGES_PROPS.replace("</ItemGroup>", item + "</ItemGroup>"))
+                self.assertRefused(fragment)
+
+    def test_more_import_redirects_and_the_config_root_are_refused(self):
+        for name, fragment in (("AfterMicrosoftNETSdkTargets", "import nothing the rules don't read"), ("CommonTargetsPath", "import nothing the rules don't read"),
+                               ("RestoreRootConfigDirectory", "sets RestoreRootConfigDirectory")):
+            with self.subTest(name=name):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("<ItemGroup>", f"<PropertyGroup><{name}>x</{name}></PropertyGroup><ItemGroup>", 1))
+                self.assertRefused(fragment)
+
+    def test_a_declared_single_byte_encoding_and_a_utf16_solution_are_read(self):
+        latin = '<?xml version="1.0" encoding="iso-8859-1"?>\n<!-- caf\xe9 -->\n' + self.evil_project()
+        target = self.repo.root / "src/Latin/Latin.anything"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(latin.encode("iso-8859-1"))
+        self.assertRefused("src/Latin/Latin.anything: sets NuGetLockFilePath")
+        target.unlink()
+        (self.repo.root / "Example.slnx").write_bytes('<Solution><Project Path="src/Odd/Odd.thing" /></Solution>\n'.encode("utf-16"))
+        self.repo.write("src/Odd/Odd.thing", "listed, not XML")
+        self.assertRefused("Odd.thing: not well-formed XML")
+
+    def test_fallback_folders_must_be_cleared(self):
+        self.repo.write("NuGet.Config", NUGET_CONFIG.replace("  <fallbackPackageFolders>\n    <clear />\n  </fallbackPackageFolders>\n", ""))
+        self.assertRefused("fallbackPackageFolders must hold exactly <clear />")
+        self.repo.write("NuGet.Config", NUGET_CONFIG.replace("    <clear />\n  </fallbackPackageFolders>", '    <clear />\n    <add key="x" value="C:\\packages" />\n  </fallbackPackageFolders>'))
+        self.assertRefused("fallbackPackageFolders must hold exactly <clear />")
+
+    # The Reviewer's sixth session (01M5XAQAE3EM8XRDRTCZGRHCJH).
+
+    def test_custom_targets_and_sdk_knowledge_items_are_refused(self):
+        for body, fragment in (('<Target Name="Quiet" BeforeTargets="_GenerateRestoreProjectSpec" />', "has a Target element"),
+                               ('<UsingTask TaskName="X" AssemblyFile="x.dll" />', "has a UsingTask element"),
+                               ('<ItemGroup><KnownFrameworkReference Update="Microsoft.NETCore.App" TargetingPackVersion="1.0.0" /></ItemGroup>', "changes the SDK's KnownFrameworkReference"),
+                               ("<Choose><When Condition=\"true\"><ItemGroup><knownappHostPack Update=\"x\" /></ItemGroup></When></Choose>", "changes the SDK's knownappHostPack"),
+                               ("<PropertyGroup><BaseIntermediateOutputPath>elsewhere/</BaseIntermediateOutputPath></PropertyGroup>", "import nothing the rules don't read")):
+            with self.subTest(body=body):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("<ItemGroup>", body + "<ItemGroup>", 1))
+                self.assertRefused(fragment)
+
+    def test_nuget_config_holds_only_the_allowed_sections(self):
+        audit = '  <auditSources>\n    <clear />\n    <add key="quiet" value="https://example.invalid/v3/index.json" />\n  </auditSources>\n</configuration>'
+        self.repo.write("NuGet.Config", NUGET_CONFIG.replace("</configuration>", audit))
+        self.assertRefused("has a auditSources section")
+        self.repo.write("NuGet.Config", NUGET_CONFIG.replace('protocolVersion="3"', 'protocolVersion="3" allowInsecureConnections="true"'))
+        self.assertRefused("allowInsecureConnections is not allowed")
+
+    def test_a_classic_solution_lists_projects_in_any_case(self):
+        self.repo.write("Example.sln", '\ufeff\nMicrosoft Visual Studio Solution File, Format Version 12.00\n'
+                        '  project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odd", "src\\Odd\\Odd.thing", "{11111111-1111-1111-1111-111111111111}"\nEndProject\n')
+        self.repo.write("src/Odd/Odd.thing", "listed, not XML")
+        self.assertRefused("Odd.thing: not well-formed XML")
+
+    # The Reviewer's seventh session (01M5XDEZ1K80P92W7GDRY2Q9EQ), info notes.
+
+    def test_the_restore_record_stays_where_the_check_reads_it(self):
+        for body, fragment in (("<PropertyGroup><UseArtifactsOutput>true</UseArtifactsOutput></PropertyGroup>", "import nothing the rules don't read"),
+                               ('<ItemGroup><FrameworkReference Update="Microsoft.NETCore.App" TargetingPackVersion="8.0.0" /></ItemGroup>', "FrameworkReference sets TargetingPackVersion"),
+                               ('<ItemDefinitionGroup><KnownFrameworkReference RuntimePackAlwaysCopyLocal="true" /></ItemDefinitionGroup>', "changes the SDK's KnownFrameworkReference")):
+            with self.subTest(body=body):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("<ItemGroup>", body + "<ItemGroup>", 1))
+                self.assertRefused(fragment)
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT)
+        self.repo.write("tests/Example.Tests/obj/project.assets.json", "{}")
+        self.repo.git("add", "-f", "tests/Example.Tests/obj/project.assets.json")
+        self.assertRefused("build output is never committed")
 
     def test_a_project_without_a_lock_file_is_refused(self):
         (self.repo.root / "tests/Example.Tests/packages.lock.json").unlink()

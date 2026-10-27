@@ -83,11 +83,20 @@ const ELEMENTS: Readonly<Record<string, ElementRule>> = {
 
 const ARIA_NAME = /^aria-[a-z]{2,32}$/;
 
-/** Attributes whose text a tooltip shows or assistive technology announces. */
-const READABLE: ReadonlySet<string> = new Set([
-  "title", "aria-label", "aria-description", "aria-roledescription", "aria-valuetext", "aria-placeholder",
-  "aria-braillelabel", "aria-brailleroledescription",
+/** ARIA attributes that name other elements by id: they hold identifiers and nothing else. */
+const ARIA_REFERENCES: ReadonlySet<string> = new Set([
+  "aria-labelledby", "aria-describedby", "aria-controls", "aria-owns", "aria-activedescendant",
+  "aria-details", "aria-errormessage", "aria-flowto",
 ]);
+const identifierList: Check = (value) => value.length <= 1024 && value.split(" ").every((part) => identifier(part));
+
+/**
+ * Attributes whose text a tooltip shows or assistive technology may announce: the title and
+ * every ARIA attribute that is not a list of references. They get a label's markers.
+ */
+function readable(attribute: string): boolean {
+  return attribute === "title" || (ARIA_NAME.test(attribute) && !ARIA_REFERENCES.has(attribute));
+}
 const DATA_NAME = /^data-ws-[a-z][a-z0-9-]{0,31}$/;
 
 function checkFor(rule: ElementRule, name: string): Check | undefined {
@@ -98,7 +107,7 @@ function checkFor(rule: ElementRule, name: string): Check | undefined {
     return GLOBAL[name];
   }
   if (ARIA_NAME.test(name)) {
-    return anyText;
+    return ARIA_REFERENCES.has(name) ? identifierList : anyText;
   }
   if (DATA_NAME.test(name)) {
     return anyText;
@@ -125,8 +134,8 @@ export function element(document: DocumentLike, name: string, attributes: Attrib
       throw new IsolationError("An attribute value failed its check.");
     }
     // Text people read or hear gets a label's treatment: bounded, hidden characters shown as markers.
-    const value = READABLE.has(attribute) ? safeLabel(given).text : given;
-    if (!READABLE.has(attribute) && !check(value)) {
+    const value = readable(attribute) ? safeLabel(given).text : given;
+    if (!readable(attribute) && !check(value)) {
       throw new IsolationError("An attribute value failed its check.");
     }
     created.setAttribute(attribute, value);

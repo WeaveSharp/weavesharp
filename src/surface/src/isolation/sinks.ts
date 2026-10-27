@@ -39,7 +39,9 @@ const SINKS: ReadonlyArray<readonly [string, RegExp]> = [
   ["style or script element", /createElement(NS)?\s*\([^)]*["'`](script|style|iframe|frame|object|embed|link|meta|base|form)["'`]/g],
   ["computed element name", /\bcreateElement\s*\((?!\s*["'`][A-Za-z][A-Za-z0-9-]*["'`]\s*[,)])|\bcreateElementNS\s*\([^,()]*,(?!\s*["'`][A-Za-z][A-Za-z0-9-]*["'`]\s*[,)])/g],
   ["computed sink member", new RegExp(`\\[\\s*["'\`](${COMPUTED})["'\`]\\s*\\]`, "g")],
-  ["reflective write", /\bReflect\s*\.\s*(set|apply|construct|defineProperty)\b|\bObject\s*\.\s*(assign|defineProperty|defineProperties)\s*\(/g],
+  ["reflective write", /\bReflect\s*(\.\s*(set|apply|construct|defineProperty)\b|\[)|\bObject\s*\.\s*(assign|defineProperty|defineProperties)\s*\(/g],
+  // A member name built from strings could spell any sink.
+  ["computed member from text", /\[\s*["'`][^"'`\]]*["'`]\s*\+|\+\s*["'`][^"'`\]]*["'`]\s*\]/g],
   ["style sink", /\.\s*cssText\b|\binsertRule\b|\breplaceSync\b|\badoptedStyleSheets\b|\bnew\s+CSSStyleSheet\b|\.\s*style\s*(\.\s*setProperty\b|=(?!=)|\[)/g],
 ];
 

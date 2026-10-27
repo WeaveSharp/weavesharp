@@ -73,3 +73,10 @@ test("joiners and variation selectors that shape scripts and emoji stay unmarked
     assert.equal(hasHiddenCharacters(value), false, value);
   }
 });
+
+test("Mongolian free variation selectors shape text and stay unmarked", () => {
+  for (const value of ["ᠠ᠋", "ᠠ᠌", "ᠠ᠍", "ᠠ᠏"]) {
+    assert.deepEqual(safeLabel(value).warnings, [], value);
+  }
+  assert.equal(safeLabel("ᠠ᠎").warnings[0]?.kind, "invisible");
+});

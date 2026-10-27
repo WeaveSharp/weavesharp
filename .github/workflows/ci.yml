@@ -22,7 +22,8 @@ env:
 
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  # Superseded pull request runs stop; every commit on main keeps its own run.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
@@ -49,6 +50,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           python3 .github/scripts/tests/test_supply_chain.py
+          python3 .github/scripts/tests/test_check_actions.py
           python3 .github/scripts/check-supply-chain.py
 
       - name: Set up .NET from global.json
@@ -56,6 +58,15 @@ jobs:
         uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
         with:
           global-json-file: global.json
+
+      - name: Check NuGet's restore graph
+        # What restore will actually do, from MSBuild's own evaluation, on every platform:
+        # a condition can make a platform's restore differ from what the files appear to say.
+        if: hashFiles('global.json') != ''
+        run: |
+          python="$(command -v python3 || command -v python)"
+          "$python" .github/scripts/tests/test_restore_graph.py
+          "$python" .github/scripts/check-restore-graph.py
 
       - name: Set up Node.js
         if: hashFiles('package-lock.json') != ''
@@ -86,6 +97,9 @@ jobs:
             created="$(git ls-files --others --exclude-standard -- '*packages.lock.json')"
             if [ -n "$created" ]; then echo "::error::restore created uncommitted lock files: $created"; exit 1; fi
             if [ "$RUNNER_OS" = "Linux" ]; then python3 .github/scripts/dependency-register.py check; fi
+            # What each restore recorded it did: the authoritative check, read after the real restores.
+            python="$(command -v python3 || command -v python)"
+            "$python" .github/scripts/check-restore-graph.py --restored
             dotnet build --no-restore --configuration Release
             dotnet test --no-build --configuration Release
           else
@@ -108,6 +122,9 @@ jobs:
           $vsix = Get-ChildItem experiments/visual-studio -Recurse -Filter *.vsix | Select-Object -First 1
           if (-not $vsix) { throw 'The Visual Studio spike produced no VSIX.' }
           Write-Host "Built $($vsix.Name), $($vsix.Length) bytes"
+          # This restore rewrote the spike's record, so read the records again.
+          python .github/scripts/check-restore-graph.py --restored
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
   ci-passed:
     name: ci passed
