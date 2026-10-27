@@ -96,5 +96,36 @@ class RestoreGraph(unittest.TestCase):
         self.assertRefused("audits as")
 
 
+    def test_the_record_a_restore_leaves_catches_what_a_separate_evaluation_misses(self):
+        # A condition true only while restoring: the separate graph evaluation never sees it.
+        quiet = ("<Project Sdk=\"Microsoft.NET.Sdk\"><PropertyGroup Condition=\"'$(MSBuildIsRestoring)' == 'true'\">"
+                 "<TreatWarningsAsErrors>false</TreatWarningsAsErrors></PropertyGroup></Project>\n")
+        self.repo.write("tests/Example.Tests/Example.Tests.csproj", quiet)
+        self.repo.write("tests/Example.Tests/packages.lock.json", '{"version": 1, "dependencies": {"net10.0": {}}}')
+        self.assertEqual(self.problems(), [])
+        restore = helpers.subprocess.run(["dotnet", "restore", str(self.repo.root / "tests/Example.Tests/Example.Tests.csproj")],
+                                         capture_output=True, text=True, env=dict(graph.os.environ, CI="true", DOTNET_CLI_TELEMETRY_OPTOUT="1"))
+        self.assertEqual(restore.returncode, 0, restore.stdout[-2000:])
+        problems = graph.check_restored(self.repo.root)[0]
+        self.assertTrue(any("does not treat warnings as errors" in p for p in problems), problems)
+
+    def test_a_project_without_a_restore_record_is_refused(self):
+        problems = graph.check_restored(self.repo.root)[0]
+        self.assertTrue(any("no obj/project.assets.json" in p for p in problems), problems)
+
+    def test_only_advisories_the_root_suppresses_with_a_reason_may_be_skipped(self):
+        spec = {"restore": {"projectStyle": "PackageReference", "sources": {graph.NUGET_ORG: {}}, "packagesPath": "/elsewhere",
+                            "restoreLockProperties": {"restorePackagesWithLockFile": "true", "restoreLockedMode": True},
+                            "restoreAuditProperties": {"enableAudit": "true", "auditLevel": "low", "auditMode": "all",
+                                                       "suppressedAdvisories": {"https://github.com/advisories/GHSA-a": None}},
+                            "warningProperties": {"allWarningsAsErrors": True},
+                            "centralPackageVersionsManagementEnabled": True, "CentralPackageTransitivePinningEnabled": True}}
+        refused = []
+        graph.check_project("p", spec, self.repo.root, refused)
+        self.assertTrue(any("suppresses advisories" in p for p in refused), refused)
+        allowed = []
+        graph.check_project("p", spec, self.repo.root, allowed, frozenset({"https://github.com/advisories/GHSA-a"}))
+        self.assertEqual(allowed, [])
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

@@ -58,7 +58,8 @@ IMPORT_PROPERTIES = ("CustomBeforeMicrosoftCommonProps", "CustomAfterMicrosoftCo
                      "CustomBeforeMicrosoftCommonCrossTargetingTargets", "CustomAfterMicrosoftCommonCrossTargetingTargets",
                      "CustomBeforeMicrosoftVisualBasicTargets", "CustomAfterMicrosoftVisualBasicTargets",
                      "LanguageTargets", "NuGetRestoreTargets", "CSharpTargetsPath", "CommonTargetsPath",
-                     "CodeAnalysisTargets", "VSTestTargets", "BeforeTargetFrameworkInferenceTargets", "RestoreTaskAssemblyFile")
+                     "CodeAnalysisTargets", "VSTestTargets", "BeforeTargetFrameworkInferenceTargets", "RestoreTaskAssemblyFile",
+                     "BaseIntermediateOutputPath", "RestoreOutputPath", "ProjectAssetsFile")
 # The audit and the warnings that make it fail a build: set only in the root Directory.Build.props.
 AUDIT_SETTINGS = {"NuGetAudit": "true", "NuGetAuditMode": "all", "NuGetAuditLevel": "low", "TreatWarningsAsErrors": "true"}
 # The SDK adds local folders as package sources on some machines unless these are true (root only).
@@ -205,7 +206,7 @@ CANONICAL = {name.lower(): name for name in (
     *SOURCE_PROPERTIES, *AUDIT_SETTINGS, *WARNING_LISTS, *IMPORT_PROPERTIES,
     "Project", "PropertyGroup", "ItemGroup", "ImportGroup", "Import", "Sdk", "Target", "Choose", "When", "Otherwise",
     "PackageReference", "PackageDownload", "GlobalPackageReference", "PackageVersion", "NuGetAuditSuppress",
-    "Include", "Update", "Remove", "Exclude", "Version", "VersionOverride", "Condition", "Reason", "Name",
+    "Include", "Update", "Remove", "Exclude", "Version", "VersionOverride", "Condition", "Reason", "Name", "Target", "UsingTask",
 )}
 
 
@@ -354,6 +355,7 @@ def check_msbuild_files(root, files, problems):
         xml = parse_msbuild(path, problems)
         if xml is None:
             continue
+        item_groups = [g for g in xml.iter() if local(g.tag) == "ItemGroup"]
         # Parsed values: character references and encodings are already decoded here.
         values = [v for e in xml.iter() for v in (e.text, e.tail, *e.attrib.values()) if v]
         if any(AUDIT_CODE.search(v) for v in values):
@@ -386,6 +388,11 @@ def check_msbuild_files(root, files, problems):
                     problems.append(f"{relative}: suppresses an advisory; suppressions belong in the root Directory.Build.props")
                 elif not (reason or "").strip():
                     problems.append(f"{relative}: suppresses {element.get('Include') or '?'} without a Reason")
+            if name in ("Target", "UsingTask"):
+                problems.append(f"{relative}: has a {name} element; custom targets run code during restore and could change "
+                                "its record afterwards, so none may be added")
+            if name.lower().startswith("known") and any(element is c for g in item_groups for c in g):
+                problems.append(f"{relative}: changes the SDK's {name} items; packs and frameworks come from the SDK as shipped")
             if name in ("Import", "Sdk"):
                 problems.append(f"{relative}: has an {name} element; MSBuild files import nothing beyond their SDK")
             if name in ("GlobalPackageReference", "PackageDownload"):
@@ -425,8 +432,12 @@ def check_nuget_config(root, files, problems):
     if [(e.get("value") or "") for e in added] != [NUGET_ORG]:
         problems.append(f"NuGet.Config: the only package source must be {NUGET_ORG}")
     key = added[0].get("key") if len(added) == 1 else None
-    if any(local(e.tag) in ("disabledPackageSources", "packageSourceCredentials", "config") for e in xml):
-        problems.append("NuGet.Config: no disabled sources, source credentials or config settings")
+    for element in xml:
+        if local(element.tag) not in ("packageSources", "fallbackPackageFolders", "packageSourceMapping"):
+            problems.append(f"NuGet.Config: has a {local(element.tag)} section; only packageSources, fallbackPackageFolders "
+                            "and packageSourceMapping are allowed (an auditSources section could hide every advisory)")
+    if any(key.lower() == "allowinsecureconnections" for element in xml.iter() for key in element.attrib):
+        problems.append("NuGet.Config: allowInsecureConnections is not allowed")
     # Machine-wide configurations (Visual Studio's, for one) add fallback folders; the root clears them all.
     fallback = [e for e in xml if local(e.tag) == "fallbackPackageFolders"]
     if len(fallback) != 1 or [local(c.tag) for c in fallback[0]] != ["clear"]:

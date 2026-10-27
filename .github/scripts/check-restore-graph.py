@@ -7,8 +7,13 @@ exact input restore uses, for every project the repository holds, and refuses
 any project whose effective restore is not the one the rules require.
 
     python3 .github/scripts/check-restore-graph.py [repository root]
+    python3 .github/scripts/check-restore-graph.py --restored [repository root]
 
-It needs the .NET SDK and no network: generating the graph restores nothing.
+The first form generates the graph before anything is restored, so a broken
+rule fails fast; it needs no network. A separate evaluation can be told apart
+from the restore, though, so the second form is the one that counts: run after
+CI's restores, it reads the spec each restore itself recorded in the project's
+obj/project.assets.json.
 """
 
 import importlib.util
@@ -47,7 +52,7 @@ def generate(target, output):
     return json.loads(output.read_text(encoding="utf-8")).get("projects", {}), []
 
 
-def check_project(name, spec, root, problems):
+def check_project(name, spec, root, problems, allowed_suppressions=frozenset()):
     restore = spec.get("restore", {})
     def refuse(message):
         problems.append(f"{name}: {message}")
@@ -69,8 +74,9 @@ def check_project(name, spec, root, problems):
     audit = restore.get("restoreAuditProperties") or {}
     if (str(audit.get("enableAudit")).lower(), audit.get("auditLevel"), audit.get("auditMode")) != ("true", "low", "all"):
         refuse(f"audits as {audit}; the audit covers all packages at level low")
-    if audit.get("suppressedAdvisories"):
-        refuse(f"suppresses advisories {sorted(audit['suppressedAdvisories'])}")
+    unexplained = sorted(set(audit.get("suppressedAdvisories") or {}) - allowed_suppressions)
+    if unexplained:
+        refuse(f"suppresses advisories {unexplained} that the root Directory.Build.props doesn't suppress with a reason")
     warnings = restore.get("warningProperties") or {}
     if warnings.get("allWarningsAsErrors") is not True:
         refuse("does not treat warnings as errors, so an advisory would not stop the restore")
@@ -97,6 +103,43 @@ def check_project(name, spec, root, problems):
                 refuse(f"{framework} pins {package} at {version!r}; central versions are exact")
 
 
+def root_suppressions(rules, root):
+    """Advisories the root Directory.Build.props suppresses with a Reason: the only ones a restore may skip."""
+    xml = rules.parse_msbuild(root / "Directory.Build.props", [])
+    if xml is None:
+        return frozenset()
+    allowed = set()
+    for element in xml.iter():
+        if rules.local(element.tag) == "NuGetAuditSuppress":
+            reason = element.get("Reason") or next((c.text for c in element if rules.local(c.tag) == "Reason"), None)
+            if (reason or "").strip() and element.get("Include"):
+                allowed.add(element.get("Include"))
+    return frozenset(allowed)
+
+
+def check_restored(root):
+    """Reads the spec each project's restore recorded, after CI's restores."""
+    root = pathlib.Path(root).resolve()
+    rules = supply_chain()
+    files = rules.repository_files(root)
+    projects = sorted(p.resolve() for p in rules.msbuild_files(files, root) if rules.is_project(p))
+    allowed = root_suppressions(rules, root)
+    problems = []
+    for project in projects:
+        name = project.relative_to(root).as_posix()
+        assets = project.parent / "obj" / "project.assets.json"
+        if not assets.is_file():
+            problems.append(f"{name}: no obj/project.assets.json; every project restores where the rules can read its record")
+            continue
+        spec = json.loads(assets.read_text(encoding="utf-8")).get("project") or {}
+        recorded = pathlib.Path((spec.get("restore") or {}).get("projectPath") or "/").resolve()
+        if recorded != project:
+            problems.append(f"{name}: obj/project.assets.json records another project ({recorded.name})")
+            continue
+        check_project(name, spec, root, problems, allowed)
+    return problems, len(projects)
+
+
 def check(root):
     root = pathlib.Path(root).resolve()
     rules = supply_chain()
@@ -116,21 +159,25 @@ def check(root):
     for project in projects:
         if str(project) not in graph:
             problems.append(f"{project.relative_to(root).as_posix()}: has no entry in NuGet's restore graph")
+    allowed = root_suppressions(rules, root)
     for path, spec in sorted(graph.items()):
         resolved = pathlib.Path(path)
         name = resolved.relative_to(root).as_posix() if root in resolved.parents else path
-        check_project(name, spec, root, problems)
+        check_project(name, spec, root, problems, allowed)
     return problems, len(graph)
 
 
 def main(argv):
-    problems, count = check(argv[1] if len(argv) > 1 else ".")
+    restored = "--restored" in argv[1:]
+    arguments = [a for a in argv[1:] if a != "--restored"]
+    problems, count = (check_restored if restored else check)(arguments[0] if arguments else ".")
+    label = "restore record" if restored else "restore graph"
     for problem in problems:
-        print(f"restore graph: {problem}")
+        print(f"{label}: {problem}")
     if problems:
-        print(f"{len(problems)} restore-graph rule(s) broken; see docs/dependencies/README.md.")
+        print(f"{len(problems)} {label} rule(s) broken; see docs/dependencies/README.md.")
         return 1
-    print(f"NuGet's restore graph holds the rules for all {count} projects.")
+    print(f"The {label}s hold the rules for all {count} projects." if restored else f"NuGet's restore graph holds the rules for all {count} projects.")
     return 0
 
 
