@@ -97,6 +97,9 @@ jobs:
             created="$(git ls-files --others --exclude-standard -- '*packages.lock.json')"
             if [ -n "$created" ]; then echo "::error::restore created uncommitted lock files: $created"; exit 1; fi
             if [ "$RUNNER_OS" = "Linux" ]; then python3 .github/scripts/dependency-register.py check; fi
+            # What each restore recorded it did: the authoritative check, read after the real restores.
+            python="$(command -v python3 || command -v python)"
+            "$python" .github/scripts/check-restore-graph.py --restored
             dotnet build --no-restore --configuration Release
             dotnet test --no-build --configuration Release
           else

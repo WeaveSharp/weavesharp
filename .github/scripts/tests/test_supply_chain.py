@@ -381,6 +381,31 @@ class SupplyChainCheck(unittest.TestCase):
         self.repo.write("NuGet.Config", NUGET_CONFIG.replace("    <clear />\n  </fallbackPackageFolders>", '    <clear />\n    <add key="x" value="C:\\packages" />\n  </fallbackPackageFolders>'))
         self.assertRefused("fallbackPackageFolders must hold exactly <clear />")
 
+    # The Reviewer's sixth session (01M5XAQAE3EM8XRDRTCZGRHCJH).
+
+    def test_custom_targets_and_sdk_knowledge_items_are_refused(self):
+        for body, fragment in (('<Target Name="Quiet" BeforeTargets="_GenerateRestoreProjectSpec" />', "has a Target element"),
+                               ('<UsingTask TaskName="X" AssemblyFile="x.dll" />', "has a UsingTask element"),
+                               ('<ItemGroup><KnownFrameworkReference Update="Microsoft.NETCore.App" TargetingPackVersion="1.0.0" /></ItemGroup>', "changes the SDK's KnownFrameworkReference"),
+                               ("<Choose><When Condition=\"true\"><ItemGroup><knownappHostPack Update=\"x\" /></ItemGroup></When></Choose>", "changes the SDK's knownappHostPack"),
+                               ("<PropertyGroup><BaseIntermediateOutputPath>elsewhere/</BaseIntermediateOutputPath></PropertyGroup>", "import nothing the rules don't read")):
+            with self.subTest(body=body):
+                self.repo.write("tests/Example.Tests/Example.Tests.csproj", PROJECT.replace("<ItemGroup>", body + "<ItemGroup>", 1))
+                self.assertRefused(fragment)
+
+    def test_nuget_config_holds_only_the_allowed_sections(self):
+        audit = '  <auditSources>\n    <clear />\n    <add key="quiet" value="https://example.invalid/v3/index.json" />\n  </auditSources>\n</configuration>'
+        self.repo.write("NuGet.Config", NUGET_CONFIG.replace("</configuration>", audit))
+        self.assertRefused("has a auditSources section")
+        self.repo.write("NuGet.Config", NUGET_CONFIG.replace('protocolVersion="3"', 'protocolVersion="3" allowInsecureConnections="true"'))
+        self.assertRefused("allowInsecureConnections is not allowed")
+
+    def test_a_classic_solution_lists_projects_in_any_case(self):
+        self.repo.write("Example.sln", '\ufeff\nMicrosoft Visual Studio Solution File, Format Version 12.00\n'
+                        '  project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Odd", "src\\Odd\\Odd.thing", "{11111111-1111-1111-1111-111111111111}"\nEndProject\n')
+        self.repo.write("src/Odd/Odd.thing", "listed, not XML")
+        self.assertRefused("Odd.thing: not well-formed XML")
+
     def test_a_project_without_a_lock_file_is_refused(self):
         (self.repo.root / "tests/Example.Tests/packages.lock.json").unlink()
         self.assertRefused("has no packages.lock.json")
