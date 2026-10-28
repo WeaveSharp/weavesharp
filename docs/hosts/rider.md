@@ -264,6 +264,17 @@ After the operator approves a Builder build, the remaining checks are:
 7. Review package sources/licenses, regenerate the dependency register and
    read the complete diff. Obtain the existing CI results before acceptance.
 
+## Hands-on results (the Builder, October 28, 2026)
+
+The Builder built the trial on its Mac with Gradle 9.8.2, JDK 21 and the IntelliJ Platform Gradle Plugin 2.19.0 against Rider 2026.2.3 (build 262.10968.135), and ran it in a sandbox Rider licensed for non-commercial use. What this establishes, local only:
+
+- **The surface embeds.** The plugin's resource handler served the page built by `surfacePage` with a fresh nonce; the module scripts ran; WS-08's canvas drew the stand-in projection of the sample method, and the outline listed every node, pin, connection and region with keyboard focus on the first node. The Gradle plugin warns that a Rider target with `useInstaller = true` is not supported, yet JCEF loaded under it.
+- **Native edits and undo work.** The trial's Insert sample statement action added a statement through `WriteCommandAction`, the graph republished with a fourth node, and Rider's own ⌘Z removed both.
+- **The browser runs out of process.** Rider 2026.2.3 runs JCEF in remote mode (CEF 144): a `cef_server` helper listens on `127.0.0.1:30000` and the IDE on `127.0.0.1:30001`. No DevTools port (9222) opened, though the documentation describes one as active by default. A production adapter must assess how that local channel is protected before trusting the page's isolation to it.
+- **Two defects found and fixed.** A provider that was not `DumbAware` was offered again when indexing ended, so the editor showed a second tab for the same view and selecting it raised an exception; the provider is now `DumbAware`. The page ignored Rider's dark theme, leaving dark text on a dark background; the canvas stylesheet now declares `color-scheme: light dark`.
+
+Not established: the page's Content-Security-Policy and Trusted Types refusals inside JCEF (only that nonce scripts run), the debugger observer against a real .NET session, remote development and split mode, and screen readers. Each is listed above as needing verification.
+
 ## Sources
 
 The JetBrains research basis was supplied by the Builder. The editor guide

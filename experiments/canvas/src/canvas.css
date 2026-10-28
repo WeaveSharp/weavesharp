@@ -1,3 +1,4 @@
+:root { color-scheme: light dark; }
 .ws-canvas, .ws-outline { color: CanvasText; background: Canvas; }
 .ws-label { unicode-bidi: isolate; }
 .graph-drawing { max-width: 100%; height: auto; }

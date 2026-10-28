@@ -10,6 +10,7 @@ import com.intellij.openapi.fileEditor.FileEditorPolicy
 import com.intellij.openapi.fileEditor.FileEditorProvider
 import com.intellij.openapi.fileEditor.FileEditorState
 import com.intellij.openapi.fileEditor.FileEditorStateLevel
+import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.UserDataHolderBase
@@ -26,7 +27,9 @@ import javax.swing.JComponent
 import javax.swing.JLabel
 import javax.swing.JPanel
 
-class GraphEditorProvider : FileEditorProvider {
+// DumbAware: the view needs no index, so Rider offers it at once instead of adding it again when
+// indexing ends, which showed a second tab for the same editor (the Builder's hands-on run).
+class GraphEditorProvider : FileEditorProvider, DumbAware {
     override fun accept(project: Project, file: VirtualFile): Boolean = !file.isDirectory && file.extension == "cs" &&
         file.url.codePointCount(0, file.url.length) <= 2048
     override fun createEditor(project: Project, file: VirtualFile): FileEditor = GraphEditor(project, file)
