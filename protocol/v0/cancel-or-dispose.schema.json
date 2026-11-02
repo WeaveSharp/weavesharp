@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://weavesharp.example/protocol/v0/cancel-or-dispose.schema.json",
+  "$id": "https://weavesharp.com/protocol/v0/cancel-or-dispose.schema.json",
   "type": "object",
   "properties": {
     "version": {

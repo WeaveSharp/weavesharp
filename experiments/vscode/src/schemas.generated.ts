@@ -4,7 +4,7 @@ export const schemas: ReadonlyMap<string, unknown> = new Map<string, unknown>([
     "cancel-or-dispose.schema.json",
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://weavesharp.example/protocol/v0/cancel-or-dispose.schema.json",
+      "$id": "https://weavesharp.com/protocol/v0/cancel-or-dispose.schema.json",
       "type": "object",
       "properties": {
         "version": {
@@ -116,7 +116,7 @@ export const schemas: ReadonlyMap<string, unknown> = new Map<string, unknown>([
     "edit-result.schema.json",
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://weavesharp.example/protocol/v0/edit-result.schema.json",
+      "$id": "https://weavesharp.com/protocol/v0/edit-result.schema.json",
       "oneOf": [
         {
           "type": "object",
@@ -494,7 +494,7 @@ export const schemas: ReadonlyMap<string, unknown> = new Map<string, unknown>([
     "envelope.schema.json",
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://weavesharp.example/protocol/v0/envelope.schema.json",
+      "$id": "https://weavesharp.com/protocol/v0/envelope.schema.json",
       "oneOf": [
         {
           "$ref": "initialize.schema.json"
@@ -780,7 +780,7 @@ export const schemas: ReadonlyMap<string, unknown> = new Map<string, unknown>([
     "initialize.schema.json",
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://weavesharp.example/protocol/v0/initialize.schema.json",
+      "$id": "https://weavesharp.com/protocol/v0/initialize.schema.json",
       "type": "object",
       "properties": {
         "version": {
@@ -906,7 +906,7 @@ export const schemas: ReadonlyMap<string, unknown> = new Map<string, unknown>([
     "prepare-edit.schema.json",
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://weavesharp.example/protocol/v0/prepare-edit.schema.json",
+      "$id": "https://weavesharp.com/protocol/v0/prepare-edit.schema.json",
       "type": "object",
       "properties": {
         "version": {
@@ -997,7 +997,7 @@ export const schemas: ReadonlyMap<string, unknown> = new Map<string, unknown>([
     "publish-execution-state.schema.json",
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://weavesharp.example/protocol/v0/publish-execution-state.schema.json",
+      "$id": "https://weavesharp.com/protocol/v0/publish-execution-state.schema.json",
       "type": "object",
       "properties": {
         "version": {
@@ -1168,7 +1168,7 @@ export const schemas: ReadonlyMap<string, unknown> = new Map<string, unknown>([
     "publish-graph.schema.json",
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://weavesharp.example/protocol/v0/publish-graph.schema.json",
+      "$id": "https://weavesharp.com/protocol/v0/publish-graph.schema.json",
       "type": "object",
       "properties": {
         "version": {
@@ -1604,7 +1604,7 @@ export const schemas: ReadonlyMap<string, unknown> = new Map<string, unknown>([
     "publish-source-snapshot.schema.json",
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://weavesharp.example/protocol/v0/publish-source-snapshot.schema.json",
+      "$id": "https://weavesharp.com/protocol/v0/publish-source-snapshot.schema.json",
       "type": "object",
       "properties": {
         "version": {
@@ -1736,7 +1736,7 @@ export const schemas: ReadonlyMap<string, unknown> = new Map<string, unknown>([
     "read-or-save-layout.schema.json",
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://weavesharp.example/protocol/v0/read-or-save-layout.schema.json",
+      "$id": "https://weavesharp.com/protocol/v0/read-or-save-layout.schema.json",
       "oneOf": [
         {
           "type": "object",
@@ -2217,7 +2217,7 @@ export const schemas: ReadonlyMap<string, unknown> = new Map<string, unknown>([
     "request-graph.schema.json",
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://weavesharp.example/protocol/v0/request-graph.schema.json",
+      "$id": "https://weavesharp.com/protocol/v0/request-graph.schema.json",
       "type": "object",
       "properties": {
         "version": {
@@ -2293,7 +2293,7 @@ export const schemas: ReadonlyMap<string, unknown> = new Map<string, unknown>([
     "set-compilation-context.schema.json",
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "$id": "https://weavesharp.example/protocol/v0/set-compilation-context.schema.json",
+      "$id": "https://weavesharp.com/protocol/v0/set-compilation-context.schema.json",
       "type": "object",
       "properties": {
         "version": {
